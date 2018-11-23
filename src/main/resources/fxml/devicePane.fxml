@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="120.0" prefWidth="160.0" style="-fx-background-color: white;" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox fx:id="hboxStateBackground" alignment="CENTER" onMouseClicked="#handleChangeState" onMousePressed="#handlePressed" onMouseReleased="#handleReleased" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #008B45;" VBox.vgrow="ALWAYS">
+         <children>
+            <Label fx:id="labelState" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 24;" text="A" />
+         </children>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </HBox>
+      <HBox alignment="CENTER" onMouseClicked="#handlerNameClicked" prefHeight="60.0" prefWidth="200.0" VBox.vgrow="NEVER">
+         <children>
+            <Label fx:id="labelName" alignment="BASELINE_RIGHT" text="Label" textAlignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Label>
+         </children>
+      </HBox>
+   </children>
+   <effect>
+      <DropShadow color="#0000007f" height="10.0" radius="4.5" width="10.0" />
+   </effect>
+   
+</fx:root>

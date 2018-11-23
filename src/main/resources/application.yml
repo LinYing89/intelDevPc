@@ -1,0 +1,17 @@
+spring: 
+  datasource:
+    url: jdbc:mysql://localhost:3306/intelDevPc?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true 
+javafx:
+    title: 呱呱物联
+logging:
+  file: ./logs/inteldevpc/info.log

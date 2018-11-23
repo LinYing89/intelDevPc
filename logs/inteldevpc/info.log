@@ -1,0 +1,28 @@
+2018-11-23 21:31:27.166  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 17584 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-23 21:31:27.217  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2018-11-23 21:31:28.396  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-23 21:31:28.768  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 346ms. Found 10 repository interfaces.
+2018-11-23 21:31:29.739  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-23 21:31:30.140  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-23 21:31:30.475  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-23 21:31:30.685  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-23 21:31:30.689  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-23 21:31:31.033  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-23 21:31:31.720  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-11-23 21:31:35.951  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-23 21:31:36.775  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-23 21:31:38.948  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-23 21:31:38.982  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-23 21:31:38.986  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 12.605 seconds (JVM running for 14.734)
+2018-11-23 21:31:49.020  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-23 21:31:59.025  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-23 21:32:09.029  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-23 21:32:19.033  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-23 21:32:29.037  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-23 21:32:39.041  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-23 21:32:45.728  INFO 17584 --- [Thread-9] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-23 21:32:45.740  INFO 17584 --- [Thread-9] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-23 21:32:45.759  INFO 17584 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-23 21:32:45.787  INFO 17584 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

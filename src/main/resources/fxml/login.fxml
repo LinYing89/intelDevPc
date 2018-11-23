@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="633.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bairock.intelDevPc.controller.LoginController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="168.0" prefWidth="633.0" style="-fx-background-color: #6CA6CD;" VBox.vgrow="ALWAYS">
+         <children>
+            <Label text="大发科技智能物联网控制系统" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="296.0" prefWidth="633.0">
+         <children>
+            <GridPane fx:id="gridPane" vgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="154.0" minWidth="10.0" prefWidth="105.0" />
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="212.0" minWidth="10.0" prefWidth="212.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="9.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="用户名" />
+                  <TextField fx:id="txtUserName" text="test123" GridPane.columnIndex="1" />
+                  <Label text="组名" GridPane.rowIndex="1" />
+                  <Label text="组密码" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtGroupName" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtGroupPsd" text="a123" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button defaultButton="true" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="317.0" text="登录" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#loginLocal" prefHeight="30.0" prefWidth="318.0" text="本地登录" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+                  <CheckBox mnemonicParsing="false" onAction="#cbAutoLogin" text="自动登录" GridPane.rowIndex="3" />
+                  <Label fx:id="labelWaring" style="-fx-text-fill: red;" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+               </children>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </GridPane>
+         </children>
+      </HBox>
+   </children>
+</VBox>
