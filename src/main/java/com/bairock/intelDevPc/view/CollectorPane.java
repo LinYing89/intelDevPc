@@ -2,7 +2,10 @@ package com.bairock.intelDevPc.view;
 
 import java.io.IOException;
 
+import com.bairock.intelDevPc.IntelDevPcApplication;
+import com.bairock.intelDevPc.SpringUtil;
 import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
+import com.bairock.intelDevPc.controller.DevCollectorInfoController;
 import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.devcollect.CollectProperty.OnCurrentValueChangedListener;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
@@ -15,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 
 public class CollectorPane extends VBox{
 	
@@ -26,6 +30,8 @@ public class CollectorPane extends VBox{
 	private Label labelName;
 	@FXML
 	private HBox hboxStateBackground;
+	
+	private DevCollectorInfo devCollectorInfo = SpringUtil.getBean(DevCollectorInfo.class);
 
 	public CollectorPane() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/collectorPane.fxml"));
@@ -100,5 +106,10 @@ public class CollectorPane extends VBox{
 	@FXML
 	private void initialize() {
 		// Do some work
+	}
+	
+	public void handlerNameClicked(){
+		((DevCollectorInfoController)devCollectorInfo.getPresenter()).init(device);
+		IntelDevPcApplication.showView(DevCollectorInfo.class, Modality.WINDOW_MODAL);
 	}
 }

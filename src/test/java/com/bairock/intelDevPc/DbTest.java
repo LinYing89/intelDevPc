@@ -2,6 +2,7 @@ package com.bairock.intelDevPc;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,8 +34,9 @@ public class DbTest {
 			userRepository.flush();
 		}
 		
-		User user = new User("jack", "a123", "444@qq.com", "171", "admin", new Date());
-		DevGroup group = new DevGroup("group", "a123", "g1");
+		User user = new User("test123", "a123", "444@qq.com", "171", "admin", new Date());
+		DevGroup group = new DevGroup("1", "a123", "g1");
+		group.setId(UUID.randomUUID().toString());
 		user.addGroup(group);
 		DevSwitchOneRoad dsor = new DevSwitchOneRoad(MainCodeHelper.KG_1LU_2TAI, "0001");
 		group.addDevice(dsor);

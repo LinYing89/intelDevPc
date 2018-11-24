@@ -1,28 +1,729 @@
-2018-11-23 21:31:27.166  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 17584 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
-2018-11-23 21:31:27.217  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
-2018-11-23 21:31:28.396  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
-2018-11-23 21:31:28.768  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 346ms. Found 10 repository interfaces.
-2018-11-23 21:31:29.739  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2018-11-23 21:31:30.140  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2018-11-23 21:31:30.475  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+2018-11-24 20:02:26.987  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 5472 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:02:27.006  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2018-11-24 20:02:28.077  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:02:28.709  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 598ms. Found 11 repository interfaces.
+2018-11-24 20:02:29.472  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:02:29.943  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:02:30.306  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
 	name: default
 	...]
-2018-11-23 21:31:30.685  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
-2018-11-23 21:31:30.689  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
-2018-11-23 21:31:31.033  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
-2018-11-23 21:31:31.720  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2018-11-23 21:31:35.951  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2018-11-23 21:31:36.775  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
-2018-11-23 21:31:38.948  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
-2018-11-23 21:31:38.982  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
-2018-11-23 21:31:38.986  INFO 17584 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 12.605 seconds (JVM running for 14.734)
-2018-11-23 21:31:49.020  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
-2018-11-23 21:31:59.025  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
-2018-11-23 21:32:09.029  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
-2018-11-23 21:32:19.033  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
-2018-11-23 21:32:29.037  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
-2018-11-23 21:32:39.041  INFO 17584 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
-2018-11-23 21:32:45.728  INFO 17584 --- [Thread-9] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
-2018-11-23 21:32:45.740  INFO 17584 --- [Thread-9] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2018-11-23 21:32:45.759  INFO 17584 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2018-11-23 21:32:45.787  INFO 17584 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:02:30.431  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:02:30.435  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:02:30.850  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:02:31.488  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-11-24 20:02:36.332  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:02:37.480  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:02:39.928  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:02:39.965  INFO 5472 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:02:39.973  INFO 5472 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 14.281 seconds (JVM running for 17.409)
+2018-11-24 20:02:49.949  INFO 5472 --- [Thread-9] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:02:49.959  INFO 5472 --- [Thread-9] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:02:49.978  INFO 5472 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:02:50.019  INFO 5472 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:06:00.703  INFO 14812 --- [main] com.bairock.intelDevPc.DbTest            : Starting DbTest on DESKTOP-B8UPRNV with PID 14812 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:06:00.704  INFO 14812 --- [main] com.bairock.intelDevPc.DbTest            : No active profile set, falling back to default profiles: default
+2018-11-24 20:06:01.555  INFO 14812 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:06:01.798  INFO 14812 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 234ms. Found 11 repository interfaces.
+2018-11-24 20:06:02.662  INFO 14812 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:06:02.899  INFO 14812 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:06:03.217  INFO 14812 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:06:03.369  INFO 14812 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:06:03.374  INFO 14812 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:06:03.618  INFO 14812 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:06:04.367  INFO 14812 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-11-24 20:06:07.496  INFO 14812 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:06:08.293  INFO 14812 --- [main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:06:10.253  INFO 14812 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:06:10.348  INFO 14812 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:06:10.352  INFO 14812 --- [main] com.bairock.intelDevPc.DbTest            : Started DbTest in 10.177 seconds (JVM running for 11.645)
+2018-11-24 20:06:10.710  INFO 14812 --- [Thread-4] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:06:10.714  INFO 14812 --- [Thread-4] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:06:10.719  INFO 14812 --- [Thread-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:06:10.728  INFO 14812 --- [Thread-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:07:28.441  INFO 17760 --- [main] com.bairock.intelDevPc.DbTest            : Starting DbTest on DESKTOP-B8UPRNV with PID 17760 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:07:28.442  INFO 17760 --- [main] com.bairock.intelDevPc.DbTest            : No active profile set, falling back to default profiles: default
+2018-11-24 20:07:29.270  INFO 17760 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:07:29.555  INFO 17760 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 276ms. Found 11 repository interfaces.
+2018-11-24 20:07:30.447  INFO 17760 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:07:30.673  INFO 17760 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:07:30.999  INFO 17760 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:07:31.144  INFO 17760 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:07:31.153  INFO 17760 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:07:31.418  INFO 17760 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:07:31.960  INFO 17760 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-11-24 20:07:35.336  INFO 17760 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:07:36.153  INFO 17760 --- [main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:07:38.247  INFO 17760 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:07:38.327  INFO 17760 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:07:38.333  INFO 17760 --- [main] com.bairock.intelDevPc.DbTest            : Started DbTest in 10.506 seconds (JVM running for 11.76)
+2018-11-24 20:07:38.589  INFO 17760 --- [Thread-4] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:07:38.591  INFO 17760 --- [Thread-4] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:07:38.596  INFO 17760 --- [Thread-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:07:38.603  INFO 17760 --- [Thread-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:07:50.901  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 20000 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:07:50.907  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2018-11-24 20:07:51.783  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:07:52.165  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 372ms. Found 11 repository interfaces.
+2018-11-24 20:07:52.840  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:07:53.030  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:07:53.318  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:07:53.417  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:07:53.421  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:07:53.603  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:07:53.949  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-11-24 20:07:57.291  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:07:57.916  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:07:59.802  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:07:59.834  INFO 20000 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:07:59.839  INFO 20000 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 9.596 seconds (JVM running for 12.263)
+2018-11-24 20:08:09.863  INFO 20000 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:08:19.868  INFO 20000 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:08:21.297  INFO 20000 --- [Thread-9] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:08:21.312  INFO 20000 --- [Thread-9] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:08:21.332  INFO 20000 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:08:21.347  INFO 20000 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:13:29.980  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 19912 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:13:29.987  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2018-11-24 20:13:30.892  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:13:31.319  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 419ms. Found 11 repository interfaces.
+2018-11-24 20:13:31.929  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:13:32.075  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:13:32.435  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:13:32.568  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:13:32.572  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:13:32.765  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:13:33.109  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-11-24 20:13:36.527  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:13:37.211  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:13:39.284  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:13:39.316  INFO 19912 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:13:39.321  INFO 19912 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 10.078 seconds (JVM running for 12.535)
+2018-11-24 20:13:49.349  INFO 19912 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:13:59.353  INFO 19912 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:14:09.357  INFO 19912 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:14:19.361  INFO 19912 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:14:29.366  INFO 19912 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:14:36.624  INFO 19912 --- [Thread-9] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:14:36.637  INFO 19912 --- [Thread-9] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:14:36.659  INFO 19912 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:14:36.678  INFO 19912 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:15:00.496  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 4500 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:15:00.510  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2018-11-24 20:15:01.435  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:15:01.736  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 293ms. Found 11 repository interfaces.
+2018-11-24 20:15:02.277  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:15:02.455  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:15:02.702  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:15:02.829  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:15:02.833  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:15:03.033  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:15:03.357  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-11-24 20:15:06.698  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:15:07.391  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:15:09.360  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:15:09.395  INFO 4500 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:15:09.399  INFO 4500 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 9.62 seconds (JVM running for 12.121)
+2018-11-24 20:15:19.425  INFO 4500 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:15:29.431  INFO 4500 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:15:38.347  INFO 4500 --- [Thread-9] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:15:38.358  INFO 4500 --- [Thread-9] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:15:38.375  INFO 4500 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:15:38.383  INFO 4500 --- [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:34:08.025  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 21216 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:34:08.033  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2018-11-24 20:34:08.859  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:34:09.206  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 338ms. Found 11 repository interfaces.
+2018-11-24 20:34:09.874  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:34:09.875  WARN 21216 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.util.DriverDataSource  : Registered driver with driverClassName=org.apache.derby.jdbc.EmbeddedDriver was not found, trying direct instantiation.
+2018-11-24 20:34:11.257  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Driver does not support get/set network timeout for connections. (Feature not implemented: No details.)
+2018-11-24 20:34:11.264  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:34:11.578  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:34:11.736  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:34:11.739  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:34:12.030  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:34:12.302  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.DerbyTenSevenDialect
+2018-11-24 20:34:21.699  WARN 21216 --- [ForkJoinPool.commonPool-worker-1] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "create table my_time (id varchar(255) not null, hour integer not null, minute integer not null, second integer not null, type integer not null, timer_id varchar(255), primary key (id))" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "create table my_time (id varchar(255) not null, hour integer not null, minute integer not null, second integer not null, type integer not null, timer_id varchar(255), primary key (id))" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.createTable(AbstractSchemaMigrator.java:277) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:71) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:207) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:183) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:72) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:310) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:467) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:939) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:57) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:390) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:377) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1804) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1741) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:576) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:498) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1083) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:853) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:546) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport.lambda$init$1(AbstractJavaFxApplicationSupport.java:124) ~[springboot-javafx-support-2.1.6.jar:na]
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590) ~[na:1.8.0_172]
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1582) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157) ~[na:1.8.0_172]
+Caused by: java.sql.SQLSyntaxErrorException: Syntax error: Encountered "hour" at line 1, column 49.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-3.2.0.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-3.2.0.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	... 39 common frames omitted
+Caused by: org.apache.derby.iapi.error.StandardException: Syntax error: Encountered "hour" at line 1, column 49.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.ParserImpl.parseStatementOrSearchCondition(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.ParserImpl.parseStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepare(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	... 44 common frames omitted
+
+2018-11-24 20:34:21.799  WARN 21216 --- [ForkJoinPool.commonPool-worker-1] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "create table user (id bigint not null, email varchar(255), name varchar(255), pet_name varchar(255), psd varchar(255), register_time timestamp, tel varchar(255), primary key (id))" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "create table user (id bigint not null, email varchar(255), name varchar(255), pet_name varchar(255), psd varchar(255), register_time timestamp, tel varchar(255), primary key (id))" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.createTable(AbstractSchemaMigrator.java:277) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:71) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:207) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:183) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:72) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:310) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:467) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:939) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:57) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:390) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:377) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1804) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1741) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:576) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:498) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1083) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:853) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:546) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport.lambda$init$1(AbstractJavaFxApplicationSupport.java:124) ~[springboot-javafx-support-2.1.6.jar:na]
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590) ~[na:1.8.0_172]
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1582) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157) ~[na:1.8.0_172]
+Caused by: java.sql.SQLSyntaxErrorException: Syntax error: Encountered "user" at line 1, column 14.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-3.2.0.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-3.2.0.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	... 39 common frames omitted
+Caused by: org.apache.derby.iapi.error.StandardException: Syntax error: Encountered "user" at line 1, column 14.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.ParserImpl.parseStatementOrSearchCondition(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.ParserImpl.parseStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepare(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	... 44 common frames omitted
+
+2018-11-24 20:34:22.189  WARN 21216 --- [ForkJoinPool.commonPool-worker-1] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table dev_group add constraint FK7c9xk2gos39hvkt09apt0c1vv foreign key (user_id) references user" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table dev_group add constraint FK7c9xk2gos39hvkt09apt0c1vv foreign key (user_id) references user" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:183) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:72) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:310) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:467) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:939) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:57) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:390) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:377) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1804) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1741) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:576) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:498) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1083) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:853) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:546) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport.lambda$init$1(AbstractJavaFxApplicationSupport.java:124) ~[springboot-javafx-support-2.1.6.jar:na]
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590) ~[na:1.8.0_172]
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1582) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157) ~[na:1.8.0_172]
+Caused by: java.sql.SQLSyntaxErrorException: Syntax error: Encountered "user" at line 1, column 99.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-3.2.0.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-3.2.0.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	... 38 common frames omitted
+Caused by: org.apache.derby.iapi.error.StandardException: Syntax error: Encountered "user" at line 1, column 99.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.ParserImpl.parseStatementOrSearchCondition(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.ParserImpl.parseStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepare(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	... 43 common frames omitted
+
+2018-11-24 20:34:22.596  WARN 21216 --- [ForkJoinPool.commonPool-worker-1] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table my_time add constraint FKs1aewp2vm9irjh5cta0l6bwye foreign key (timer_id) references ztimer" via JDBC Statement
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table my_time add constraint FKs1aewp2vm9irjh5cta0l6bwye foreign key (timer_id) references ztimer" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:183) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:72) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:310) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:467) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:939) [hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:57) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:390) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:377) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341) [spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1804) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1741) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:576) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:498) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1083) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:853) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:546) ~[spring-context-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248) ~[spring-boot-2.1.0.RELEASE.jar:2.1.0.RELEASE]
+	at de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport.lambda$init$1(AbstractJavaFxApplicationSupport.java:124) ~[springboot-javafx-support-2.1.6.jar:na]
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590) ~[na:1.8.0_172]
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1582) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692) ~[na:1.8.0_172]
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157) ~[na:1.8.0_172]
+Caused by: java.sql.SQLSyntaxErrorException: 'ALTER TABLE' cannot be performed on 'MY_TIME' because it does not exist.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedStatement.execute(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-3.2.0.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-3.2.0.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	... 38 common frames omitted
+Caused by: org.apache.derby.iapi.error.StandardException: 'ALTER TABLE' cannot be performed on 'MY_TIME' because it does not exist.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.DDLStatementNode.justGetDescriptor(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.DDLStatementNode.getTableDescriptor(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.DDLStatementNode.getTableDescriptor(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.AlterTableNode.bindStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepare(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	... 43 common frames omitted
+
+2018-11-24 20:34:22.707  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:34:23.381  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:34:25.654  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:34:25.707  INFO 21216 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:34:25.712  INFO 21216 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 18.527 seconds (JVM running for 21.107)
+2018-11-24 20:34:25.990  WARN 21216 --- [JavaFX Application Thread] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 20000, SQLState: 42X01
+2018-11-24 20:34:25.990 ERROR 21216 --- [JavaFX Application Thread] o.h.engine.jdbc.spi.SqlExceptionHelper   : Syntax error: Encountered "user" at line 1, column 209.
+2018-11-24 20:34:26.003 ERROR 21216 --- [JavaFX Application Thread] d.f.j.AbstractJavaFxApplicationSupport   : Failed to load application: 
+
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [select user0_.id as id1_17_, user0_.email as email2_17_, user0_.name as name3_17_, user0_.pet_name as pet_name4_17_, user0_.psd as psd5_17_, user0_.register_time as register6_17_, user0_.tel as tel7_17_ from user user0_]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:279) ~[spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:253) ~[spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:527) ~[spring-orm-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61) ~[spring-tx-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:242) ~[spring-tx-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:153) ~[spring-tx-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:135) ~[spring-data-jpa-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:93) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:61) ~[spring-data-commons-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at com.sun.proxy.$Proxy101.findAll(Unknown Source) ~[na:na]
+	at com.bairock.intelDevPc.service.UserService.initUser(UserService.java:71) ~[classes/:na]
+	at com.bairock.intelDevPc.service.UserService$$FastClassBySpringCGLIB$$2f4570c1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218) ~[spring-core-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:746) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:294) ~[spring-tx-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98) ~[spring-tx-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at com.bairock.intelDevPc.service.UserService$$EnhancerBySpringCGLIB$$e9b7bce4.initUser(<generated>) ~[classes/:na]
+	at com.bairock.intelDevPc.IntelDevPcApplication.handleShown(IntelDevPcApplication.java:63) ~[classes/:na]
+	at com.bairock.intelDevPc.IntelDevPcApplication.lambda$1(IntelDevPcApplication.java:47) ~[classes/:na]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[jfxrt.jar:na]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238) ~[jfxrt.jar:na]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191) ~[jfxrt.jar:na]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[jfxrt.jar:na]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[jfxrt.jar:na]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[jfxrt.jar:na]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[jfxrt.jar:na]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[jfxrt.jar:na]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[jfxrt.jar:na]
+	at javafx.stage.Window.fireEvent(Window.java:1138) ~[jfxrt.jar:na]
+	at javafx.stage.Window$9.invalidated(Window.java:888) ~[jfxrt.jar:na]
+	at javafx.beans.property.BooleanPropertyBase.markInvalid(BooleanPropertyBase.java:109) ~[jfxrt.jar:na]
+	at javafx.beans.property.BooleanPropertyBase.set(BooleanPropertyBase.java:144) ~[jfxrt.jar:na]
+	at javafx.stage.Window.setShowing(Window.java:940) ~[jfxrt.jar:na]
+	at javafx.stage.Window.show(Window.java:955) ~[jfxrt.jar:na]
+	at javafx.stage.Stage.show(Stage.java:259) ~[jfxrt.jar:na]
+	at de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport.showView(AbstractJavaFxApplicationSupport.java:215) [springboot-javafx-support-2.1.6.jar:na]
+	at de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport.showInitialView(AbstractJavaFxApplicationSupport.java:185) [springboot-javafx-support-2.1.6.jar:na]
+	at de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport.lambda$start$6(AbstractJavaFxApplicationSupport.java:163) [springboot-javafx-support-2.1.6.jar:na]
+	at com.sun.javafx.application.PlatformImpl.lambda$null$172(PlatformImpl.java:295) ~[jfxrt.jar:na]
+	at java.security.AccessController.doPrivileged(Native Method) ~[na:1.8.0_172]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$173(PlatformImpl.java:294) ~[jfxrt.jar:na]
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95) ~[jfxrt.jar:na]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[jfxrt.jar:na]
+	at com.sun.glass.ui.win.WinApplication.lambda$null$147(WinApplication.java:177) ~[jfxrt.jar:na]
+	at java.lang.Thread.run(Thread.java:748) ~[na:1.8.0_172]
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:63) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:113) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$StatementPreparationTemplate.prepareStatement(StatementPreparerImpl.java:182) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl.prepareQueryStatement(StatementPreparerImpl.java:148) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.Loader.prepareQueryStatement(Loader.java:1984) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:1914) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.Loader.executeQueryStatement(Loader.java:1892) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.Loader.doQuery(Loader.java:937) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.Loader.doQueryAndInitializeNonLazyCollections(Loader.java:340) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.Loader.doList(Loader.java:2689) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.Loader.doList(Loader.java:2672) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2506) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.Loader.list(Loader.java:2501) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.loader.hql.QueryLoader.list(QueryLoader.java:504) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.hql.internal.ast.QueryTranslatorImpl.list(QueryTranslatorImpl.java:395) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.engine.query.spi.HQLQueryPlan.performList(HQLQueryPlan.java:220) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.internal.SessionImpl.list(SessionImpl.java:1508) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.query.internal.AbstractProducedQuery.doList(AbstractProducedQuery.java:1537) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.query.internal.AbstractProducedQuery.list(AbstractProducedQuery.java:1505) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.query.Query.getResultList(Query.java:135) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.query.criteria.internal.compile.CriteriaQueryTypeQueryAdapter.getResultList(CriteriaQueryTypeQueryAdapter.java:74) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.findAll(SimpleJpaRepository.java:306) ~[spring-data-jpa-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.findAll(SimpleJpaRepository.java:73) ~[spring-data-jpa-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_172]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_172]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_172]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_172]
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:359) ~[spring-data-commons-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:200) ~[spring-data-commons-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:644) ~[spring-data-commons-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:608) ~[spring-data-commons-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lambda$invoke$3(RepositoryFactorySupport.java:595) ~[spring-data-commons-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:595) ~[spring-data-commons-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:59) ~[spring-data-commons-2.1.2.RELEASE.jar:2.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:294) ~[spring-tx-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98) ~[spring-tx-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:139) ~[spring-tx-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+	... 47 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Syntax error: Encountered "user" at line 1, column 209.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.<init>(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement42.<init>(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.jdbc.Driver42.newEmbedPreparedStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at com.zaxxer.hikari.pool.ProxyConnection.prepareStatement(ProxyConnection.java:311) ~[HikariCP-3.2.0.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyConnection.prepareStatement(HikariProxyConnection.java) ~[HikariCP-3.2.0.jar:na]
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$5.doPrepare(StatementPreparerImpl.java:146) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	at org.hibernate.engine.jdbc.internal.StatementPreparerImpl$StatementPreparationTemplate.prepareStatement(StatementPreparerImpl.java:172) ~[hibernate-core-5.3.7.Final.jar:5.3.7.Final]
+	... 85 common frames omitted
+Caused by: org.apache.derby.iapi.error.StandardException: Syntax error: Encountered "user" at line 1, column 209.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.ParserImpl.parseStatementOrSearchCondition(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.compile.ParserImpl.parseStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.GenericStatement.prepare(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(Unknown Source) ~[derby-10.14.2.0.jar:na]
+	... 94 common frames omitted
+
+2018-11-24 20:34:35.738  INFO 21216 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:34:39.341  INFO 21216 --- [JavaFX Application Thread] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:34:39.358  INFO 21216 --- [JavaFX Application Thread] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:34:39.379  INFO 21216 --- [JavaFX Application Thread] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': java.sql.SQLSyntaxErrorException: Syntax error: Encountered "SHUTDOWN" at line 1, column 1.
+2018-11-24 20:34:39.380  INFO 21216 --- [JavaFX Application Thread] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:34:39.389  INFO 21216 --- [JavaFX Application Thread] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:46:13.715  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 5800 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:46:13.719  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2018-11-24 20:46:14.534  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:46:14.995  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 452ms. Found 11 repository interfaces.
+2018-11-24 20:46:15.512  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:46:15.835  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:46:16.090  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:46:16.196  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:46:16.209  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:46:16.390  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:46:16.711  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2018-11-24 20:46:18.905  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:46:19.499  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:46:21.378  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:46:21.428  INFO 5800 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:46:21.434  INFO 5800 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 8.338 seconds (JVM running for 10.353)
+2018-11-24 20:46:31.474  INFO 5800 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:46:41.479  INFO 5800 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:46:46.947  INFO 5800 --- [Thread-10] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:46:46.957  INFO 5800 --- [Thread-10] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:46:46.971  INFO 5800 --- [Thread-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:46:46.977  INFO 5800 --- [Thread-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:47:50.241  INFO 17524 --- [main] com.bairock.intelDevPc.DbTest            : Starting DbTest on DESKTOP-B8UPRNV with PID 17524 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:47:50.244  INFO 17524 --- [main] com.bairock.intelDevPc.DbTest            : No active profile set, falling back to default profiles: default
+2018-11-24 20:47:51.153  INFO 17524 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:47:51.419  INFO 17524 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 257ms. Found 11 repository interfaces.
+2018-11-24 20:47:52.279  INFO 17524 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:47:52.619  INFO 17524 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:47:52.963  INFO 17524 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:47:53.076  INFO 17524 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:47:53.089  INFO 17524 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:47:53.310  INFO 17524 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:47:54.127  INFO 17524 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2018-11-24 20:47:56.680  INFO 17524 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:47:57.540  INFO 17524 --- [main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:47:59.598  INFO 17524 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:47:59.677  INFO 17524 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:47:59.682  INFO 17524 --- [main] com.bairock.intelDevPc.DbTest            : Started DbTest in 10.084 seconds (JVM running for 11.589)
+2018-11-24 20:47:59.987  INFO 17524 --- [Thread-5] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:48:00.006  INFO 17524 --- [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:48:00.012  INFO 17524 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:48:00.018  INFO 17524 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:48:39.178  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 20052 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:48:39.184  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2018-11-24 20:48:40.075  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:48:40.388  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 305ms. Found 11 repository interfaces.
+2018-11-24 20:48:41.006  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:48:41.196  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:48:41.435  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:48:41.552  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:48:41.556  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:48:41.893  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:48:42.203  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2018-11-24 20:48:44.665  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:48:45.302  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:48:47.260  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:48:47.295  INFO 20052 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:48:47.300  INFO 20052 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 8.755 seconds (JVM running for 11.319)
+2018-11-24 20:48:57.324  INFO 20052 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:49:07.328  INFO 20052 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:49:13.067  INFO 20052 --- [JavaFX Application Thread] c.b.i.controller.DevicesController       : changed dev 0_2
+2018-11-24 20:49:14.089  INFO 20052 --- [JavaFX Application Thread] c.b.i.controller.DevicesController       : changed dev B10001
+2018-11-24 20:49:15.340  INFO 20052 --- [JavaFX Application Thread] c.b.i.controller.DevicesController       : changed dev qiyachuanganyeweiji0001
+2018-11-24 20:49:17.332  INFO 20052 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:49:27.336  INFO 20052 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:49:30.541  INFO 20052 --- [Thread-10] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:49:30.553  INFO 20052 --- [Thread-10] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:49:30.573  INFO 20052 --- [Thread-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:49:30.579  INFO 20052 --- [Thread-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:50:25.764  INFO 3700 --- [main] com.bairock.intelDevPc.DbTest            : Starting DbTest on DESKTOP-B8UPRNV with PID 3700 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:50:25.768  INFO 3700 --- [main] com.bairock.intelDevPc.DbTest            : No active profile set, falling back to default profiles: default
+2018-11-24 20:50:26.594  INFO 3700 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:50:26.891  INFO 3700 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 288ms. Found 11 repository interfaces.
+2018-11-24 20:50:27.745  INFO 3700 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:50:28.011  INFO 3700 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:50:28.329  INFO 3700 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:50:28.425  INFO 3700 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:50:28.430  INFO 3700 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:50:28.711  INFO 3700 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:50:29.565  INFO 3700 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2018-11-24 20:50:31.871  INFO 3700 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:50:32.718  INFO 3700 --- [main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:50:34.475  INFO 3700 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:50:34.556  INFO 3700 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:50:34.560  INFO 3700 --- [main] com.bairock.intelDevPc.DbTest            : Started DbTest in 9.311 seconds (JVM running for 10.91)
+2018-11-24 20:50:34.746  INFO 3700 --- [Thread-5] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:50:34.750  INFO 3700 --- [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:50:34.755  INFO 3700 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:50:34.760  INFO 3700 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 20:50:45.268  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Starting application on DESKTOP-B8UPRNV with PID 1572 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 20:50:45.274  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : No active profile set, falling back to default profiles: default
+2018-11-24 20:50:46.543  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 20:50:46.857  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 305ms. Found 11 repository interfaces.
+2018-11-24 20:50:47.528  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 20:50:47.822  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 20:50:48.086  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 20:50:48.189  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 20:50:48.194  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 20:50:48.480  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 20:50:48.765  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2018-11-24 20:50:52.640  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:50:53.593  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 20:50:55.837  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 20:50:55.899  INFO 1572 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:50:55.908  INFO 1572 --- [ForkJoinPool.commonPool-worker-1] o.s.boot.SpringApplication               : Started application in 11.619 seconds (JVM running for 13.811)
+2018-11-24 20:51:05.957  INFO 1572 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:51:15.961  INFO 1572 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:51:25.967  INFO 1572 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:51:35.971  INFO 1572 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:51:45.974  INFO 1572 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:51:55.978  INFO 1572 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 20:52:00.806  INFO 1572 --- [Thread-10] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 20:52:00.822  INFO 1572 --- [Thread-10] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 20:52:00.843  INFO 1572 --- [Thread-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 20:52:00.854  INFO 1572 --- [Thread-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2018-11-24 21:05:08.674  INFO 1424 --- [main] com.bairock.intelDevPc.DbDeleteTest      : Starting DbDeleteTest on DESKTOP-B8UPRNV with PID 1424 (started by 44489 in C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc)
+2018-11-24 21:05:08.678  INFO 1424 --- [main] com.bairock.intelDevPc.DbDeleteTest      : No active profile set, falling back to default profiles: default
+2018-11-24 21:05:09.438  INFO 1424 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-11-24 21:05:09.688  INFO 1424 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 240ms. Found 11 repository interfaces.
+2018-11-24 21:05:10.520  INFO 1424 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-11-24 21:05:10.859  INFO 1424 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-11-24 21:05:11.111  INFO 1424 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-11-24 21:05:11.218  INFO 1424 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2018-11-24 21:05:11.223  INFO 1424 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-11-24 21:05:11.474  INFO 1424 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2018-11-24 21:05:12.068  INFO 1424 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2018-11-24 21:05:14.488  INFO 1424 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 21:05:15.282  INFO 1424 --- [main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2018-11-24 21:05:16.896  INFO 1424 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2018-11-24 21:05:16.952  INFO 1424 --- [scheduling-1] c.b.i.scheduling.ScheduleRunner          : checkServerConnect
+2018-11-24 21:05:16.956  INFO 1424 --- [main] com.bairock.intelDevPc.DbDeleteTest      : Started DbDeleteTest in 8.734 seconds (JVM running for 10.202)
+2018-11-24 21:05:16.983  INFO 1424 --- [main] o.s.t.c.transaction.TransactionContext   : Began transaction (1) for test context [DefaultTestContext@158a8276 testClass = DbDeleteTest, testInstance = com.bairock.intelDevPc.DbDeleteTest@1f59a598, testMethod = testInsertUser@DbDeleteTest, testException = [null], mergedContextConfiguration = [MergedContextConfiguration@3c3d9b6b testClass = DbDeleteTest, locations = '{}', classes = '{class com.bairock.intelDevPc.IntelDevPcApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@2f490758, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@276438c9, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@701fc37a, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@6a396c1e], contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map[[empty]]]; transaction manager [org.springframework.orm.jpa.JpaTransactionManager@39cf7f3c]; rollback [true]
+2018-11-24 21:05:17.231  INFO 1424 --- [main] o.s.t.c.transaction.TransactionContext   : Rolled back transaction for test: [DefaultTestContext@158a8276 testClass = DbDeleteTest, testInstance = com.bairock.intelDevPc.DbDeleteTest@1f59a598, testMethod = testInsertUser@DbDeleteTest, testException = [null], mergedContextConfiguration = [MergedContextConfiguration@3c3d9b6b testClass = DbDeleteTest, locations = '{}', classes = '{class com.bairock.intelDevPc.IntelDevPcApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@2f490758, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@276438c9, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@701fc37a, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@6a396c1e], contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map[[empty]]]
+2018-11-24 21:05:17.234  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.bairock.intelDevPc.DbReadTest], using SpringBootContextLoader
+2018-11-24 21:05:17.237  INFO 1424 --- [main] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.bairock.intelDevPc.DbReadTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2018-11-24 21:05:17.238  INFO 1424 --- [main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.bairock.intelDevPc.DbReadTest]: DbReadTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2018-11-24 21:05:17.241  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.bairock.intelDevPc.IntelDevPcApplication for test class com.bairock.intelDevPc.DbReadTest
+2018-11-24 21:05:17.246  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+2018-11-24 21:05:17.248  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@25bd8eab, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@15974f4e, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@38911759, org.springframework.test.context.support.DirtiesContextTestExecutionListener@2b8106f, org.springframework.test.context.transaction.TransactionalTestExecutionListener@4b391e45, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@647bd553, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@54602d5a, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@161974d1, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@15d18b61, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@2fba15c5, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@7ae5f795]
+2018-11-24 21:05:17.262  INFO 1424 --- [main] o.s.t.c.transaction.TransactionContext   : Began transaction (1) for test context [DefaultTestContext@3e94a6f6 testClass = DbReadTest, testInstance = com.bairock.intelDevPc.DbReadTest@41ff98dc, testMethod = testInsertUser@DbReadTest, testException = [null], mergedContextConfiguration = [MergedContextConfiguration@14738629 testClass = DbReadTest, locations = '{}', classes = '{class com.bairock.intelDevPc.IntelDevPcApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@2f490758, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@276438c9, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@701fc37a, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@6a396c1e], contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map[[empty]]]; transaction manager [org.springframework.orm.jpa.JpaTransactionManager@39cf7f3c]; rollback [true]
+2018-11-24 21:05:17.287  INFO 1424 --- [main] o.s.t.c.transaction.TransactionContext   : Rolled back transaction for test: [DefaultTestContext@3e94a6f6 testClass = DbReadTest, testInstance = com.bairock.intelDevPc.DbReadTest@41ff98dc, testMethod = testInsertUser@DbReadTest, testException = [null], mergedContextConfiguration = [MergedContextConfiguration@14738629 testClass = DbReadTest, locations = '{}', classes = '{class com.bairock.intelDevPc.IntelDevPcApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@2f490758, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@276438c9, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@701fc37a, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@6a396c1e], contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map[[empty]]]
+2018-11-24 21:05:17.289  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.bairock.intelDevPc.DbTest], using SpringBootContextLoader
+2018-11-24 21:05:17.292  INFO 1424 --- [main] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.bairock.intelDevPc.DbTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2018-11-24 21:05:17.292  INFO 1424 --- [main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.bairock.intelDevPc.DbTest]: DbTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2018-11-24 21:05:17.295  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.bairock.intelDevPc.IntelDevPcApplication for test class com.bairock.intelDevPc.DbTest
+2018-11-24 21:05:17.300  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+2018-11-24 21:05:17.302  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@1633962a, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@2afd8972, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@33fefbbe, org.springframework.test.context.support.DirtiesContextTestExecutionListener@5784f6b9, org.springframework.test.context.transaction.TransactionalTestExecutionListener@5d0ca8a5, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@1b7c1c6f, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@5f9b37b5, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@2f5a23c1, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@17abef0f, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@6ccf06f1, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@6aefb242]
+2018-11-24 21:05:17.388  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.bairock.intelDevPc.IntelDevPcApplicationTests], using SpringBootContextLoader
+2018-11-24 21:05:17.391  INFO 1424 --- [main] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.bairock.intelDevPc.IntelDevPcApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+2018-11-24 21:05:17.392  INFO 1424 --- [main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.bairock.intelDevPc.IntelDevPcApplicationTests]: IntelDevPcApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2018-11-24 21:05:17.395  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.bairock.intelDevPc.IntelDevPcApplication for test class com.bairock.intelDevPc.IntelDevPcApplicationTests
+2018-11-24 21:05:17.399  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+2018-11-24 21:05:17.400  INFO 1424 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@ab7ac41, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@5ad67d82, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@301608d, org.springframework.test.context.support.DirtiesContextTestExecutionListener@3c3a8246, org.springframework.test.context.transaction.TransactionalTestExecutionListener@bd8f424, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@620ba2b0, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@6a06b374, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@2c634c0, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@4e739968, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@71d2bc34, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@2e903c69]
+2018-11-24 21:05:17.421  INFO 1424 --- [Thread-5] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2018-11-24 21:05:17.426  INFO 1424 --- [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-11-24 21:05:17.432  INFO 1424 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2018-11-24 21:05:17.434  INFO 1424 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

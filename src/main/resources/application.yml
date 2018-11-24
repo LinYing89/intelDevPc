@@ -1,8 +1,11 @@
 spring: 
   datasource:
-    url: jdbc:mysql://localhost:3306/intelDevPc?useSSL=false&serverTimezone=UTC
-    username: root
-    password: root
+#    url: jdbc:mysql://localhost:3306/intelDevPc?useSSL=false&serverTimezone=UTC
+#    username: root
+#    password: root
+#    url: jdbc:derby:C:/test/db/demo_db;create=true
+#"~"表示用户目录, 如C:/user/44489, 文件在C:/user/44489/db下
+    url: jdbc:h2:file:~/db/demo_db2
   jpa:
     show-sql: true
     hibernate:
