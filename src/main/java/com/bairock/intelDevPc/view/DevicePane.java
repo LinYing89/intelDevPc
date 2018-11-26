@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
 import com.bairock.intelDevPc.comm.MyOnGearChangedListener;
-import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
 import com.bairock.intelDevPc.controller.DevSwitchController;
 import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.Device;
@@ -69,7 +68,7 @@ public class DevicePane extends VBox {
 		this.device = device;
 		labelName.setText(device.getName());
 		refreshState();
-		this.device.setOnStateChanged(new MyOnStateChangedListener());
+//		this.device.setOnStateChanged(new MyOnStateChangedListener());
 		this.device.setOnGearChanged(new MyOnGearChangedListener());
 		this.device.addOnNameChangedListener(onNameChangedListener);
 	}

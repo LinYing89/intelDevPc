@@ -59,9 +59,9 @@ public class DownloadClientHandler extends ChannelInboundHandlerAdapter {
 					userService.initUser();
 					mainController.reInit();
 
-					upDownloadDialogController.downLoadResult(true);
+					upDownloadDialogController.loadResult(true);
 				}else {
-					upDownloadDialogController.downLoadResult(false);
+					upDownloadDialogController.loadResult(false);
 				}
 			}
 
@@ -69,7 +69,7 @@ public class DownloadClientHandler extends ChannelInboundHandlerAdapter {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-			upDownloadDialogController.downLoadResult(false);
+			upDownloadDialogController.loadResult(false);
 		} finally {
 			m.release();
 		}
@@ -86,7 +86,7 @@ public class DownloadClientHandler extends ChannelInboundHandlerAdapter {
 		super.userEventTriggered(ctx, evt);
 		if (evt instanceof IdleStateEvent) { // 2
 			// IdleStateEvent event = (IdleStateEvent) evt;
-			upDownloadDialogController.downLoadResult(false);
+			upDownloadDialogController.loadResult(false);
 			ctx.close();
 		}
 	}

@@ -21,21 +21,37 @@ public class UpDownloadDialogController {
 	@FXML
 	private Button btnOk;
 	
-	public void init() {
+	public static final int UPLOAD = 0;
+	public static final int DOWNLOAD = 1;
+	//1下载, 0上传
+	private int which;
+	
+	public void init(int which) {
 		btnOk.setDisable(true);
+		this.which = which;
 	}
 	
 	public void handlerOk() {
 		upDownloadDialog.getView().getScene().getWindow().hide();
 	}
 	
-	public void downLoadResult(boolean success) {
+	public void loadResult(boolean success) {
 		Platform.runLater(()->{btnOk.setDisable(false);});
+		String str;
 		if(success) {
-			setMessage("下载成功");
+			if(which == UPLOAD) {
+				str = "上传成功";
+			}else {
+				str = "下载成功";
+			}
 		}else {
-			setMessage("下载失败");
+			if(which == UPLOAD) {
+				str = "上传失败";
+			}else {
+				str = "下载失败";
+			}
 		}
+		setMessage(str);
 	}
 	
 	private void setMessage(String message) {

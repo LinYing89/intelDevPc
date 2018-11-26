@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import com.bairock.intelDevPc.comm.PadClient;
 import com.bairock.intelDevPc.controller.LoginController;
 import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.repository.ConfigRepository;
@@ -86,12 +87,13 @@ public class IntelDevPcApplication extends AbstractJavaFxApplicationSupport {
 		switch (device.getCtrlModel()) {
 		case UNKNOW:
 			DevChannelBridgeHelper.getIns().sendDevOrder(device, order, immediately);
-
+			PadClient.getIns().send(order);
 			break;
 		case LOCAL:
 			DevChannelBridgeHelper.getIns().sendDevOrder(device, order, immediately);
 			break;
 		case REMOTE:
+			PadClient.getIns().send(order);
 			break;
 		}
 	}

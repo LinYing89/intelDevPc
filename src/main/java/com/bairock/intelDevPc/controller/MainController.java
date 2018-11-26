@@ -3,12 +3,11 @@ package com.bairock.intelDevPc.controller;
 import java.util.Collections;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.comm.DownloadClient;
+import com.bairock.intelDevPc.comm.UploadClient;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.intelDevPc.view.CollectorPane;
 import com.bairock.intelDevPc.view.DevicePane;
@@ -30,7 +29,7 @@ import javafx.stage.Modality;
 @FXMLController
 public class MainController {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+//	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	public MainController() {
 		
@@ -70,6 +69,7 @@ public class MainController {
 			CollectorPane dp = new CollectorPane(dev);
 			fpCollector.getChildren().add(dp);
 		}
+		refreshServerState(IntelDevPcApplication.SERVER_CONNECTED);
 		
 //		DevSwitch dev = (DevSwitch) DeviceAssistent.createDeviceByMcId(MainCodeHelper.KG_3LU_2TAI, "0001");
 //		DevicePane dp = new DevicePane((SubDev)(dev.getSubDevBySc("1")));
@@ -114,6 +114,9 @@ public class MainController {
 	 * @param state
 	 */
 	public void refreshServerState(boolean state) {
+		if(null == labelServerState) {
+			return;
+		}
 		String text;
 		if(state) {
 			text = "已连接";
@@ -125,18 +128,19 @@ public class MainController {
 		Platform.runLater(()->labelServerState.setText(text));
 	}
 	
+	//上传
 	public void handleMenuUpload() {
-//		System.out.println("do");
-//		System.out.println("fpSwitch MainController" + fpSwitch);
-//		IntelDevPcApplication.showView(LoginView.class, Modality.NONE);
+		UploadClient uploadClient = new UploadClient();
+        uploadClient.link();
+		((UpDownloadDialogController)upDownloadDialog.getPresenter()).init(UpDownloadDialogController.UPLOAD);
+		IntelDevPcApplication.showView(UpDownloadDialog.class, Modality.WINDOW_MODAL);
 	}
 	
+	//下载
 	public void handleMenuDownload() {
-		logger.info("handleMenuDownload");
-//		upDownloadDialogController.init();
 		DownloadClient download = new DownloadClient();
 		download.link();
-		((UpDownloadDialogController)upDownloadDialog.getPresenter()).init();
+		((UpDownloadDialogController)upDownloadDialog.getPresenter()).init(UpDownloadDialogController.DOWNLOAD);
 		IntelDevPcApplication.showView(UpDownloadDialog.class, Modality.WINDOW_MODAL);
 	}
 	

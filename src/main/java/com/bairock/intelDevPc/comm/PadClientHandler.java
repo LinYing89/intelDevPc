@@ -36,7 +36,7 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
         PadClient.getIns().setPadClientHandler(this);
         IntelDevPcApplication.SERVER_CONNECTED = true;
         if(null != mainController) {
-        	mainController.refreshServerState(false);
+        	mainController.refreshServerState(true);
         }
     }
 
@@ -127,7 +127,9 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
             msg = msg.substring(0, msg.indexOf("#"));
         }
         if(msg.contains("h2")){
-            send(OrderHelper.getOrderMsg("UN" + UserService.user.getName() + OrderHelper.SEPARATOR + UserService.user.getListDevGroup().get(0).getName()));
+        	if(null != UserService.user) {
+        		send(OrderHelper.getOrderMsg("UN" + UserService.user.getName() + OrderHelper.SEPARATOR + UserService.user.getListDevGroup().get(0).getName()));
+        	}
         }else if(msg.contains("h1")){
             syncDevMsg = true;
             send(OrderHelper.getOrderMsg("h1"));
@@ -201,7 +203,7 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 
             //String devCoding = msg.substring(1, index);
             List<Device> listDev = myMessageAnalysiser.putMsg("$" + strData, UserService.user);
-            if(listDev == null){
+            if(listDev == null || listDev.isEmpty()){
                 return;
             }
             Device dev = listDev.get(0);
@@ -215,6 +217,13 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     private void queueDevice(Device device){
+    	//发送挡位信息
+        if(device instanceof DevSwitch){
+            for(Device device1 : ((DevSwitch) device).getListDev()){
+                PadClient.getIns().send(OrderHelper.getOrderMsg(OrderHelper.FEEDBACK_HEAD  + device1.getLongCoding() + OrderHelper.SEPARATOR + "b" + device1.getGear()));
+            }
+        }
+        
         //本地设备才往服务器发送状态，远程设备只接收服务器状态
         if(device.findSuperParent().getCtrlModel() == CtrlModel.REMOTE) {
             return;
@@ -225,11 +234,6 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
             //发送异常信息
             PadClient.getIns().send(device.createAbnormalOrder());
         }
-        //发送挡位信息
-        if(device instanceof DevSwitch){
-            for(Device device1 : ((DevSwitch) device).getListDev()){
-                PadClient.getIns().send(OrderHelper.getOrderMsg(OrderHelper.FEEDBACK_HEAD  + device1.getLongCoding() + OrderHelper.SEPARATOR + "b" + device1.getGear()));
-            }
-        }
+        
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.repository.DeviceRepository;
 import com.bairock.intelDevPc.service.UserService;
+import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.DevHaveChild;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.MainCodeHelper;
@@ -62,7 +63,13 @@ public class DevicesController {
 						this.setGraphic(null);
 					} else {
 						Device value = this.getTreeItem().getValue();
-						this.setText(value.getName());
+						String ctrlModel;
+						if(value.getCtrlModel() == CtrlModel.LOCAL) {
+							ctrlModel = "本地";
+						}else {
+							ctrlModel = "远程";
+						}
+						this.setText(value.getName() + " (" + ctrlModel + ")");
 					}
 				}
 

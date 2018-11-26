@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
+import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
 import com.bairock.intelDevPc.repository.UserRepository;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
+import com.bairock.iot.intelDev.communication.FindDevHelper;
 import com.bairock.iot.intelDev.communication.UdpServer;
 import com.bairock.iot.intelDev.device.DevHaveChild;
+import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.linkage.Linkage;
@@ -57,16 +60,6 @@ public class UserService {
 	
 	@Transactional
 	public void initUser() {
-//		List<User> list = userRepository.findAll();
-//		for(User user : list) {
-//			System.out.println("user:" + user.getName());
-//			for(DevGroup group : user.getListDevGroup()) {
-//				System.out.println("group:" + group.getName());
-//				for(Device dev : group.getListDevice()) {
-//					System.out.println("dev:" + dev.getName());
-//				}
-//			}
-//		}
 		
 		List<User> listUser = userRepository.findAll();
 		if(listUser.isEmpty()) {
@@ -81,6 +74,8 @@ public class UserService {
 				System.out.println("userServer group " + (group.getUser() == user));
 				for(Device dev : group.getListDevice()) {
 					System.out.println(dev);
+					FindDevHelper.getIns().findDev(dev.getCoding());
+					dev.setDevStateId(DevStateHelper.DS_YI_CHANG);
 					initDevice(dev);
 				}
 				for(LinkageHolder holder : group.getListLinkageHolder()) {
@@ -128,6 +123,7 @@ public class UserService {
 	}
 	
 	private void initDevice(Device dev) {
+		dev.setOnStateChanged(new MyOnStateChangedListener());
 		if(dev instanceof DevHaveChild) {
 			for(Device dd : ((DevHaveChild) dev).getListDev()) {
 				initDevice(dd);
