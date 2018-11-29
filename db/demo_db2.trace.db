@@ -1,0 +1,3 @@
+2018-11-28 10:02:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "CONFIG" not found; SQL statement:
+select config0_.id as id1_4_, config0_.app_title as app_titl2_4_, config0_.pad_port as pad_port3_4_, config0_.server_name as server_n4_4_, config0_.up_download_port as up_downl5_4_ from config config0_ [42102-197]

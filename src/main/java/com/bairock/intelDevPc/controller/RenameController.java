@@ -13,17 +13,17 @@ public class RenameController {
 
 	@Autowired
 	private RenameView renameView;
-	
+
 	@FXML
 	private TextField txtNewName;
-	
+
 	private String oldName;
 	private String newName;
 	/**
 	 * true is OK, false is cancel
 	 */
 	public boolean result;
-	
+
 	public String getOldName() {
 		return oldName;
 	}
@@ -32,22 +32,30 @@ public class RenameController {
 		return newName;
 	}
 
+	public boolean edit = false;
+
 	public void init(String oldName) {
-		this.oldName = oldName;
-		txtNewName.setText(oldName);
+		result = false;
+		if (null == oldName || oldName.isEmpty()) {
+			edit = true;
+		} else {
+			edit = false;
+			this.oldName = oldName;
+			txtNewName.setText(oldName);
+		}
 	}
-	
+
 	@FXML
 	public void handlerOk() {
 		newName = txtNewName.getText();
-		if(!newName.equals(oldName)) {
+		if (!newName.equals(oldName)) {
 			result = true;
-		}else {
+		} else {
 			result = false;
 		}
 		renameView.getView().getScene().getWindow().hide();
 	}
-	
+
 	@FXML
 	public void handlerCancel() {
 		result = false;

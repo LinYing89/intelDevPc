@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.comm.DownloadClient;
 import com.bairock.intelDevPc.comm.UploadClient;
+import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.intelDevPc.view.CollectorPane;
 import com.bairock.intelDevPc.view.DevicePane;
 import com.bairock.intelDevPc.view.DevicesView;
 import com.bairock.intelDevPc.view.LinkageView;
+import com.bairock.intelDevPc.view.SettingsView;
 import com.bairock.intelDevPc.view.UpDownloadDialog;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
@@ -31,10 +33,6 @@ public class MainController {
 
 //	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public MainController() {
-		
-	}
-	
 	@FXML
 	private FlowPane fpSwitch;
 	@FXML
@@ -43,16 +41,21 @@ public class MainController {
 	private Label labelServerState;
 	
 	@Autowired
+	private Config config;
+	@Autowired
 	DevicesView devicesView;
 	@Autowired
 	LinkageView linkageView;
 	@Autowired
 	private UpDownloadDialog upDownloadDialog;
+	@Autowired
+	private SettingsView settingsView;
 	
 //	@Autowired
 //	private DevicePane devPane;
 	
 	public void init() {
+		IntelDevPcApplication.getStage().setTitle(config.getAppTitle());
 		fpSwitch.getChildren().clear();
 		fpCollector.getChildren().clear();
 		
@@ -154,5 +157,11 @@ public class MainController {
 		System.out.println("menuLinkage");
 		((LinkageController)linkageView.getPresenter()).init();
 		IntelDevPcApplication.showView(LinkageView.class, Modality.NONE);
+	}
+	
+	@FXML
+	public void menuSettingsAction() {
+		((SettingsController)settingsView.getPresenter()).init();
+		IntelDevPcApplication.showView(SettingsView.class, Modality.WINDOW_MODAL);
 	}
 }

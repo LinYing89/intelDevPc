@@ -68,6 +68,7 @@ public class DevicePane extends VBox {
 		this.device = device;
 		labelName.setText(device.getName());
 		refreshState();
+		refreshGear();
 //		this.device.setOnStateChanged(new MyOnStateChangedListener());
 		this.device.setOnGearChanged(new MyOnGearChangedListener());
 		this.device.addOnNameChangedListener(onNameChangedListener);

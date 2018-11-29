@@ -58,6 +58,10 @@ public class UserService {
 		userRepository.saveAndFlush(user);
 	}
 	
+	public void update(User user) {
+		userRepository.saveAndFlush(user);
+	}
+	
 	@Transactional
 	public void initUser() {
 		

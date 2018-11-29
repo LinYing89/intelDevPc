@@ -12,7 +12,7 @@ public class Config {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	private String serverName = "192.168.1.112";
+	private String serverName = "051801.cn";
 	private int upDownloadPort = 10004;
 	private int padPort = 10002;
 	private String appTitle = "大发科技智能物联网控制平台";

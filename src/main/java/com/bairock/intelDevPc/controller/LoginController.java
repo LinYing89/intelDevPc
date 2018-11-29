@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.MainStateView;
+import com.bairock.intelDevPc.comm.PadClient;
 import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.data.LoginResult;
 import com.bairock.intelDevPc.service.LoginTask;
@@ -24,6 +25,8 @@ public class LoginController {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@FXML
+	private Label labelAppName;
+	@FXML
 	private GridPane gridPane;
 	@FXML
 	private TextField txtUserName;
@@ -38,8 +41,11 @@ public class LoginController {
 	MainStateView mainStateView;
 	@Autowired
 	private Config config;
+	@Autowired
+	private UserService userService;
 	
 	public void init() {
+		labelAppName.setText(config.getAppTitle());
 		txtUserName.setText(UserService.user.getName());
 		txtGroupName.setText(UserService.user.getListDevGroup().get(0).getName());
 		txtGroupPsd.setText(UserService.user.getListDevGroup().get(0).getPsd());
@@ -85,8 +91,12 @@ public class LoginController {
 			logger.info("padPort: " + result.getData().getPadPort());
 			config.setUpDownloadPort(result.getData().getUpDownloadPort());
 			config.setPadPort(result.getData().getPadPort());
-			
+			UserService.user.setName(txtUserName.getText());
+			UserService.getDevGroup().setName(txtGroupName.getText());
+			UserService.getDevGroup().setPsd(txtGroupPsd.getText());
+			userService.update(UserService.user);
 //			userService.initUser();
+			PadClient.getIns().closeHandler();
 			
 			//显示主窗口
 			IntelDevPcApplication.showView(MainStateView.class);
