@@ -3,8 +3,6 @@ package com.bairock.intelDevPc.controller;
 import java.util.List;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
@@ -56,7 +54,7 @@ import javafx.util.StringConverter;
 @FXMLController
 public class LinkageController {
 
-	private static Logger logger = LoggerFactory.getLogger(LinkageController.class);
+//	private static Logger logger = LoggerFactory.getLogger(LinkageController.class);
 
 	@Autowired
 	private RenameView renameView;
@@ -203,8 +201,8 @@ public class LinkageController {
 				protected void updateItem(Effect item, boolean empty) {
 					super.updateItem(item, empty);
 					if (null != item && !empty) {
-						String name = String.format("设备 :%-4s    \t次数 :%-4s\n内容: %s", item.getDevice().getName(), item.getEffectCount(),
-								item.getEffectContent());
+						String name = String.format("设备 :%-4s    \t次数 :%-4s\n内容: %s", item.getDevice().getName(),
+								item.getEffectCount(), item.getEffectContent());
 						this.setText(name);
 						setGraphic(null);
 					} else {
@@ -225,9 +223,9 @@ public class LinkageController {
 				protected void updateItem(LinkageCondition item, boolean empty) {
 					super.updateItem(item, empty);
 					if (null != item && !empty) {
+						String compareValueStr = item.getCompareValue() == 0 ? "关" : "开";
 						String name = String.format("%-4s %-5s %-2s %s", item.getLogic().toString(),
-								item.getDevice().getName(), item.compareSymbolStr(),
-								String.valueOf(item.getCompareValue()));
+								item.getDevice().getName(), item.compareSymbolStr(), compareValueStr);
 						this.setText(name);
 						setGraphic(null);
 					} else {
@@ -245,8 +243,8 @@ public class LinkageController {
 		if (!inited) {
 			inited = true;
 			// -----------------------连锁
-			toogleBtnSubChainEnable.selectedProperty().addListener((p0, p1, p2) ->{
-				if(p2 != chainHolder.isEnable()) {
+			toogleBtnSubChainEnable.selectedProperty().addListener((p0, p1, p2) -> {
+				if (p2 != chainHolder.isEnable()) {
 					chainHolder.setEnable(p2);
 					linkageHolderRepository.saveAndFlush(chainHolder);
 				}
@@ -280,8 +278,8 @@ public class LinkageController {
 			// -------------连锁--------------
 
 			// --------定时--------------------
-			toogleBtnTimingEnable.selectedProperty().addListener((p0, p1, p2) ->{
-				if(p2 != timingHolder.isEnable()) {
+			toogleBtnTimingEnable.selectedProperty().addListener((p0, p1, p2) -> {
+				if (p2 != timingHolder.isEnable()) {
 					timingHolder.setEnable(p2);
 					linkageHolderRepository.saveAndFlush(timingHolder);
 				}
@@ -332,8 +330,8 @@ public class LinkageController {
 			// --------------定时-------------
 
 			// -----------------------循环
-			toogleBtnLoopEnable.selectedProperty().addListener((p0, p1, p2) ->{
-				if(p2 != loopHolder.isEnable()) {
+			toogleBtnLoopEnable.selectedProperty().addListener((p0, p1, p2) -> {
+				if (p2 != loopHolder.isEnable()) {
 					loopHolder.setEnable(p2);
 					linkageHolderRepository.saveAndFlush(loopHolder);
 				}
@@ -401,8 +399,8 @@ public class LinkageController {
 			// -------------循环--------------
 
 			// -----------------------呱呱
-			toogleBtnGuaguaEnable.selectedProperty().addListener((p0, p1, p2) ->{
-				if(p2 != guaguaHolder.isEnable()) {
+			toogleBtnGuaguaEnable.selectedProperty().addListener((p0, p1, p2) -> {
+				if (p2 != guaguaHolder.isEnable()) {
 					guaguaHolder.setEnable(p2);
 					linkageHolderRepository.saveAndFlush(guaguaHolder);
 				}
@@ -483,9 +481,9 @@ public class LinkageController {
 
 	// 连锁名称使能事件
 	public void linkageEnablechanged(ObservableValue<? extends Boolean> prop, Boolean oldValue, Boolean newValue) {
-		SimpleBooleanProperty boolProp = (SimpleBooleanProperty) prop;
-		Linkage linkage = (Linkage) boolProp.getBean();
-		logger.info("linkage enable changed " + linkage.getName() + linkage.isEnable());
+//		SimpleBooleanProperty boolProp = (SimpleBooleanProperty) prop;
+//		Linkage linkage = (Linkage) boolProp.getBean();
+//		logger.info("linkage enable changed " + linkage.getName() + linkage.isEnable());
 	}
 
 	// 添加连锁按钮
@@ -541,7 +539,7 @@ public class LinkageController {
 		Linkage linkage = listViewLinkage.getSelectionModel().getSelectedItem();
 		if (null != linkage) {
 			String name = linkage.getName();
-			logger.info("edit " + name);
+//			logger.info("edit " + name);
 			RenameController renameController = (RenameController) renameView.getPresenter();
 			renameController.init(name);
 			IntelDevPcApplication.showView(RenameView.class, Modality.WINDOW_MODAL);
@@ -867,9 +865,9 @@ public class LinkageController {
 
 	// 循环名称使能事件
 	public void loopEnablechanged(ObservableValue<? extends Boolean> prop, Boolean oldValue, Boolean newValue) {
-		SimpleBooleanProperty boolProp = (SimpleBooleanProperty) prop;
-		Linkage linkage = (Linkage) boolProp.getBean();
-		logger.info("linkage enable changed " + linkage.getName() + linkage.isEnable());
+//		SimpleBooleanProperty boolProp = (SimpleBooleanProperty) prop;
+//		Linkage linkage = (Linkage) boolProp.getBean();
+//		logger.info("linkage enable changed " + linkage.getName() + linkage.isEnable());
 	}
 
 	// 添加循环按钮
@@ -942,7 +940,7 @@ public class LinkageController {
 		Linkage linkage = listViewLoop.getSelectionModel().getSelectedItem();
 		if (null != linkage) {
 			String name = linkage.getName();
-			logger.info("edit " + name);
+//			logger.info("edit " + name);
 			RenameController renameController = (RenameController) renameView.getPresenter();
 			renameController.init(name);
 			IntelDevPcApplication.showView(RenameView.class, Modality.WINDOW_MODAL);

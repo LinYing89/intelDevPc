@@ -91,6 +91,7 @@ public class LoginController {
 			logger.info("padPort: " + result.getData().getPadPort());
 			config.setUpDownloadPort(result.getData().getUpDownloadPort());
 			config.setPadPort(result.getData().getPadPort());
+			config.setDevPort(result.getData().getDevPort());
 			UserService.user.setName(txtUserName.getText());
 			UserService.getDevGroup().setName(txtGroupName.getText());
 			UserService.getDevGroup().setPsd(txtGroupPsd.getText());
@@ -101,7 +102,7 @@ public class LoginController {
 			//显示主窗口
 			IntelDevPcApplication.showView(MainStateView.class);
 			//窗口最大化
-//			IntelDevPcApplication.getStage().setMaximized(true);
+			IntelDevPcApplication.getStage().setMaximized(true);
 
 			((MainController)mainStateView.getPresenter()).init();
 		}
@@ -111,7 +112,7 @@ public class LoginController {
 		System.out.println("loginLocal");
 		IntelDevPcApplication.showView(MainStateView.class);
 		//窗口最大化
-//		IntelDevPcApplication.getStage().setMaximized(true);
+		IntelDevPcApplication.getStage().setMaximized(true);
 
 		((MainController)mainStateView.getPresenter()).init();
 	}

@@ -14,7 +14,7 @@ import com.bairock.intelDevPc.repository.UserRepository;
 import com.bairock.iot.intelDev.device.DeviceAssistent;
 import com.bairock.iot.intelDev.device.MainCodeHelper;
 import com.bairock.iot.intelDev.device.devcollect.Pressure;
-import com.bairock.iot.intelDev.device.devswitch.DevSwitchOneRoad;
+import com.bairock.iot.intelDev.device.devswitch.DevSwitchThreeRoad;
 import com.bairock.iot.intelDev.user.DevGroup;
 import com.bairock.iot.intelDev.user.User;
 
@@ -38,7 +38,7 @@ public class DbTest {
 		DevGroup group = new DevGroup("1", "a123", "g1");
 		group.setId(UUID.randomUUID().toString());
 		user.addGroup(group);
-		DevSwitchOneRoad dsor = new DevSwitchOneRoad(MainCodeHelper.KG_1LU_2TAI, "0001");
+		DevSwitchThreeRoad dsor = new DevSwitchThreeRoad(MainCodeHelper.KG_3LU_2TAI, "0001");
 		group.addDevice(dsor);
 		Pressure pressure = (Pressure) DeviceAssistent.createDeviceByMcId(MainCodeHelper.YE_WEI, "0001");
 		group.addDevice(pressure);

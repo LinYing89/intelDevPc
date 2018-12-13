@@ -20,9 +20,13 @@ import com.bairock.iot.intelDev.communication.FindDevHelper;
 import com.bairock.iot.intelDev.device.Coordinator;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.MainCodeHelper;
+import com.bairock.iot.intelDev.linkage.timing.WeekHelper;
 
+import de.felixroske.jfxsupport.AbstractFxmlView;
 import de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport;
 import javafx.event.EventType;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -32,6 +36,7 @@ import javafx.stage.WindowEvent;
 public class IntelDevPcApplication extends AbstractJavaFxApplicationSupport {
 	
 	public static boolean SERVER_CONNECTED = false;
+	
 	
 	public static void main(String[] args) {
 		// SpringApplication.run(IntelDevPcApplication.class, args);
@@ -47,6 +52,7 @@ public class IntelDevPcApplication extends AbstractJavaFxApplicationSupport {
 		primaryStage.setOnCloseRequest(e -> handle(e));
 		primaryStage.setOnShown(e -> handleShown(e));
 		initMainCodeInfo();
+		WeekHelper.ARRAY_WEEKS = new String[]{"日", "一", "二", "三", "四", "五", "六"};
 	}
 
 	public void handle(WindowEvent e) {
@@ -161,4 +167,31 @@ public class IntelDevPcApplication extends AbstractJavaFxApplicationSupport {
 //			}
 //		};
 //	}
+	
+	public static void showView(final Class<? extends AbstractFxmlView> window, final Modality mode, OnStageCreatedListener onStageCreatedListener) {
+        final AbstractFxmlView view = SpringUtil.getBean(window);
+        Stage newStage = new Stage();
+
+        Scene newScene;
+        if (view.getView().getScene() != null) {
+            // This view was already shown so
+            // we have a scene for it and use this one.
+            newScene = view.getView().getScene();
+        } else {
+            newScene = new Scene(view.getView());
+        }
+
+        newStage.setScene(newScene);
+        newStage.initModality(mode);
+        newStage.initOwner(getStage());
+
+        if(null != onStageCreatedListener) {
+        	onStageCreatedListener.onStageCreated(newStage);
+        }
+        newStage.showAndWait();
+    }
+	
+	public interface OnStageCreatedListener {
+		void onStageCreated(Stage newStage);
+	}
 }

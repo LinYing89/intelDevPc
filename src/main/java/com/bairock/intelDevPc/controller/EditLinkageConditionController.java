@@ -49,7 +49,7 @@ public class EditLinkageConditionController {
 	private void init1() {
 		choiceBoxLogic.getItems().addAll("AND", "OR");
 		choiceBoxCompareSymbol.getItems().addAll("< (小于)", "= (等于)", "> (大于)");
-		choiceBoxCompareValue.getItems().addAll("开", "关");
+		choiceBoxCompareValue.getItems().addAll("关", "开");
 		choiceBoxDevice.setConverter(new StringConverter<Device>() {
 			@Override
 			public String toString(Device object) {
@@ -98,7 +98,7 @@ public class EditLinkageConditionController {
 			Device device = condition.getDevice();
 			if (device instanceof IStateDev) {
 				enableStateCompareValue();
-				if (condition.getCompareValue() == 1) {
+				if (condition.getCompareValue() == 0) {
 					choiceBoxCompareValue.getSelectionModel().select(0);
 				} else {
 					choiceBoxCompareValue.getSelectionModel().select(1);

@@ -1,5 +1,6 @@
 package com.bairock.intelDevPc.controller;
 
+import com.bairock.intelDevPc.Util;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.Gear;
 
@@ -32,7 +33,7 @@ public class DevSwitchController {
 	public void init(Device device) {
 		labelName.setText(device.getName());
 		labelLongCoding.setText(device.getLongCoding());
-		labelCtrlModel.setText(device.findSuperParent().getCtrlModel().toString());
+		labelCtrlModel.setText(Util.getCtrlModelName(device.findSuperParent().getCtrlModel()));
 		switch(device.getGear()) {
 		case KAI:
 			radioKai.setSelected(true);

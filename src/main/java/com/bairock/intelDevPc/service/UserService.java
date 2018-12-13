@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
+import com.bairock.intelDevPc.comm.MyOnCtrlModelChangedListener;
 import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
 import com.bairock.intelDevPc.repository.UserRepository;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
@@ -28,6 +29,7 @@ import com.bairock.iot.intelDev.linkage.timing.Timing;
 import com.bairock.iot.intelDev.linkage.timing.ZTimer;
 import com.bairock.iot.intelDev.user.DevGroup;
 import com.bairock.iot.intelDev.user.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class UserService {
@@ -128,6 +130,7 @@ public class UserService {
 	
 	private void initDevice(Device dev) {
 		dev.setOnStateChanged(new MyOnStateChangedListener());
+		dev.setOnCtrlModelChanged(new MyOnCtrlModelChangedListener());
 		if(dev instanceof DevHaveChild) {
 			for(Device dd : ((DevHaveChild) dev).getListDev()) {
 				initDevice(dd);
@@ -137,4 +140,17 @@ public class UserService {
 			((DevCollect) dev).getCollectProperty();
 		}
 	}
+	
+	public static String getUserJson(User user){
+        String json = null;
+        if(null != user){
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                json = mapper.writeValueAsString(user);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return json;
+    }
 }

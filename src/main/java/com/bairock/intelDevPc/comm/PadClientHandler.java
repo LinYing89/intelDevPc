@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
+import com.bairock.intelDevPc.controller.CtrlModelDialogController;
 import com.bairock.intelDevPc.controller.MainController;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
@@ -29,6 +30,7 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
     private MyMessageAnalysiser myMessageAnalysiser = new ServerMsgAnalysiser();
     
     private MainController mainController = SpringUtil.getBean(MainController.class);
+    private CtrlModelDialogController ctrlModelDialogController = SpringUtil.getBean(CtrlModelDialogController.class);
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
@@ -188,15 +190,16 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 
             if(stateHead.equals("a")) {
                 //设置模式时服务器响应命令
-//                if (null != SearchActivity.handler) {
-//                    Log.e("PadClientHandler", "handler 1");
-//                    String model = state.substring(1, 2);
-//                    if(model.equals("1")) {
-//                        SearchActivity.handler.obtainMessage(SearchActivity.handler.CTRL_MODEL_PROGRESS, 1).sendToTarget();
-//                    }else{
-//                        SearchActivity.handler.obtainMessage(SearchActivity.handler.CTRL_MODEL_PROGRESS, 2).sendToTarget();
-//                    }
-//                }
+                if (null != ctrlModelDialogController && ctrlModelDialogController.setting) {
+                    String model = state.substring(1, 2);
+                    if(model.equals("1")) {
+                    	//服务器收到设为远程命令返回
+                    	ctrlModelDialogController.setModelProgressValue(1);
+                    }else{
+                    	//服务器收到设为本地命令返回
+                    	ctrlModelDialogController.setModelProgressValue(2);
+                    }
+                }
                 return;
             }
 

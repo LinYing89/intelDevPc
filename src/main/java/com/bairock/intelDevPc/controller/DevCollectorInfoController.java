@@ -2,6 +2,7 @@ package com.bairock.intelDevPc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.repository.CollectPropertyRepository;
 import com.bairock.intelDevPc.view.DevCollectorInfo;
 import com.bairock.iot.intelDev.device.devcollect.CollectProperty;
@@ -48,41 +49,73 @@ public class DevCollectorInfoController {
 	@FXML
 	private HBox hboxSignValue;
 	
+	private boolean inited;
+	
+	private void init1() {
+		comboBoxSignalSource.getItems().clear();
+		comboBoxSignalSource.getItems().addAll("数字", "4-20mA", "a-bV", "开关");
+		
+		comboBoxSignalSource.getSelectionModel().selectedIndexProperty().addListener((p0, p1, p2) -> {
+			initSignalSourceHBox(CollectSignalSource.values()[p2.intValue()]);
+		});
+		
+	}
+	
 	public void init(DevCollect device) {
+		if(!inited) {
+			inited = true;
+			init1();
+		}
+		
 		devCollect = device;
 		CollectProperty cp = device.getCollectProperty();
 		labelName.setText(device.getName());
 		labelLongCoding.setText(device.getLongCoding());
-		labelCtrlModel.setText(device.findSuperParent().getCtrlModel().toString());
+		labelCtrlModel.setText(Util.getCtrlModelName(device.findSuperParent().getCtrlModel()));
 		txtUnit.setText(cp.getUnitSymbol());
-		comboBoxSignalSource.getItems().clear();
-		comboBoxSignalSource.getItems().addAll("数字", "4-20mA", "a-bV", "开关");
-		hboxSignValue.setVisible(true);
-		hboxAValue.setVisible(true);
+
 		switch(cp.getCollectSrc()) {
 		case DIGIT:
 			comboBoxSignalSource.getSelectionModel().select(0);
-			hboxSignValue.setVisible(false);
 			break;
 		case VOLTAGE:
 			comboBoxSignalSource.getSelectionModel().select(1);
 			break;
 		case ELECTRIC_CURRENT:
 			comboBoxSignalSource.getSelectionModel().select(2);
-			hboxSignValue.setVisible(false);
 			break;
 		case SWITCH:
 			comboBoxSignalSource.getSelectionModel().select(3);
-			hboxAValue.setVisible(false);
-			hboxSignValue.setVisible(false);
 			break;
 		}
+		initSignalSourceHBox(cp.getCollectSrc());
 		
 		txtAa.setText(String.valueOf(cp.getLeastReferValue()));
 		txtAb.setText(String.valueOf(cp.getCrestReferValue()));
 		txta.setText(String.valueOf(cp.getLeastValue()));
 		txtb.setText(String.valueOf(cp.getCrestValue()));
 		
+	}
+	
+	private void initSignalSourceHBox(CollectSignalSource src) {
+		switch(src) {
+		case DIGIT:
+			hboxAValue.setVisible(true);
+			hboxSignValue.setVisible(false);
+			break;
+		case VOLTAGE:
+			hboxAValue.setVisible(true);
+			hboxSignValue.setVisible(true);
+			break;
+		case ELECTRIC_CURRENT:
+			hboxAValue.setVisible(true);
+			hboxSignValue.setVisible(false);
+			break;
+		case SWITCH:
+			hboxAValue.setVisible(false);
+			hboxSignValue.setVisible(false);
+			break;
+		}
 	}
 	
 	public void onBtnOk() {
