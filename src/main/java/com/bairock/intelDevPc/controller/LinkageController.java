@@ -102,7 +102,7 @@ public class LinkageController {
 	// 选中的连锁影响
 	private Effect selectedChainEffect;
 
-	private ChangeListener<Boolean> linkageChangedListener = new OnLinkageEnableChangeListener();
+	private ChangeListener<Boolean> linkageChangedListener;
 	// ----------------SubChain---------------------------------
 
 	// ------------------Timing start----------------------------------
@@ -173,75 +173,82 @@ public class LinkageController {
 	// ----------------Guagua---------------------------------
 
 	// 受控设备列表适配器
-	private Callback<ListView<Effect>, ListCell<Effect>> effectCellFactory = new Callback<ListView<Effect>, ListCell<Effect>>() {
-		@Override
-		public ListCell<Effect> call(ListView<Effect> param) {
-			return new ListCell<Effect>() {
-				@Override
-				protected void updateItem(Effect item, boolean empty) {
-					super.updateItem(item, empty);
-					if (null != item && !empty) {
-						String name = String.format("%-4s %-4s", item.getDevice().getName(), item.effectStateStr());
-						this.setText(name);
-						setGraphic(null);
-					} else {
-						this.setText(null);
-						setGraphic(null);
-					}
-				}
-			};
-		}
-	};
+	private Callback<ListView<Effect>, ListCell<Effect>> effectCellFactory;
 	// 呱呱受控设备列表适配器
-	private Callback<ListView<Effect>, ListCell<Effect>> guaguaEffectCellFactory = new Callback<ListView<Effect>, ListCell<Effect>>() {
-		@Override
-		public ListCell<Effect> call(ListView<Effect> param) {
-			return new ListCell<Effect>() {
-				@Override
-				protected void updateItem(Effect item, boolean empty) {
-					super.updateItem(item, empty);
-					if (null != item && !empty) {
-						String name = String.format("设备 :%-4s    \t次数 :%-4s\n内容: %s", item.getDevice().getName(),
-								item.getEffectCount(), item.getEffectContent());
-						this.setText(name);
-						setGraphic(null);
-					} else {
-						this.setText(null);
-						setGraphic(null);
-					}
-				}
-			};
-		}
-	};
-
+	private Callback<ListView<Effect>, ListCell<Effect>> guaguaEffectCellFactory;
 	// 连锁条件列表适配器
-	private Callback<ListView<LinkageCondition>, ListCell<LinkageCondition>> linkageConditionCellFactory = new Callback<ListView<LinkageCondition>, ListCell<LinkageCondition>>() {
-		@Override
-		public ListCell<LinkageCondition> call(ListView<LinkageCondition> param) {
-			return new ListCell<LinkageCondition>() {
-				@Override
-				protected void updateItem(LinkageCondition item, boolean empty) {
-					super.updateItem(item, empty);
-					if (null != item && !empty) {
-						String compareValueStr = item.getCompareValue() == 0 ? "关" : "开";
-						String name = String.format("%-4s %-5s %-2s %s", item.getLogic().toString(),
-								item.getDevice().getName(), item.compareSymbolStr(), compareValueStr);
-						this.setText(name);
-						setGraphic(null);
-					} else {
-						this.setText(null);
-						setGraphic(null);
-					}
-				}
-			};
-		}
-	};
+	private Callback<ListView<LinkageCondition>, ListCell<LinkageCondition>> linkageConditionCellFactory;
 
 	private boolean inited = false;
 
+	private void initParm() {
+		linkageChangedListener = new OnLinkageEnableChangeListener();
+		effectCellFactory = new Callback<ListView<Effect>, ListCell<Effect>>() {
+			@Override
+			public ListCell<Effect> call(ListView<Effect> param) {
+				return new ListCell<Effect>() {
+					@Override
+					protected void updateItem(Effect item, boolean empty) {
+						super.updateItem(item, empty);
+						if (null != item && !empty) {
+							String name = String.format("%-4s %-4s", item.getDevice().getName(), item.effectStateStr());
+							this.setText(name);
+							setGraphic(null);
+						} else {
+							this.setText(null);
+							setGraphic(null);
+						}
+					}
+				};
+			}
+		};
+		guaguaEffectCellFactory = new Callback<ListView<Effect>, ListCell<Effect>>() {
+			@Override
+			public ListCell<Effect> call(ListView<Effect> param) {
+				return new ListCell<Effect>() {
+					@Override
+					protected void updateItem(Effect item, boolean empty) {
+						super.updateItem(item, empty);
+						if (null != item && !empty) {
+							String name = String.format("设备 :%-4s    \t次数 :%-4s\n内容: %s", item.getDevice().getName(),
+									item.getEffectCount(), item.getEffectContent());
+							this.setText(name);
+							setGraphic(null);
+						} else {
+							this.setText(null);
+							setGraphic(null);
+						}
+					}
+				};
+			}
+		};
+		linkageConditionCellFactory = new Callback<ListView<LinkageCondition>, ListCell<LinkageCondition>>() {
+			@Override
+			public ListCell<LinkageCondition> call(ListView<LinkageCondition> param) {
+				return new ListCell<LinkageCondition>() {
+					@Override
+					protected void updateItem(LinkageCondition item, boolean empty) {
+						super.updateItem(item, empty);
+						if (null != item && !empty) {
+							String compareValueStr = item.getCompareValue() == 0 ? "关" : "开";
+							String name = String.format("%-4s %-5s %-2s %s", item.getLogic().toString(),
+									item.getDevice().getName(), item.compareSymbolStr(), compareValueStr);
+							this.setText(name);
+							setGraphic(null);
+						} else {
+							this.setText(null);
+							setGraphic(null);
+						}
+					}
+				};
+			}
+		};
+	}
+	
 	private void init1() {
 		if (!inited) {
 			inited = true;
+			initParm();
 			// -----------------------连锁
 			toogleBtnSubChainEnable.selectedProperty().addListener((p0, p1, p2) -> {
 				if (p2 != chainHolder.isEnable()) {

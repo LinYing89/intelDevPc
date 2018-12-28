@@ -33,6 +33,7 @@
                 <Menu mnemonicParsing="false" text="设备">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#menuAllDevices" text="所有设备" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuSortDevices" text="排序" />
                   <MenuItem mnemonicParsing="false" onAction="#menuLinkage" text="连锁" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="选项" />

@@ -1,5 +1,8 @@
 package com.bairock.intelDevPc.controller;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
@@ -36,11 +40,15 @@ public class DevicesController {
 
 	@Autowired
 	private CtrlModelDialogView ctrlModelDialogView;
+	@Autowired
+	private MainController mainController;
 
 	@FXML
 	private TreeView<Device> treeViewDevices;
 	@FXML
 	private TextField tfDeviceName;
+	@FXML
+	private CheckBox cbVisibility;
 	@FXML
 	private Label labelMainCode;
 	@FXML
@@ -80,6 +88,13 @@ public class DevicesController {
 			};
 			return cell;
 		});
+		cbVisibility.selectedProperty().addListener((p1, p2, p3) -> {
+			if (selectedDevice.isVisibility() == p3) {
+				selectedDevice.setVisibility(!p3);
+				deviceRepository.saveAndFlush(selectedDevice);
+				mainController.refreshDevicePane();
+			}
+		});
 	}
 
 	public void init() {
@@ -108,12 +123,14 @@ public class DevicesController {
 		TreeItem<Device> item1 = new TreeItem<>(dev);
 		root.getChildren().add(item1);
 		if (dev instanceof DevHaveChild) {
-			for (Device dd : ((DevHaveChild) dev).getListDev()) {
+			List<Device> list = ((DevHaveChild) dev).getListDev();
+			Collections.sort(list);
+			for (Device dd : list) {
 				initDevTree(dd, item1);
 			}
 		}
 	}
-	
+
 	public void refresh() {
 		treeViewDevices.refresh();
 		String model;
@@ -129,7 +146,8 @@ public class DevicesController {
 	private void btnCtrlModelAction() {
 		CtrlModelDialogController ctrler = (CtrlModelDialogController) ctrlModelDialogView.getPresenter();
 		ctrler.init(selectedDevice);
-		IntelDevPcApplication.showView(CtrlModelDialogView.class, Modality.APPLICATION_MODAL, ctrler.onStageCreatedListener);
+		IntelDevPcApplication.showView(CtrlModelDialogView.class, Modality.APPLICATION_MODAL,
+				ctrler.onStageCreatedListener);
 	}
 
 	@FXML
@@ -151,6 +169,7 @@ public class DevicesController {
 				tfDeviceName.setText(selectedDevice.getName());
 				labelMainCode.setText(MainCodeHelper.getIns().getMc(selectedDevice.getMainCodeId()));
 				labelLongCoding.setText(selectedDevice.getLongCoding());
+				cbVisibility.setSelected(!selectedDevice.isVisibility());
 				if (selectedDevice.getParent() == null) {
 					btnCtrlModel.setVisible(true);
 					if (selectedDevice.getCtrlModel() == CtrlModel.LOCAL) {

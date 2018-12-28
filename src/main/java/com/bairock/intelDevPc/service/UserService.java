@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.comm.MyOnCtrlModelChangedListener;
+import com.bairock.intelDevPc.comm.MyOnSortIndexChangedListener;
 import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
 import com.bairock.intelDevPc.repository.UserRepository;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
@@ -131,6 +132,7 @@ public class UserService {
 	private void initDevice(Device dev) {
 		dev.setOnStateChanged(new MyOnStateChangedListener());
 		dev.setOnCtrlModelChanged(new MyOnCtrlModelChangedListener());
+		dev.setOnSortIndexChangedListener(new MyOnSortIndexChangedListener());
 		if(dev instanceof DevHaveChild) {
 			for(Device dd : ((DevHaveChild) dev).getListDev()) {
 				initDevice(dd);

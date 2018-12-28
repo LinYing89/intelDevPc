@@ -1,6 +1,5 @@
 package com.bairock.intelDevPc.controller;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import com.bairock.intelDevPc.view.DevicePane;
 import com.bairock.intelDevPc.view.DevicesView;
 import com.bairock.intelDevPc.view.LinkageView;
 import com.bairock.intelDevPc.view.SettingsView;
+import com.bairock.intelDevPc.view.SortDeviceView;
 import com.bairock.intelDevPc.view.UpDownloadDialog;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
@@ -43,9 +43,11 @@ public class MainController {
 	@Autowired
 	private Config config;
 	@Autowired
-	DevicesView devicesView;
+	private DevicesView devicesView;
 	@Autowired
-	LinkageView linkageView;
+	private SortDeviceView sortDeviceView;
+	@Autowired
+	private LinkageView linkageView;
 	@Autowired
 	private UpDownloadDialog upDownloadDialog;
 	@Autowired
@@ -56,22 +58,7 @@ public class MainController {
 	
 	public void init() {
 		IntelDevPcApplication.getStage().setTitle(config.getAppTitle());
-		fpSwitch.getChildren().clear();
-		fpCollector.getChildren().clear();
-		
-		DevGroup devGroup = UserService.user.getListDevGroup().get(0);
-		List<Device> listIStateDev = devGroup.findListIStateDev(true);
-		Collections.sort(listIStateDev);
-		for(Device dev : listIStateDev) {
-			DevicePane dp = new DevicePane(dev);
-			fpSwitch.getChildren().add(dp);
-		}
-		List<DevCollect> listDevCollector = devGroup.findListCollectDev(true);
-		Collections.sort(listDevCollector);
-		for(DevCollect dev : listDevCollector) {
-			CollectorPane dp = new CollectorPane(dev);
-			fpCollector.getChildren().add(dp);
-		}
+		refreshDevicePane();
 		refreshServerState(IntelDevPcApplication.SERVER_CONNECTED);
 		
 //		DevSwitch dev = (DevSwitch) DeviceAssistent.createDeviceByMcId(MainCodeHelper.KG_3LU_2TAI, "0001");
@@ -83,6 +70,31 @@ public class MainController {
 	
 	public void reInit() {
 		Platform.runLater(()->init());
+	}
+	
+	public void refreshDevicePane() {
+		refreshValueDevicePane();
+		refreshStateDevicePane();
+	}
+	
+	public void refreshStateDevicePane() {
+		fpSwitch.getChildren().clear();
+		DevGroup devGroup = UserService.user.getListDevGroup().get(0);
+		List<Device> listIStateDev = devGroup.findListIStateDev(true);
+		for(Device dev : listIStateDev) {
+			DevicePane dp = new DevicePane(dev);
+			fpSwitch.getChildren().add(dp);
+		}
+	}
+	
+	public void refreshValueDevicePane() {
+		fpCollector.getChildren().clear();
+		DevGroup devGroup = UserService.user.getListDevGroup().get(0);
+		List<DevCollect> listDevCollector = devGroup.findListCollectDev(true);
+		for(DevCollect dev : listDevCollector) {
+			CollectorPane dp = new CollectorPane(dev);
+			fpCollector.getChildren().add(dp);
+		}
 	}
 	
 	public void refreshDevicePaneGear(Device dev) {
@@ -151,6 +163,11 @@ public class MainController {
 		System.out.println("menuAllDevices");
 		((DevicesController)devicesView.getPresenter()).init();
 		IntelDevPcApplication.showView(DevicesView.class, Modality.NONE);
+	}
+	
+	public void menuSortDevices(){
+		((SortDeviceController)sortDeviceView.getPresenter()).init();
+		IntelDevPcApplication.showView(SortDeviceView.class, Modality.NONE);
 	}
 	
 	public void menuLinkage(){
