@@ -1,0 +1,35 @@
+.label {
+	-fx-font-size: 18px;
+	-fx-font-style: normal;
+	-fx-font-weight: bolder;
+}
+
+#labelName {
+	-fx-padding : 4 0 4 8;
+}
+
+#labelValue {
+	-fx-text-fill : #218868;
+}
+
+.toggle-button{
+	-fx-pref-width : 60px;
+}
+
+.list-cell:filled:selected {
+    -fx-background: green;
+    -fx-background-color: #E0EEEE, -fx-cell-focus-inner-border, #E0EEEE;
+    -fx-background-insets: 0, 1, 2;
+}
+
+/* .list-cell:filled:selected:hover { */
+/*     -fx-background: green; */
+/*     -fx-background-color: yellow, -fx-cell-focus-inner-border, yellow; */
+/*     -fx-background-insets: 0, 1, 2; */
+/* } */
+
+/* .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected:hover { */
+/*     -fx-background: -fx-accent; */
+/*     -fx-background-color: -fx-background, -fx-cell-focus-inner-border, -fx-background; */
+/*     -fx-background-insets: 0, 1, 2; */
+/* } */

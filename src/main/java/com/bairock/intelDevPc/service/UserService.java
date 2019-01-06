@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.comm.MyOnCtrlModelChangedListener;
+import com.bairock.intelDevPc.comm.MyOnGearChangedListener;
 import com.bairock.intelDevPc.comm.MyOnSortIndexChangedListener;
 import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
 import com.bairock.intelDevPc.repository.UserRepository;
@@ -130,7 +131,8 @@ public class UserService {
 	}
 	
 	private void initDevice(Device dev) {
-		dev.setOnStateChanged(new MyOnStateChangedListener());
+		dev.addOnStateChangedListener(new MyOnStateChangedListener());
+		dev.addOnGearChangedListener(new MyOnGearChangedListener());
 		dev.setOnCtrlModelChanged(new MyOnCtrlModelChangedListener());
 		dev.setOnSortIndexChangedListener(new MyOnSortIndexChangedListener());
 		if(dev instanceof DevHaveChild) {

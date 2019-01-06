@@ -4,10 +4,12 @@ import java.io.IOException;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
-import com.bairock.intelDevPc.comm.MyOnGearChangedListener;
 import com.bairock.intelDevPc.controller.DevSwitchController;
+import com.bairock.intelDevPc.data.MyColor;
 import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.Device;
+import com.bairock.iot.intelDev.device.Device.OnGearChangedListener;
+import com.bairock.iot.intelDev.device.Device.OnStateChangedListener;
 import com.bairock.iot.intelDev.device.Gear;
 import com.bairock.iot.intelDev.device.IStateDev;
 import com.bairock.iot.intelDev.user.MyHome;
@@ -69,8 +71,8 @@ public class DevicePane extends VBox {
 		labelName.setText(device.getName());
 		refreshState();
 		refreshGear();
-//		this.device.setOnStateChanged(new MyOnStateChangedListener());
-		this.device.setOnGearChanged(new MyOnGearChangedListener());
+		this.device.addOnStateChangedListener(onStateChangedListener);
+		this.device.addOnGearChangedListener(onGearChangedListener);
 		this.device.addOnNameChangedListener(onNameChangedListener);
 	}
 
@@ -101,19 +103,11 @@ public class DevicePane extends VBox {
 	public void refreshState() {
 		if(device.getDevStateId().equals(DevStateHelper.DS_KAI)) {
 //			Platform.runLater(()->scheduleLabel.setText("0%"));
-			hboxStateBackground.setStyle("-fx-background-color : #008B45;");
+			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.SUCCESS);
 		}else if(device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
-			hboxStateBackground.setStyle("-fx-background-color : #8DB6CD;");
+			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.SECONDARY);
 		}else if(device.getDevStateId().equals(DevStateHelper.DS_YI_CHANG)) {
-			hboxStateBackground.setStyle("-fx-background-color : #CD6839;");
-		}
-	}
-
-	public void setState(int state) {
-		if (state == 0) {
-			hboxStateBackground.setStyle("-fx-background-color : #8DB6CD;");
-		} else if (state == 1) {
-			hboxStateBackground.setStyle("-fx-background-color : #008B45;");
+			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.DANGER);
 		}
 	}
 
@@ -126,9 +120,48 @@ public class DevicePane extends VBox {
 		
 	};
 	
+	private OnGearChangedListener onGearChangedListener = new OnGearChangedListener() {
+		@Override
+		public void onGearChanged(Device dev, Gear gear) {
+			refreshGear();
+		}
+	};
+	
+	private OnStateChangedListener onStateChangedListener = new OnStateChangedListener() {
+
+		@Override
+		public void onStateChanged(Device dev, String stateId) {
+			refreshState();
+		}
+
+		@Override
+		public void onNormalToAbnormal(Device dev) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onAbnormalToNormal(Device dev) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onNoResponse(Device dev) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	};
+	
 	@FXML
 	private void initialize() {
 		// Do some work
+	}
+	
+	public void destory() {
+		device.removeOnNameChangedListener(onNameChangedListener);
+		device.removeOnStateChangedListener(onStateChangedListener);
 	}
 
 	@FXML
@@ -153,7 +186,7 @@ public class DevicePane extends VBox {
 	@FXML
 	private void handlePressed(MouseEvent event) {
 //		refreshState();
-		hboxStateBackground.setStyle("-fx-background-color : #87CEEB;");
+		hboxStateBackground.setStyle("-fx-background-color :" + MyColor.INFO);
 	}
 	
 	public void handlerNameClicked(MouseEvent event) {

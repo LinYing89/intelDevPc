@@ -1,0 +1,11 @@
+.toggle-button:selected {
+	-fx-background-color: -fx-selection-bar,
+		linear-gradient(to bottom, derive(-fx-outer-border, -20%),
+		-fx-outer-border), linear-gradient(to bottom, derive(-fx-selection-bar, -22%)
+		0%, derive(-fx-selection-bar, -13%) 20%, derive(-fx-selection-bar, -11%) 50%);
+	-fx-background-insets: 0 0 -1 0, 0, 1;
+	-fx-text-fill: white;
+}
+.label{
+	-fx-text-fill: white;
+}

@@ -1,8 +1,6 @@
 package com.bairock.intelDevPc.comm;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
-import com.bairock.intelDevPc.SpringUtil;
-import com.bairock.intelDevPc.controller.MainController;
 import com.bairock.iot.intelDev.communication.RefreshCollectorValueHelper;
 import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.Device;
@@ -12,13 +10,13 @@ import com.bairock.iot.intelDev.device.devswitch.SubDev;
 
 public class MyOnStateChangedListener implements OnStateChangedListener {
 
-	private MainController mainController = SpringUtil.getBean(MainController.class);
+//	private MainController mainController = SpringUtil.getBean(MainController.class);
 	
 	@Override
 	public void onStateChanged(Device dev, String stateId) {
-		if(null != mainController) {
-        	mainController.refreshDevicePaneState(dev);
-        }
+//		if(null != mainController) {
+//        	mainController.refreshDevicePaneState(dev);
+//        }
 	}
 
 	@Override

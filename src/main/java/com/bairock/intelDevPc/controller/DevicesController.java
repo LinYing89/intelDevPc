@@ -132,6 +132,9 @@ public class DevicesController {
 	}
 
 	public void refresh() {
+		if(null == treeViewDevices) {
+			return;
+		}
 		treeViewDevices.refresh();
 		String model;
 		if (selectedDevice.getCtrlModel() == CtrlModel.LOCAL) {

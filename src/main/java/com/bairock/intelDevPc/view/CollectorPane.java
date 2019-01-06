@@ -4,9 +4,11 @@ import java.io.IOException;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
-import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
 import com.bairock.intelDevPc.controller.DevCollectorInfoController;
+import com.bairock.intelDevPc.data.MyColor;
 import com.bairock.iot.intelDev.device.DevStateHelper;
+import com.bairock.iot.intelDev.device.Device;
+import com.bairock.iot.intelDev.device.Device.OnStateChangedListener;
 import com.bairock.iot.intelDev.device.devcollect.CollectProperty.OnCurrentValueChangedListener;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.user.MyHome;
@@ -65,22 +67,11 @@ public class CollectorPane extends VBox{
 		}
 		this.device = device;
 		labelName.setText(device.getName());
+		labelValue.setText(String.valueOf(device.getCollectProperty().getCurrentValue()));
 		refreshState();
-		this.device.setOnStateChanged(new MyOnStateChangedListener());
-		this.device.addOnNameChangedListener(new OnNameChangedListener() {
-			
-			@Override
-			public void onNameChanged(MyHome myHome, String name) {
-				setName(name);
-			}
-		});
-		this.device.getCollectProperty().addOnCurrentValueChangedListener(new OnCurrentValueChangedListener() {
-			
-			@Override
-			public void onCurrentValueChanged(DevCollect dev, Float value) {
-				Platform.runLater(()->labelValue.setText(String.valueOf(value)));
-			}
-		});
+		this.device.addOnStateChangedListener(onStateChangedListener);
+		this.device.addOnNameChangedListener(onNameChangedListener);
+		this.device.getCollectProperty().addOnCurrentValueChangedListener(onCurrentValueChangedListener);
 	}
 
 	public void setName(String name) {
@@ -89,20 +80,63 @@ public class CollectorPane extends VBox{
 	
 	public void refreshState() {
 		if(device.getDevStateId().equals(DevStateHelper.DS_YI_CHANG)) {
-			hboxStateBackground.setStyle("-fx-background-color : #CD6839;");
+			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.DANGER);
 		}else {
-			hboxStateBackground.setStyle("-fx-background-color : #4F94CD;");
+			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.INFO);
 		}
 	}
 
-	public void setState(int state) {
-		if (state == 0) {
-			hboxStateBackground.setStyle("-fx-background-color : #8DB6CD;");
-		} else if (state == 1) {
-			hboxStateBackground.setStyle("-fx-background-color : #008B45;");
-		}
-	}
+	private OnCurrentValueChangedListener onCurrentValueChangedListener = new OnCurrentValueChangedListener() {
 
+		@Override
+		public void onCurrentValueChanged(DevCollect dev, Float value) {
+			Platform.runLater(()->labelValue.setText(String.valueOf(value)));
+		}
+		
+	};
+	
+	private OnNameChangedListener onNameChangedListener = new OnNameChangedListener() {
+
+		@Override
+		public void onNameChanged(MyHome myHome, String name) {
+			setName(name);
+		}
+		
+	};
+	
+	private OnStateChangedListener onStateChangedListener = new OnStateChangedListener() {
+
+		@Override
+		public void onStateChanged(Device dev, String stateId) {
+			refreshState();
+		}
+
+		@Override
+		public void onNormalToAbnormal(Device dev) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onAbnormalToNormal(Device dev) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onNoResponse(Device dev) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	};
+	
+	public void destory() {
+		this.device.removeOnStateChangedListener(onStateChangedListener);
+		this.device.removeOnNameChangedListener(onNameChangedListener);
+		this.device.getCollectProperty().removeOnCurrentValueChangedListener(onCurrentValueChangedListener);
+	}
+	
 	@FXML
 	private void initialize() {
 		// Do some work

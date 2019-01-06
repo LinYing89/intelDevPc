@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1138.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bairock.intelDevPc.controller.MainController">
     <top>
@@ -39,51 +45,95 @@
                   <MenuItem mnemonicParsing="false" text="选项" />
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="视图">
+              <items>
+                  <CheckMenuItem mnemonicParsing="false" text="历史曲线" />
+                  <CheckMenuItem mnemonicParsing="false" text="事件信息" />
+                  <CheckMenuItem mnemonicParsing="false" text="历史纪录" />
+              </items>
+            </Menu>
                 <Menu mnemonicParsing="false" text="帮助">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" text="关于" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
     </top>
     <center>
-        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+        <SplitPane fx:id="splitePaneRoot" dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
             <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                <AnchorPane>
                     <children>
-                        <SplitPane dividerPositions="0.5" prefHeight="180.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane fx:id="splitePaneDevice" dividerPositions="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <items>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
-                           <content>
-                               <FlowPane fx:id="fpSwitch" hgap="10.0" maxWidth="1.7976931348623157E308" prefHeight="301.0" prefWidth="527.0" vgap="10.0">
-                                  <children>
-                                      
-                                  </children>
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                               </FlowPane>
-                           </content>
-                        </ScrollPane>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
-                           <content>
-                              <FlowPane fx:id="fpCollector" hgap="10.0" maxWidth="1.7976931348623157E308" prefHeight="301.0" prefWidth="527.0" vgap="10.0">
-                                 <children>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                              </FlowPane>
-                           </content>
-                        </ScrollPane>
+                        <VBox>
+                           <children>
+                              <ToolBar>
+                                <items>
+                                    <ToggleButton fx:id="tbStateDevGrid" mnemonicParsing="false">
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../img/gongge.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="tgStateDevLayout" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton fx:id="tbStateDevList" mnemonicParsing="false" toggleGroup="$tgStateDevLayout">
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../img/liebiao.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </ToggleButton>
+                                </items>
+                              </ToolBar>
+                              <AnchorPane fx:id="paneStateDevContainer" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <ToolBar>
+                                 <items>
+                                    <ToggleButton fx:id="tbValueDevGrid" mnemonicParsing="false">
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../img/gongge.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="tgValueDevLayout" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton fx:id="tbValueDevList" mnemonicParsing="false" toggleGroup="$tgValueDevLayout">
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../img/liebiao.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </ToggleButton>
+                                 </items>
+                              </ToolBar>
+                              <AnchorPane fx:id="paneValueDevContainer" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
                      </items>
                         </SplitPane>
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
-                        <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane fx:id="splitePaneView" dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                     <children>
@@ -112,6 +162,22 @@
                                     <children>
                                         <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <tabs>
+                                    <Tab text="历史曲线">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <LineChart title="液位计" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <xAxis>
+                                                    <CategoryAxis side="BOTTOM" />
+                                                  </xAxis>
+                                                  <yAxis>
+                                                    <NumberAxis side="LEFT" />
+                                                  </yAxis>
+                                                </LineChart>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </Tab>
                                                 <Tab text="历史纪录">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
