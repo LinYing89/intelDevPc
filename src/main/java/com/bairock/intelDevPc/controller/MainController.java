@@ -6,7 +6,6 @@ import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.MainStateView;
 import com.bairock.intelDevPc.comm.DownloadClient;
 import com.bairock.intelDevPc.comm.UploadClient;
-import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.data.UILayoutConfig;
 import com.bairock.intelDevPc.repository.UILayoutConfigRepository;
 import com.bairock.intelDevPc.service.UserService;
@@ -70,8 +69,8 @@ public class MainController {
 	@FXML
 	private SplitPane splitePaneView;
 
-	@Autowired
-	private Config config;
+//	@Autowired
+//	private Config config;
 	@Autowired
 	private UILayoutConfig uiConfig;
 	@Autowired
@@ -105,7 +104,7 @@ public class MainController {
 		
 		DevGroup group = UserService.getDevGroup();
 		Stage stage = IntelDevPcApplication.getStage();
-		stage.setTitle(config.getAppTitle() + " - " + UserService.user.getName() + "-" + group.getName() + ":"
+		stage.setTitle(UserService.user.getName() + "-" + group.getName() + ":"
 				+ group.getPetName());
 		
 		refreshDevicePane();

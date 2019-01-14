@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.service.UserService;
+import com.bairock.iot.intelDev.device.DevHaveChild;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.user.DevGroup;
@@ -72,6 +73,23 @@ public class SortDeviceController {
 			}
 			selectedValueDevice = (Device) device;
 		});
+		
+		DevGroup devGroup = UserService.user.getListDevGroup().get(0);
+		for(Device dev : devGroup.getListDevice()) {
+			setUnVisibilitySort(dev);
+		}
+	}
+	
+	//设置隐藏的设备的排序最大, 使其排到后面
+	private void setUnVisibilitySort(Device dev) {
+		if(!dev.isVisibility()) {
+			dev.setSortIndex(10000);
+			if(dev instanceof DevHaveChild) {
+				for(Device d : ((DevHaveChild) dev).getListDev()) {
+					setUnVisibilitySort(d);
+				}
+			}
+		}
 	}
 
 	public void init() {

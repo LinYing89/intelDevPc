@@ -5,10 +5,13 @@ import java.util.List;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
+import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.controller.DevCollectorInfoController;
 import com.bairock.intelDevPc.data.MyColor;
 import com.bairock.intelDevPc.service.UserService;
+import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.Device;
+import com.bairock.iot.intelDev.device.Device.OnCtrlModelChangedListener;
 import com.bairock.iot.intelDev.device.Device.OnStateChangedListener;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.device.devcollect.CollectProperty.OnCurrentValueChangedListener;
@@ -132,8 +135,11 @@ public class ValueDeviceListView extends VBox {
 		DevCollect dc = (DevCollect) device;
 		GridPane paneRoot = new GridPane();
 		ColumnConstraints cc2 = new ColumnConstraints();
-		cc2.setPercentWidth(50);
+		cc2.setPercentWidth(40);
 		paneRoot.getColumnConstraints().add(cc2);
+		ColumnConstraints cc3 = new ColumnConstraints();
+		cc3.setPercentWidth(40);
+		paneRoot.getColumnConstraints().add(cc3);
 		
 		Label labelName = new Label(device.getName());
 		labelName.setId("labelName");
@@ -147,14 +153,20 @@ public class ValueDeviceListView extends VBox {
 		Label labelValue = new Label(dc.getCollectProperty().getValueWithSymbol());
 		labelValue.setId("labelValue");
 		paneRoot.addColumn(1, labelValue);
+		
+		String ctrlModel = Util.getCtrlModelName(device.findSuperParent().getCtrlModel());
+		Label labelCtrlModel = new Label(ctrlModel);
+		paneRoot.addColumn(2, labelCtrlModel);
 
 		if (!device.isNormal()) {
 			paneRoot.setStyle("-fx-background-color : " + MyColor.DANGER);
 			labelName.setStyle("-fx-text-fill : white");
+			labelCtrlModel.setStyle("-fx-text-fill : white");
 		} else {
 //			paneRoot.setStyle("-fx-background-color : white;");
 			paneRoot.setStyle("-fx-background-color : #00000000;");
 			labelName.setStyle("-fx-text-fill : black");
+			labelCtrlModel.setStyle("-fx-text-fill : black");
 		}
 
 		paneRoot.setPadding(new Insets(4, 0, 4, 0));
@@ -173,6 +185,7 @@ public class ValueDeviceListView extends VBox {
 		for (Device dev : listDev) {
 			dev.removeOnStateChangedListener(onStateChangedListener);
 			dev.removeOnNameChangedListener(onNameChangedListener);
+			dev.removeOnCtrlModelChangedListener(onCtrlModelChangedListener);
 		}
 	}
 
@@ -182,6 +195,7 @@ public class ValueDeviceListView extends VBox {
 		for (Device dev : listDev) {
 			dev.addOnStateChangedListener(onStateChangedListener);
 			dev.addOnNameChangedListener(onNameChangedListener);
+			dev.addOnCtrlModelChangedListener(onCtrlModelChangedListener);
 			((DevCollect) dev).getCollectProperty().addOnCurrentValueChangedListener(onCurrentValueChangedListener);
 		}
 		lvDevices.getItems().clear();
@@ -205,12 +219,20 @@ public class ValueDeviceListView extends VBox {
 		}
 
 	};
+	
+	private OnCtrlModelChangedListener onCtrlModelChangedListener = new OnCtrlModelChangedListener() {
+
+		@Override
+		public void onCtrlModelChanged(Device dev, CtrlModel ctrlModel) {
+			Platform.runLater(() -> refresh());
+		}
+	};
 
 	private OnStateChangedListener onStateChangedListener = new OnStateChangedListener() {
 
 		@Override
 		public void onStateChanged(Device dev, String stateId) {
-			refresh();
+			Platform.runLater(() -> refresh());
 		}
 
 		@Override

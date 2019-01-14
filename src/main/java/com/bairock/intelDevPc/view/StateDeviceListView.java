@@ -5,11 +5,14 @@ import java.util.List;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
+import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.controller.DevSwitchController;
 import com.bairock.intelDevPc.data.MyColor;
 import com.bairock.intelDevPc.service.UserService;
+import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.Device;
+import com.bairock.iot.intelDev.device.Device.OnCtrlModelChangedListener;
 import com.bairock.iot.intelDev.device.Device.OnGearChangedListener;
 import com.bairock.iot.intelDev.device.Device.OnStateChangedListener;
 import com.bairock.iot.intelDev.device.Gear;
@@ -18,6 +21,7 @@ import com.bairock.iot.intelDev.user.DevGroup;
 import com.bairock.iot.intelDev.user.MyHome;
 import com.bairock.iot.intelDev.user.MyHome.OnNameChangedListener;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -115,10 +119,13 @@ public class StateDeviceListView extends VBox {
 
 		if (device.getDevStateId().equals(DevStateHelper.DS_KAI)) {
 			paneRoot.setStyle("-fx-background-color : " + MyColor.SUCCESS);
+			labelName.setStyle("-fx-fill-color : white");
 		} else if (device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
 			paneRoot.setStyle("-fx-background-color : " + MyColor.SECONDARY);
+			labelName.setStyle("-fx-fill-color : black");
 		} else if (device.getDevStateId().equals(DevStateHelper.DS_YI_CHANG)) {
 			paneRoot.setStyle("-fx-background-color : " + MyColor.DANGER);
+			labelName.setStyle("-fx-fill-color : white");
 		}
 
 		switch (device.getGear()) {
@@ -152,8 +159,11 @@ public class StateDeviceListView extends VBox {
 	private GridPane getItemGridPane(Device device) {
 		GridPane paneRoot = new GridPane();
 		ColumnConstraints cc2 = new ColumnConstraints();
-		cc2.setPercentWidth(50);
+		cc2.setPercentWidth(40);
 		paneRoot.getColumnConstraints().add(cc2);
+		ColumnConstraints cc3 = new ColumnConstraints();
+		cc3.setPercentWidth(40);
+		paneRoot.getColumnConstraints().add(cc3);
 		
 		Label labelName = new Label(device.getName());
 		labelName.setId("labelName");
@@ -175,15 +185,25 @@ public class StateDeviceListView extends VBox {
 		hbox.getChildren().addAll(btnOn, btnAuto, btnOff);
 		hbox.setAlignment(Pos.CENTER);
 		paneRoot.addColumn(1, hbox);
+		
+		String ctrlModel = Util.getCtrlModelName(device.findSuperParent().getCtrlModel());
+		Label labelCtrlModel = new Label(ctrlModel);
+		paneRoot.addColumn(2, labelCtrlModel);
 
 		if (device.getDevStateId().equals(DevStateHelper.DS_KAI)) {
 			paneRoot.setStyle("-fx-background-color : " + MyColor.SUCCESS);
+			labelName.setStyle("-fx-text-fill : white");
+			labelCtrlModel.setStyle("-fx-text-fill : white");
 		} else if (device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
-			paneRoot.setStyle("-fx-background-color : " + MyColor.SECONDARY);
+			paneRoot.setStyle("-fx-background-color : " + MyColor.TRANSPARENT);
+			labelName.setStyle("-fx-text-fill : black");
+			labelCtrlModel.setStyle("-fx-text-fill : black");
 		} else if (device.getDevStateId().equals(DevStateHelper.DS_YI_CHANG)) {
 			paneRoot.setStyle("-fx-background-color : " + MyColor.DANGER);
+			labelName.setStyle("-fx-text-fill : white");
+			labelCtrlModel.setStyle("-fx-text-fill : white");
 		}
-
+		
 		switch (device.getGear()) {
 		case GUAN:
 			group.selectToggle(btnOff);
@@ -207,7 +227,7 @@ public class StateDeviceListView extends VBox {
 				device.setGear(Gear.GUAN);
 			}
 		});
-
+		
 		paneRoot.setPadding(new Insets(4, 0, 4, 0));
 		return paneRoot;
 	}
@@ -225,6 +245,7 @@ public class StateDeviceListView extends VBox {
 			dev.removeOnStateChangedListener(onStateChangedListener);
 			dev.removeOnGearChangedListener(onGearChangedListener);
 			dev.removeOnNameChangedListener(onNameChangedListener);
+			dev.removeOnCtrlModelChangedListener(onCtrlModelChangedListener);
 		}
 	}
 
@@ -235,6 +256,7 @@ public class StateDeviceListView extends VBox {
 			dev.addOnStateChangedListener(onStateChangedListener);
 			dev.addOnGearChangedListener(onGearChangedListener);
 			dev.addOnNameChangedListener(onNameChangedListener);
+			dev.addOnCtrlModelChangedListener(onCtrlModelChangedListener);
 		}
 		lvDevices.getItems().clear();
 		lvDevices.getItems().addAll(listDev);
@@ -248,11 +270,19 @@ public class StateDeviceListView extends VBox {
 		}
 
 	};
+	
+	private OnCtrlModelChangedListener onCtrlModelChangedListener = new OnCtrlModelChangedListener() {
+
+		@Override
+		public void onCtrlModelChanged(Device dev, CtrlModel ctrlModel) {
+			Platform.runLater(() -> refresh());
+		}
+	};
 
 	private OnGearChangedListener onGearChangedListener = new OnGearChangedListener() {
 		@Override
 		public void onGearChanged(Device dev, Gear gear) {
-			refresh();
+			Platform.runLater(() -> refresh());
 		}
 	};
 
@@ -260,7 +290,7 @@ public class StateDeviceListView extends VBox {
 
 		@Override
 		public void onStateChanged(Device dev, String stateId) {
-			refresh();
+			Platform.runLater(() -> refresh());
 		}
 
 		@Override

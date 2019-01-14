@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
-import com.bairock.intelDevPc.comm.MyOnCtrlModelChangedListener;
 import com.bairock.intelDevPc.comm.MyOnGearChangedListener;
 import com.bairock.intelDevPc.comm.MyOnSortIndexChangedListener;
 import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
@@ -133,7 +132,7 @@ public class UserService {
 	private void initDevice(Device dev) {
 		dev.addOnStateChangedListener(new MyOnStateChangedListener());
 		dev.addOnGearChangedListener(new MyOnGearChangedListener());
-		dev.setOnCtrlModelChanged(new MyOnCtrlModelChangedListener());
+//		dev.setOnCtrlModelChanged(new MyOnCtrlModelChangedListener());
 		dev.setOnSortIndexChangedListener(new MyOnSortIndexChangedListener());
 		if(dev instanceof DevHaveChild) {
 			for(Device dd : ((DevHaveChild) dev).getListDev()) {
