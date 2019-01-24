@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
+import com.bairock.intelDevPc.comm.MyOnCurrentValueChangedListener;
 import com.bairock.intelDevPc.comm.MyOnGearChangedListener;
 import com.bairock.intelDevPc.comm.MyOnSortIndexChangedListener;
 import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
@@ -140,7 +141,7 @@ public class UserService {
 			}
 		}
 		if(dev instanceof DevCollect) {
-			((DevCollect) dev).getCollectProperty();
+			((DevCollect) dev).getCollectProperty().addOnCurrentValueChangedListener(new MyOnCurrentValueChangedListener());
 		}
 	}
 	

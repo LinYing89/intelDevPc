@@ -23,6 +23,9 @@ public class Config {
 	
 	private String appTitle = "大发科技智能物联网控制平台";
 	
+	@Column(columnDefinition="boolean default false",nullable=false)
+	private boolean autoLogin;
+	
 	public long getId() {
 		return id;
 	}
@@ -60,6 +63,10 @@ public class Config {
 	public void setAppTitle(String appTitle) {
 		this.appTitle = appTitle;
 	}
-	
-	
+	public boolean isAutoLogin() {
+		return autoLogin;
+	}
+	public void setAutoLogin(boolean autoLogin) {
+		this.autoLogin = autoLogin;
+	}
 }

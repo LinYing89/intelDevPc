@@ -7,14 +7,15 @@ import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
 import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.controller.DevCollectorInfoController;
+import com.bairock.intelDevPc.controller.MainController;
 import com.bairock.intelDevPc.data.MyColor;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.Device.OnCtrlModelChangedListener;
 import com.bairock.iot.intelDev.device.Device.OnStateChangedListener;
-import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.device.devcollect.CollectProperty.OnCurrentValueChangedListener;
+import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.user.DevGroup;
 import com.bairock.iot.intelDev.user.MyHome;
 import com.bairock.iot.intelDev.user.MyHome.OnNameChangedListener;
@@ -46,6 +47,7 @@ import javafx.util.Callback;
 public class ValueDeviceListView extends VBox {
 
 	private DevCollectorInfo devCollectorInfo = SpringUtil.getBean(DevCollectorInfo.class);
+	private MainController mainController = SpringUtil.getBean(MainController.class);
 
 	@FXML
 	private ListView<Device> lvDevices;
@@ -86,6 +88,15 @@ public class ValueDeviceListView extends VBox {
 
 		lvDevices.setCellFactory(deviceCellFactory);
 
+		lvDevices.getSelectionModel().selectedItemProperty().addListener((p1, p2, p3) -> {
+			if (null == p3) {
+				return;
+			}
+			MainController.selectedValueDev = p3;
+			mainController.refreshValueChartTitle(p3.getName());
+			mainController.removeValueHistory();
+		});
+		
 		AnchorPane.setLeftAnchor(this, 0.0);
 		AnchorPane.setTopAnchor(this, 0.0);
 		AnchorPane.setRightAnchor(this, 0.0);
@@ -186,6 +197,7 @@ public class ValueDeviceListView extends VBox {
 			dev.removeOnStateChangedListener(onStateChangedListener);
 			dev.removeOnNameChangedListener(onNameChangedListener);
 			dev.removeOnCtrlModelChangedListener(onCtrlModelChangedListener);
+			((DevCollect) dev).getCollectProperty().removeOnCurrentValueChangedListener(onCurrentValueChangedListener);
 		}
 	}
 

@@ -2,30 +2,22 @@ package com.bairock.intelDevPc.data;
 
 public class DevGroupLoginResult {
 
-	private int stateCode;
-	private String petName = "";
+	private String devGroupId;
+	private String devGroupPetName;
 	private int padPort;
 	private int devPort;
-	private int upDownloadPort;
-	
-	
-	public int getStateCode() {
-		return stateCode;
+
+	public String getDevGroupId() {
+		return devGroupId;
 	}
-	public void setStateCode(int stateCode) {
-		this.stateCode = stateCode;
+	public void setDevGroupId(String devGroupId) {
+		this.devGroupId = devGroupId;
 	}
-	public String getPetName() {
-		return petName;
+	public String getDevGroupPetName() {
+		return devGroupPetName;
 	}
-	public void setPetName(String petName) {
-		this.petName = petName;
-	}
-	public int getUpDownloadPort() {
-		return upDownloadPort;
-	}
-	public void setUpDownloadPort(int upDownloadPort) {
-		this.upDownloadPort = upDownloadPort;
+	public void setDevGroupPetName(String devGroupPetName) {
+		this.devGroupPetName = devGroupPetName;
 	}
 	public int getPadPort() {
 		return padPort;

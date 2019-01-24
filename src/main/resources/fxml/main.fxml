@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -33,7 +30,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#handleMenuDownload" text="下载" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#menuSettingsAction" text="设置" />
-                        <MenuItem mnemonicParsing="false" text="关闭" />
+                        <MenuItem fx:id="menuExit" mnemonicParsing="false" onAction="#menuExitAction" text="退出" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="设备">
@@ -164,18 +161,7 @@
                                             <tabs>
                                     <Tab text="历史曲线">
                                       <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                             <children>
-                                                <LineChart title="液位计" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                  <xAxis>
-                                                    <CategoryAxis side="BOTTOM" />
-                                                  </xAxis>
-                                                  <yAxis>
-                                                    <NumberAxis side="LEFT" />
-                                                  </yAxis>
-                                                </LineChart>
-                                             </children>
-                                          </AnchorPane>
+                                        <AnchorPane fx:id="apaneValueLineChart" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                       </content>
                                     </Tab>
                                                 <Tab text="历史纪录">

@@ -35,6 +35,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+//jdbc:h2:file:C:\project\workspace-sts-3.9.5.RELEASE\intelDevPc\db\demo_db2
+
 @SpringBootApplication
 @EntityScan({ "com.bairock.iot.intelDev", "com.bairock.intelDevPc.data" })
 @EnableScheduling
@@ -76,6 +78,7 @@ public class IntelDevPcApplication extends AbstractJavaFxApplicationSupport {
 	}
 
 	public void handleShown(WindowEvent e) {
+		System.out.println("handleShown");
 		UserService userService = SpringUtil.getBean(UserService.class);
 		LoginView loginView = SpringUtil.getBean(LoginView.class);
 		userService.initUser();

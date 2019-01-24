@@ -1,12 +1,20 @@
 package com.bairock.intelDevPc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.MainStateView;
 import com.bairock.intelDevPc.comm.DownloadClient;
 import com.bairock.intelDevPc.comm.UploadClient;
+import com.bairock.intelDevPc.data.Config;
+import com.bairock.intelDevPc.data.DeviceValueHistory;
+import com.bairock.intelDevPc.data.Result;
 import com.bairock.intelDevPc.data.UILayoutConfig;
+import com.bairock.intelDevPc.httpclient.HttpUploadTask;
+import com.bairock.intelDevPc.repository.ConfigRepository;
+import com.bairock.intelDevPc.repository.DeviceValueHistoryRepo;
 import com.bairock.intelDevPc.repository.UILayoutConfigRepository;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.intelDevPc.view.DevicesView;
@@ -18,11 +26,17 @@ import com.bairock.intelDevPc.view.StateDeviceListView;
 import com.bairock.intelDevPc.view.UpDownloadDialog;
 import com.bairock.intelDevPc.view.ValueDeviceGridView;
 import com.bairock.intelDevPc.view.ValueDeviceListView;
+import com.bairock.iot.intelDev.device.Device;
+import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.user.DevGroup;
 
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToggleButton;
@@ -37,14 +51,20 @@ public class MainController {
 
 //	private Logger logger = LoggerFactory.getLogger(getClass());
 
+	public static Device selectedValueDev;
+
 	@Autowired
 	private MainStateView mainStateView;
+	@Autowired
+	private DeviceValueHistoryRepo deviceValueHistoryRepo;
 	@FXML
 	private FlowPane fpSwitch;
 	@FXML
 	private AnchorPane paneStateDevContainer;
 	@FXML
 	private AnchorPane paneValueDevContainer;
+	@FXML
+	private AnchorPane apaneValueLineChart;
 	@FXML
 	private FlowPane fpCollector;
 	@FXML
@@ -69,12 +89,15 @@ public class MainController {
 	@FXML
 	private SplitPane splitePaneView;
 
-//	@Autowired
-//	private Config config;
+//	@FXML
+//	private LineChart<String,Number> chartValueHistory;
+
+	@Autowired
+	private Config config;
 	@Autowired
 	private UILayoutConfig uiConfig;
 	@Autowired
-	private UILayoutConfigRepository configRepository;
+	private ConfigRepository configRepository;
 	@Autowired
 	private UILayoutConfigRepository uiConfigRepository;
 	@Autowired
@@ -93,25 +116,58 @@ public class MainController {
 	private ValueDeviceListView valueDeviceListView;
 	private ValueDeviceGridView valueDeviceGridView;
 
+	private XYChart.Series<String, Number> seriesValueChart;
+	private LineChart<String, Number> chartValueHistory;
+
 	public void init() {
 
-		splitePaneRoot.setDividerPositions(uiConfig.getDividerRoot());
-		splitePaneDevice.setDividerPositions(uiConfig.getDividerDevice());
-		splitePaneView.setDividerPositions(uiConfig.getDividerView());
 		mainStateView.getView().getScene().getWindow().setOnCloseRequest(e -> handlerExit());
 		initToggleButton();
 		refreshServerState(IntelDevPcApplication.SERVER_CONNECTED);
-		
+
 		DevGroup group = UserService.getDevGroup();
 		Stage stage = IntelDevPcApplication.getStage();
-		stage.setTitle(UserService.user.getName() + "-" + group.getName() + ":"
-				+ group.getPetName());
-		
+		stage.setTitle(UserService.user.getName() + "-" + group.getName() + ":" + group.getPetName());
+
 		refreshDevicePane();
+
+		initLineChart();
+		
+		splitePaneRoot.setDividerPositions(uiConfig.getDividerRoot());
+		splitePaneDevice.setDividerPositions(uiConfig.getDividerDevice());
+		splitePaneView.setDividerPositions(uiConfig.getDividerView());
 	}
 
 	public void reInit() {
 		Platform.runLater(() -> refreshDevicePane());
+	}
+
+	private void initLineChart() {
+		final CategoryAxis xAxis = new CategoryAxis();
+		final NumberAxis yAxis = new NumberAxis();
+		chartValueHistory = new LineChart<String, Number>(xAxis, yAxis);
+		chartValueHistory.setLegendVisible(false);
+		chartValueHistory.setCreateSymbols(false);
+		seriesValueChart = new XYChart.Series<>();
+
+//        series.getData().add(new XYChart.Data<String, Number>("Jan", 23));
+//        series.getData().add(new XYChart.Data<String, Number>("Feb", 14));
+		chartValueHistory.getData().add(seriesValueChart);
+
+		apaneValueLineChart.getChildren().add(chartValueHistory);
+		AnchorPane.setLeftAnchor(chartValueHistory, 0.0);
+		AnchorPane.setTopAnchor(chartValueHistory, 0.0);
+		AnchorPane.setRightAnchor(chartValueHistory, 0.0);
+		AnchorPane.setBottomAnchor(chartValueHistory, 0.0);
+		
+		DevGroup devGroup = UserService.user.getListDevGroup().get(0);
+		List<DevCollect> listDev = devGroup.findListCollectDev(true);
+		if(listDev.size() > 0) {
+//			selectedValueDev = listDev.get(0);
+//			refreshValueChartTitle(selectedValueDev.getName());
+			
+//			setHistoryChart();
+		}
 	}
 
 	private void initToggleButton() {
@@ -229,12 +285,59 @@ public class MainController {
 		Platform.runLater(() -> labelServerState.setText(text));
 	}
 
+	public void refreshValueChartTitle(String title) {
+		chartValueHistory.setTitle(title);
+	}
+	
+	public void removeValueHistory() {
+		seriesValueChart.getData().clear();
+		setHistoryChart();
+	}
+	
+	public void setHistoryChart() {
+		List<DeviceValueHistory> list = deviceValueHistoryRepo.findByDeviceId(selectedValueDev.getId());
+		for(DeviceValueHistory h : list) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String time = h.strTimeFormat();
+			addValueHistoryToChart(time, h.getValue());
+		}
+	}
+
+	public void addValueHistoryToChart(String time, float value) {
+		Platform.runLater(() -> {
+			if(seriesValueChart.getData().size() > 500) {
+				seriesValueChart.getData().remove(0);
+			}
+			seriesValueChart.getData().add(new XYChart.Data<String, Number>(time, value));
+		});
+	}
+
 	// 上传
 	public void handleMenuUpload() {
-		UploadClient uploadClient = new UploadClient();
-		uploadClient.link();
+//		UploadClient uploadClient = new UploadClient();
+//		uploadClient.link();
+		HttpUploadTask task = new HttpUploadTask(UserService.user);
+		task.setOnExecutedListener(loginResult ->{
+			Platform.runLater(()->uploadResult(loginResult));
+		});
+		task.start();
+		
 		((UpDownloadDialogController) upDownloadDialog.getPresenter()).init(UpDownloadDialogController.UPLOAD);
 		IntelDevPcApplication.showView(UpDownloadDialog.class, Modality.WINDOW_MODAL);
+	}
+	
+	private void uploadResult(Result<Object> result) {
+		UpDownloadDialogController controller = (UpDownloadDialogController) upDownloadDialog.getPresenter();
+		if(result.getCode() == 0) {
+			controller.loadResult(true);
+		}else {
+			controller.loadResult(false);
+		}
 	}
 
 	// 下载
@@ -256,6 +359,7 @@ public class MainController {
 		IntelDevPcApplication.showView(SortDeviceView.class, Modality.NONE);
 	}
 
+	@FXML
 	public void menuLinkage() {
 		System.out.println("menuLinkage");
 		((LinkageController) linkageView.getPresenter()).init();
@@ -267,13 +371,21 @@ public class MainController {
 		((SettingsController) settingsView.getPresenter()).init();
 		IntelDevPcApplication.showView(SettingsView.class, Modality.WINDOW_MODAL);
 	}
-	
+
+	// 退出
+	@FXML
+	public void menuExitAction() {
+		config.setAutoLogin(false);
+		configRepository.saveAndFlush(config);
+		handlerExit();
+	}
+
 	private void handlerExit() {
-		//窗口关闭时保存当前布局
+		// 窗口关闭时保存当前布局
 		uiConfig.setDividerRoot(splitePaneRoot.getDividerPositions()[0]);
 		uiConfig.setDividerDevice(splitePaneDevice.getDividerPositions()[0]);
 		uiConfig.setDividerView(splitePaneView.getDividerPositions()[0]);
-		configRepository.saveAndFlush(uiConfig);
+		uiConfigRepository.saveAndFlush(uiConfig);
 		System.exit(0);
 	}
 }

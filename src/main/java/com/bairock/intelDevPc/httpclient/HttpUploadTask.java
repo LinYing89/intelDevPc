@@ -1,24 +1,31 @@
-package com.bairock.intelDevPc.service;
+package com.bairock.intelDevPc.httpclient;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.bairock.intelDevPc.data.DevGroupLoginResult;
-import com.bairock.intelDevPc.data.LoginResult;
+import com.bairock.intelDevPc.SpringUtil;
+import com.bairock.intelDevPc.data.Config;
+import com.bairock.intelDevPc.data.Result;
+import com.bairock.iot.intelDev.user.User;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class LoginTask extends Thread {
+public class HttpUploadTask extends Thread {
 
 	private String strUrl;
+	private User user;
 	private OnExecutedListener onExecutedListener;
 	
-	public LoginTask(String strUrl) {
-		this.strUrl = strUrl;
+	public HttpUploadTask(User user) {
+		Config config = SpringUtil.getBean(Config.class);
+		this.strUrl = "http://" + config.getServerName() + "/group/client/groupUpload";
+		this.user = user;
 	}
 	
 	public OnExecutedListener getOnExecutedListener() {
@@ -31,37 +38,47 @@ public class LoginTask extends Thread {
 
 	@Override
 	public void run() {
-		LoginResult loginResult = new LoginResult();
+		Result<Object> loginResult = new Result<>();
 		InputStream inputStream = null;
 		HttpURLConnection urlConnection = null;
 		try {
 			URL url = new URL(strUrl);
 			urlConnection = (HttpURLConnection) url.openConnection();
-			urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			urlConnection.setRequestProperty("Content-Type", "application/json");
 			urlConnection.setRequestProperty("Accept", "application/json");
-			urlConnection.setRequestProperty("Charset", "UTF-8");
-			urlConnection.setRequestProperty("Accept-Language", "zh-CN");
+//			urlConnection.setRequestProperty("Charset", "UTF-8");
+//			urlConnection.setRequestProperty("Accept-Language", "zh-CN");
 			
 			urlConnection.setConnectTimeout(30000);
 			urlConnection.setReadTimeout(30000);
 			
-			urlConnection.setRequestMethod("GET");
+			urlConnection.setDoOutput(true);     //需要输出
+			urlConnection.setDoInput(true);      //需要输入
+			urlConnection.setUseCaches(false);   //不允许缓存
+			urlConnection.setInstanceFollowRedirects(true); 
+			urlConnection.setRequestMethod("POST");
 			urlConnection.connect();
 			
+			ObjectMapper mapperWrite = new ObjectMapper();
+			String jsonUser = mapperWrite.writeValueAsString(user);
+			
+//			String json = "{\"name\":\"admin\"}";
+			//建立输入流，向指向的URL传入参数
+	        DataOutputStream dos=new DataOutputStream(urlConnection.getOutputStream());
+	        dos.write(jsonUser.getBytes("UTF-8"));
+	        dos.flush();
+	        dos.close();
+//			
 			int statusCode = urlConnection.getResponseCode();
 			if(statusCode == 200) {
 				inputStream = new BufferedInputStream(urlConnection.getInputStream());
 				String response = convertStreamToString(inputStream);
 				ObjectMapper mapper = new ObjectMapper();
-				DevGroupLoginResult resultData = mapper.readValue(response, DevGroupLoginResult.class);
-				loginResult.setData(resultData);
-				if(resultData.getStateCode() != 200) {
-					loginResult.setCode(404);
-					loginResult.setMsg("登录失败, 用户名或密码错误");
-				}
+				loginResult = mapper.readValue(response, new TypeReference<Result<Object>>(){});
+				
 			}else {
 				loginResult.setCode(statusCode);
-				loginResult.setMsg("登录失败");
+				loginResult.setMsg("上传失败");
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -107,8 +124,6 @@ public class LoginTask extends Thread {
     }
 	
 	public interface OnExecutedListener{
-		void onExecuted(LoginResult loginResult);
+		void onExecuted(Result<Object> loginResult);
 	}
-
-	
 }

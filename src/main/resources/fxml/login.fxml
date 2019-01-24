@@ -52,7 +52,7 @@
                      </GridPane.margin>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#loginLocal" prefHeight="30.0" prefWidth="318.0" text="本地登录" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-                  <CheckBox mnemonicParsing="false" onAction="#cbAutoLogin" text="自动登录" GridPane.rowIndex="3" />
+                  <CheckBox fx:id="cbAutoLogin" mnemonicParsing="false" onAction="#cbAutoLoginAction" text="自动登录" GridPane.rowIndex="3" />
                   <Label fx:id="labelWaring" style="-fx-text-fill: red;" GridPane.columnSpan="2" GridPane.rowIndex="6" />
                </children>
                <HBox.margin>
