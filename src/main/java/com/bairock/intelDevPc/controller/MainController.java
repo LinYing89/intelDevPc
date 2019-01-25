@@ -1,19 +1,20 @@
 package com.bairock.intelDevPc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.MainStateView;
-import com.bairock.intelDevPc.comm.DownloadClient;
-import com.bairock.intelDevPc.comm.UploadClient;
 import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.data.DeviceValueHistory;
 import com.bairock.intelDevPc.data.Result;
 import com.bairock.intelDevPc.data.UILayoutConfig;
+import com.bairock.intelDevPc.httpclient.HttpDownloadTask;
 import com.bairock.intelDevPc.httpclient.HttpUploadTask;
 import com.bairock.intelDevPc.repository.ConfigRepository;
+import com.bairock.intelDevPc.repository.DevGroupRepo;
 import com.bairock.intelDevPc.repository.DeviceValueHistoryRepo;
 import com.bairock.intelDevPc.repository.UILayoutConfigRepository;
 import com.bairock.intelDevPc.service.UserService;
@@ -26,8 +27,10 @@ import com.bairock.intelDevPc.view.StateDeviceListView;
 import com.bairock.intelDevPc.view.UpDownloadDialog;
 import com.bairock.intelDevPc.view.ValueDeviceGridView;
 import com.bairock.intelDevPc.view.ValueDeviceListView;
+import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
+import com.bairock.iot.intelDev.linkage.LinkageHolder;
 import com.bairock.iot.intelDev.user.DevGroup;
 
 import de.felixroske.jfxsupport.FXMLController;
@@ -53,6 +56,8 @@ public class MainController {
 
 	public static Device selectedValueDev;
 
+	@Autowired
+	private DevGroupRepo devGroupRepo;
 	@Autowired
 	private MainStateView mainStateView;
 	@Autowired
@@ -342,10 +347,56 @@ public class MainController {
 
 	// 下载
 	public void handleMenuDownload() {
-		DownloadClient download = new DownloadClient();
-		download.link();
+		HttpDownloadTask task = new HttpDownloadTask();
+		task.setOnExecutedListener(loginResult ->{
+			Platform.runLater(()->downloadResult(loginResult));
+		});
+		task.start();
 		((UpDownloadDialogController) upDownloadDialog.getPresenter()).init(UpDownloadDialogController.DOWNLOAD);
 		IntelDevPcApplication.showView(UpDownloadDialog.class, Modality.WINDOW_MODAL);
+	}
+	private void downloadResult(Result<DevGroup> result) {
+		DevGroup groupDb = UserService.getDevGroup();
+		DevGroup groupDownload = result.getData();
+		
+		DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
+		
+		List<Device> listOldDevice = new ArrayList<>(groupDb.getListDevice());
+		
+//		groupDb.getListDevice().clear();
+		for(Device dev : listOldDevice) {
+			groupDb.removeDevice(dev);
+		}
+		for(Device dev : groupDownload.getListDevice()) {
+			groupDb.addDevice(dev);
+		}
+//		groupDb.getListDevice().addAll(groupUpload.getListDevice());
+//		groupDb.getListLinkageHolder().clear();
+		List<LinkageHolder> listOldLinkageHolder = new ArrayList<>(groupDb.getListLinkageHolder());
+		for(LinkageHolder h : listOldLinkageHolder) {
+			h.setDevGroup(null);
+			groupDb.getListLinkageHolder().remove(h);
+		}
+		for(LinkageHolder h : groupDownload.getListLinkageHolder()) {
+			h.setDevGroup(groupDb);
+			groupDb.getListLinkageHolder().add(h);
+		}
+		groupDb.getListLinkageHolder().addAll(groupDownload.getListLinkageHolder());
+		devGroupRepo.saveAndFlush(groupDb);
+		
+		UserService.reloadDevGroup(groupDb);
+		reInit();
+		//关掉所有设备链接
+		DevChannelBridgeHelper.getIns().closeAllBridge();
+		
+		DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
+		
+		UpDownloadDialogController controller = (UpDownloadDialogController) upDownloadDialog.getPresenter();
+		if(result.getCode() == 0) {
+			controller.loadResult(true);
+		}else {
+			controller.loadResult(false);
+		}
 	}
 
 	public void menuAllDevices() {

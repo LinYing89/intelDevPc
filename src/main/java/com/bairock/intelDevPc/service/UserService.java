@@ -69,51 +69,59 @@ public class UserService {
 	@Transactional
 	public void initUser() {
 		
+		DevGroup group = null;
+		
 		List<User> listUser = userRepository.findAll();
 		if(listUser.isEmpty()) {
 			user = new User("test123", "a123456", "", "", "admin", new Date());
-			DevGroup group = new DevGroup("1", "a123", "g1");
+			group = new DevGroup("1", "a123", "g1");
 			group.setId(UUID.randomUUID().toString());
 			user.addGroup(group);
 			userRepository.saveAndFlush(user);
 		}else {
 			user = listUser.get(0);
-			for(DevGroup group : user.getListDevGroup()) {
-				System.out.println("userServer group " + (group.getUser() == user));
-				for(Device dev : group.getListDevice()) {
-					System.out.println(dev);
-					FindDevHelper.getIns().findDev(dev.getCoding());
-					dev.setDevStateId(DevStateHelper.DS_YI_CHANG);
-					initDevice(dev);
-				}
-				for(LinkageHolder holder : group.getListLinkageHolder()) {
-					for(Linkage linkage : holder.getListLinkage()) {
-						linkage.getListEffect();
-						if(linkage instanceof SubChain) {
-							((SubChain) linkage).getListCondition();
-						}else if(linkage instanceof Timing) {
-							for(ZTimer timer : ((Timing) linkage).getListZTimer()) {
-								timer.getListTimes();
-							}
-						}
-					}
-				}
-			}
+			group = user.getListDevGroup().get(0);
 		}
 		DevChannelBridgeHelper.getIns().setUser(user);
 		UdpServer.getIns().setUser(user);
 		
-		List<Device> list = user.getListDevGroup().get(0).findListIStateDev(true);
+		reloadDevGroup(group);
+		
+	}
+	
+	public static void reloadDevGroup(DevGroup group) {
+		System.out.println("userServer group " + (group.getUser() == user));
+		FindDevHelper.getIns().cleanAll();
+		for(Device dev : group.getListDevice()) {
+			System.out.println(dev);
+			FindDevHelper.getIns().findDev(dev.getCoding());
+			dev.setDevStateId(DevStateHelper.DS_YI_CHANG);
+			initDevice(dev);
+		}
+		for(LinkageHolder holder : group.getListLinkageHolder()) {
+			for(Linkage linkage : holder.getListLinkage()) {
+				linkage.getListEffect();
+				if(linkage instanceof SubChain) {
+					((SubChain) linkage).getListCondition();
+				}else if(linkage instanceof Timing) {
+					for(ZTimer timer : ((Timing) linkage).getListZTimer()) {
+						timer.getListTimes();
+					}
+				}
+			}
+		}
+		
+		List<Device> list = group.findListIStateDev(true);
 		LinkageTab.getIns().getListLinkageTabRow().clear();
 		for(Device dev : list) {
 			LinkageTab.getIns().addTabRow(dev);
 		}
 		
-		LinkageHelper.getIns().setChain(user.getListDevGroup().get(0).getChainHolder());
-		LinkageHelper.getIns().setLoop(user.getListDevGroup().get(0).getLoopHolder());
-		LinkageHelper.getIns().setTiming(user.getListDevGroup().get(0).getTimingHolder());
+		LinkageHelper.getIns().setChain(group.getChainHolder());
+		LinkageHelper.getIns().setLoop(group.getLoopHolder());
+		LinkageHelper.getIns().setTiming(group.getTimingHolder());
 		
-		GuaguaHelper.getIns().setGuaguaHolder(user.getListDevGroup().get(0).getGuaguaHolder());
+		GuaguaHelper.getIns().setGuaguaHolder(group.getGuaguaHolder());
 		
 		LinkageTab.getIns().SetOnOrderSendListener((device, order, ctrlModel) ->{
 			if(null != order) {
@@ -130,7 +138,7 @@ public class UserService {
 		}); 
 	}
 	
-	private void initDevice(Device dev) {
+	private static void initDevice(Device dev) {
 		dev.addOnStateChangedListener(new MyOnStateChangedListener());
 		dev.addOnGearChangedListener(new MyOnGearChangedListener());
 //		dev.setOnCtrlModelChanged(new MyOnCtrlModelChangedListener());
