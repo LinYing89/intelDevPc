@@ -25,6 +25,8 @@ import com.bairock.iot.intelDev.device.Coordinator;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.MainCodeHelper;
 import com.bairock.iot.intelDev.linkage.timing.WeekHelper;
+import com.bairock.iot.intelDev.order.DeviceOrder;
+import com.bairock.iot.intelDev.order.OrderType;
 
 import de.felixroske.jfxsupport.AbstractFxmlView;
 import de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport;
@@ -104,19 +106,30 @@ public class IntelDevPcApplication extends AbstractJavaFxApplicationSupport {
 	}
 
 	public static void sendOrder(Device device, String order, boolean immediately) {
+		
 		switch (device.getCtrlModel()) {
 		case UNKNOW:
 			DevChannelBridgeHelper.getIns().sendDevOrder(device, order, immediately);
-			PadClient.getIns().send(order);
+			String strOrderBase = getOrderBaseString(device, order);
+			PadClient.getIns().send(strOrderBase);
 			break;
 		case LOCAL:
 			DevChannelBridgeHelper.getIns().sendDevOrder(device, order, immediately);
 			break;
 		case REMOTE:
 			// 远程设备没判断发送间隔, 所以同一条命令没有获得响应时发送的可能比较频繁
-			PadClient.getIns().send(order);
+			String strOrderBase1 = getOrderBaseString(device, order);
+			PadClient.getIns().send(strOrderBase1);
 			break;
 		}
+	}
+	
+	private static String getOrderBaseString(Device device, String order) {
+		DeviceOrder ob = new DeviceOrder();
+		ob.setOrderType(OrderType.CTRL_DEV);
+		ob.setLongCoding(device.getLongCoding());
+		ob.setData(order);
+		return Util.orderBaseToString(ob);
 	}
 
 	@Bean

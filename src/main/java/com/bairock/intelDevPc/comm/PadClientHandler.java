@@ -1,5 +1,6 @@
 package com.bairock.intelDevPc.comm;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
@@ -13,8 +14,15 @@ import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.Gear;
+import com.bairock.iot.intelDev.device.IStateDev;
 import com.bairock.iot.intelDev.device.OrderHelper;
+import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.device.devswitch.DevSwitch;
+import com.bairock.iot.intelDev.order.DeviceOrder;
+import com.bairock.iot.intelDev.order.OrderType;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -49,7 +57,8 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
             byte[] req = new byte[m.readableBytes()];
             m.readBytes(req);
             String str = new String(req, "GBK");
-            displayMsg(str);
+            analysisMsg2(str);
+//            displayMsg(str);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -121,8 +130,88 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
             e.printStackTrace();
         }
     }
+    
+    private void analysisMsg2(String strData) {
+    	ObjectMapper om = new ObjectMapper();
+    	try {
+			DeviceOrder orderBase = om.readValue(strData, DeviceOrder.class);
+			String order = "";
+			switch(orderBase.getOrderType()) {
+			case HEAD_USER_INFO : 
+				if(null != UserService.user) {
+					DeviceOrder ob = new DeviceOrder();
+					ob.setOrderType(OrderType.HEAD_USER_INFO);
+					ob.setUsername(UserService.user.getName());
+					ob.setDevGroupName(UserService.getDevGroup().getName());
+					order = om.writeValueAsString(ob);
+	        		send(order);
+	        	}
+				break;
+			case HEAD_SYN : 
+				syncDevMsg = true;
+				order = om.writeValueAsString(orderBase);
+        		send(order);
+				break;
+			case HEAD_NOT_SYN : 
+				syncDevMsg = false;
+				order = om.writeValueAsString(orderBase);
+        		send(order);
+				break;
+			case GEAR : 
+				Device dev = UserService.getDevGroup().findDeviceWithCoding(orderBase.getLongCoding());
+	            if(null == dev){
+	                return;
+	            }
+	            dev.setGear(Gear.valueOf(orderBase.getData()));
+				break;
+			case CTRL_DEV:
+				dev = UserService.getDevGroup().findDeviceWithCoding(orderBase.getLongCoding());
+	            if(null == dev){
+	                return;
+	            }
+	            dev.setCtrlModel(CtrlModel.REMOTE);
+	            IStateDev stateDev = (IStateDev)dev;
+	            if(orderBase.getData().equals(DevStateHelper.DS_KAI)) {
+	            	order = stateDev.getTurnOnOrder();
+	            }else {
+	            	order = stateDev.getTurnOffOrder();
+	            }
+	            DevChannelBridgeHelper.getIns().sendDevOrder(dev, order, true);
+				break;
+			case STATE:
+				dev = UserService.getDevGroup().findDeviceWithCoding(orderBase.getLongCoding());
+	            if(null == dev){
+	                return;
+	            }
+	            dev.findSuperParent().setCtrlModel(CtrlModel.REMOTE);
+	            dev.setDevStateId(orderBase.getData());
+				break;
+			case VALUE:
+				dev = UserService.getDevGroup().findDeviceWithCoding(orderBase.getLongCoding());
+	            if(null == dev){
+	                return;
+	            }
+	            dev.findSuperParent().setCtrlModel(CtrlModel.REMOTE);
+	            ((DevCollect)dev).getCollectProperty().setCurrentValue(Float.valueOf(orderBase.getData()));
+				break;
+			default:
+				break;
+			}
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
 
     private synchronized void analysisMsg(String strData) {
+    	
         strData = strData.replaceAll("\n", "").replaceAll("\r", "").trim();
         String msg = strData;
         if(msg.contains("#")) {
