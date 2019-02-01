@@ -15,7 +15,7 @@ public class MyMessageAnalysiser extends MessageAnalysiser {
 
 	@Override
 	public void deviceFeedback(Device device, String msg) {
-		PadClient.getIns().sendIfSync("$" + msg);
+//		PadClient.getIns().sendIfSync("$" + msg);
 		updateDevice(device);
 	}
 

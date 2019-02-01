@@ -52,16 +52,20 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ByteBuf m = (ByteBuf)msg;
-        try {
-            byte[] req = new byte[m.readableBytes()];
-            m.readBytes(req);
-            String str = new String(req, "GBK");
-            analysisMsg2(str);
-//            displayMsg(str);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    	
+    	String str = (String)msg;
+        analysisMsg2(str);
+    	
+//        ByteBuf m = (ByteBuf)msg;
+//        try {
+//            byte[] req = new byte[m.readableBytes()];
+//            m.readBytes(req);
+//            String str = new String(req, "GBK");
+//            analysisMsg2(str);
+////            displayMsg(str);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -106,6 +110,7 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     void send(String msg){
+    	msg = msg + System.getProperty("line.separator");
         try {
             if(null != channel) {
                 channel.writeAndFlush(Unpooled.copiedBuffer(msg.getBytes("GBK")));
@@ -191,6 +196,7 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 	            if(null == dev){
 	                return;
 	            }
+	            dev.setDevStateId(DevStateHelper.DS_ZHENG_CHANG);
 	            dev.findSuperParent().setCtrlModel(CtrlModel.REMOTE);
 	            ((DevCollect)dev).getCollectProperty().setCurrentValue(Float.valueOf(orderBase.getData()));
 				break;

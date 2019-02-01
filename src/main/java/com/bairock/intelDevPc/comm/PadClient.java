@@ -1,5 +1,6 @@
 package com.bairock.intelDevPc.comm;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 import com.bairock.intelDevPc.SpringUtil;
@@ -10,10 +11,15 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 
 public class PadClient {
@@ -43,8 +49,15 @@ public class PadClient {
         b.handler(new ChannelInitializer<SocketChannel>() {
             @Override
             public void initChannel(SocketChannel ch) throws Exception {
-                ch.pipeline().addLast(new IdleStateHandler(-1, 20,20, TimeUnit.SECONDS)); // 1
-                ch.pipeline().addLast(new PadClientHandler());
+            	ChannelPipeline ph = ch.pipeline();        
+				// 以("\n")为结尾分割的 解码器        
+				ph.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));        
+				// 解码和编码，应和客户端一致       
+				ph.addLast("decoder", new StringDecoder(Charset.forName("UTF-8")));        
+				ph.addLast("encoder", new StringEncoder(Charset.forName("UTF-8")));        
+				
+                ph.addLast(new IdleStateHandler(-1, 20,20, TimeUnit.SECONDS)); // 1
+                ph.addLast(new PadClientHandler());
             }
         });
     }
