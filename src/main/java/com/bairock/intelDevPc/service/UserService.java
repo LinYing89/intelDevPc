@@ -29,6 +29,7 @@ import com.bairock.iot.intelDev.linkage.SubChain;
 import com.bairock.iot.intelDev.linkage.guagua.GuaguaHelper;
 import com.bairock.iot.intelDev.linkage.timing.Timing;
 import com.bairock.iot.intelDev.linkage.timing.ZTimer;
+import com.bairock.iot.intelDev.order.OrderType;
 import com.bairock.iot.intelDev.user.DevGroup;
 import com.bairock.iot.intelDev.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,14 +40,16 @@ public class UserService {
 	public static User user;
 
 	private UserRepository userRepository;
+	private DeviceHistoryService deviceHistoryService;
 	
 	public static DevGroup getDevGroup() {
 		return user.getListDevGroup().get(0);
 	}
 	
 	@Autowired
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, DeviceHistoryService deviceHistoryService) {
 		this.userRepository = userRepository;
+		this.deviceHistoryService = deviceHistoryService;
 		//initUser();
 	}
 	
@@ -89,7 +92,7 @@ public class UserService {
 		
 	}
 	
-	public static void reloadDevGroup(DevGroup group) {
+	public void reloadDevGroup(DevGroup group) {
 		System.out.println("userServer group " + (group.getUser() == user));
 		FindDevHelper.getIns().cleanAll();
 		for(Device dev : group.getListDevice()) {
@@ -125,7 +128,7 @@ public class UserService {
 		
 		LinkageTab.getIns().SetOnOrderSendListener((device, order, ctrlModel) ->{
 			if(null != order) {
-				IntelDevPcApplication.sendOrder(device, order, false);
+				IntelDevPcApplication.sendOrder(device, order, OrderType.CTRL_DEV, false);
 			}
 		});
 		
@@ -134,15 +137,16 @@ public class UserService {
 		GuaguaHelper.getIns().stopCheckGuaguaThread();
 		GuaguaHelper.getIns().startCheckGuaguaThread();
 		GuaguaHelper.getIns().setOnOrderSendListener((guagua, s, ctrlModel) ->{
-			IntelDevPcApplication.sendOrder(guagua.findSuperParent(), s, true);
+			IntelDevPcApplication.sendOrder(guagua.findSuperParent(), s, OrderType.CTRL_DEV, true);
 		}); 
 	}
 	
-	private static void initDevice(Device dev) {
+	private void initDevice(Device dev) {
 		dev.addOnStateChangedListener(new MyOnStateChangedListener());
 		dev.addOnGearChangedListener(new MyOnGearChangedListener());
 //		dev.setOnCtrlModelChanged(new MyOnCtrlModelChangedListener());
 		dev.setOnSortIndexChangedListener(new MyOnSortIndexChangedListener());
+		deviceHistoryService.createTable(dev.getLongCoding());
 		if(dev instanceof DevHaveChild) {
 			for(Device dd : ((DevHaveChild) dev).getListDev()) {
 				initDevice(dd);

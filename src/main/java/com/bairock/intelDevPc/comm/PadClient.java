@@ -25,85 +25,98 @@ import io.netty.handler.timeout.IdleStateHandler;
 public class PadClient {
 	private static PadClient ins = new PadClient();
 
-    private PadClientHandler padClientHandler;
-    
-    private Config config = SpringUtil.getBean(Config.class);
-    private MainController mainController = SpringUtil.getBean(MainController.class);
-    
-    private Bootstrap b;
+	private PadClientHandler padClientHandler;
 
-    private PadClient(){
-        init();
-    }
+	private Config config = SpringUtil.getBean(Config.class);
+	private MainController mainController = SpringUtil.getBean(MainController.class);
 
-    public static PadClient getIns(){
-        return ins;
-    }
+	private Bootstrap b;
 
-    private void init(){
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-        b = new Bootstrap(); // (1)
-        b.group(workerGroup); // (2)
-        b.channel(NioSocketChannel.class); // (3)
-        b.option(ChannelOption.SO_KEEPALIVE, true); // (4)
-        b.handler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            public void initChannel(SocketChannel ch) throws Exception {
-            	ChannelPipeline ph = ch.pipeline();        
-				// 以("\n")为结尾分割的 解码器        
-				ph.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));        
-				// 解码和编码，应和客户端一致       
-				ph.addLast("decoder", new StringDecoder(Charset.forName("UTF-8")));        
-				ph.addLast("encoder", new StringEncoder(Charset.forName("UTF-8")));        
-				
-                ph.addLast(new IdleStateHandler(-1, 20,20, TimeUnit.SECONDS)); // 1
-                ph.addLast(new PadClientHandler());
-            }
-        });
-    }
+	private boolean linking;
 
-    void setPadClientHandler(PadClientHandler padClientHandler){
-        if(this.padClientHandler != null){
-            this.padClientHandler.channel.close();
-            this.padClientHandler = null;
-        }
-        this.padClientHandler = padClientHandler;
-    }
+	private PadClient() {
+		init();
+	}
 
-    public boolean isLinked(){
-        return padClientHandler != null;
-    }
+	public static PadClient getIns() {
+		return ins;
+	}
 
-    public void link(){
-        try {
-            // Start the client.
-            ChannelFuture channelFuture = b.connect(config.getServerName(), config.getPadPort()); // (5)
-            // Wait until the connection is closed.
-            channelFuture.channel().closeFuture();
-        }catch (Exception e){
-            e.printStackTrace();
-            padClientHandler = null;
-            if(null != mainController) {
-            	mainController.refreshServerState(false);
-            }
-        }
-    }
+	private void init() {
+		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		b = new Bootstrap(); // (1)
+		b.group(workerGroup); // (2)
+		b.channel(NioSocketChannel.class); // (3)
+		b.option(ChannelOption.SO_KEEPALIVE, true); // (4)
+		b.handler(new ChannelInitializer<SocketChannel>() {
+			@Override
+			public void initChannel(SocketChannel ch) throws Exception {
+				ChannelPipeline ph = ch.pipeline();
+				// 以("\n")为结尾分割的 解码器
+				ph.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+				// 解码和编码，应和客户端一致
+				ph.addLast("decoder", new StringDecoder(Charset.forName("UTF-8")));
+				ph.addLast("encoder", new StringEncoder(Charset.forName("UTF-8")));
 
-    public void closeHandler(){
-        if(null != padClientHandler)
-        padClientHandler.channel.close();
-        padClientHandler = null;
-    }
+				ph.addLast(new IdleStateHandler(-1, 20, 20, TimeUnit.SECONDS)); // 1
+				ph.addLast(new PadClientHandler());
+			}
+		});
+	}
 
-    public void send(String msg){
-        if(null != padClientHandler){
-            padClientHandler.send(msg);
-        }
-    }
+	void setPadClientHandler(PadClientHandler padClientHandler) {
+		if (this.padClientHandler != null) {
+			this.padClientHandler.channel.close();
+			this.padClientHandler = null;
+		}
+		this.padClientHandler = padClientHandler;
+	}
 
-    void sendIfSync(String msg){
-        if(null != padClientHandler && padClientHandler.syncDevMsg){
-            padClientHandler.send(msg);
-        }
-    }
+	public boolean isLinked() {
+		return padClientHandler != null;
+	}
+
+	public void link() {
+		if (linking) {
+			return;
+		}
+		linking = true;
+		try {
+			// Start the client.
+			ChannelFuture channelFuture = b.connect(config.getServerName(), config.getPadPort()); // (5)
+			// Wait until the connection is closed.
+			channelFuture.channel().closeFuture();
+		} catch (Exception e) {
+			e.printStackTrace();
+			padClientHandler = null;
+			if (null != mainController) {
+				mainController.refreshServerState(false);
+			}
+		}
+		linking = false;
+	}
+
+	public void closeHandler() {
+		if (null != padClientHandler)
+			padClientHandler.channel.close();
+		padClientHandler = null;
+	}
+
+	public void send(String msg) {
+		if (null != padClientHandler) {
+			padClientHandler.send(msg);
+		}
+	}
+
+	public void sendUserInfo() {
+		if (null != padClientHandler) {
+			padClientHandler.sendUserInfo();
+		}
+	}
+
+	void sendIfSync(String msg) {
+		if (null != padClientHandler && padClientHandler.syncDevMsg) {
+			padClientHandler.send(msg);
+		}
+	}
 }

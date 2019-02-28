@@ -15,6 +15,7 @@ import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.Device.OnCtrlModelChangedListener;
 import com.bairock.iot.intelDev.device.Device.OnGearChangedListener;
 import com.bairock.iot.intelDev.device.Device.OnStateChangedListener;
+import com.bairock.iot.intelDev.order.OrderType;
 import com.bairock.iot.intelDev.device.Gear;
 import com.bairock.iot.intelDev.device.IStateDev;
 import com.bairock.iot.intelDev.user.DevGroup;
@@ -89,73 +90,6 @@ public class StateDeviceListView extends VBox {
 		AnchorPane.setBottomAnchor(this, 0.0);
 	}
 
-	@SuppressWarnings("unused")
-	private AnchorPane getItemPane(Device device) {
-		AnchorPane paneRoot = new AnchorPane();
-
-		Label labelName = new Label(device.getName());
-		labelName.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-			((DevSwitchController) devSwitchInfo.getPresenter()).init(device);
-			IntelDevPcApplication.showView(DevSwitchInfo.class, Modality.WINDOW_MODAL);
-		});
-		labelName.setCursor(Cursor.HAND);
-		AnchorPane.setLeftAnchor(labelName, 10.0);
-		AnchorPane.setTopAnchor(labelName, 3.0);
-
-		HBox hbox = new HBox();
-		hbox.setSpacing(10);
-		ToggleButton btnOn = new ToggleButton("开");
-		ToggleButton btnAuto = new ToggleButton("自动");
-		ToggleButton btnOff = new ToggleButton("关");
-		ToggleGroup group = new ToggleGroup();
-		group.getToggles().addAll(btnOn, btnAuto, btnOff);
-		hbox.getChildren().addAll(btnOn, btnAuto, btnOff);
-		hbox.setAlignment(Pos.CENTER);
-		AnchorPane.setTopAnchor(hbox, 0.0);
-		AnchorPane.setRightAnchor(hbox, 10.0);
-		AnchorPane.setBottomAnchor(hbox, 0.0);
-
-		paneRoot.getChildren().addAll(labelName, hbox);
-
-		if (device.getDevStateId().equals(DevStateHelper.DS_KAI)) {
-			paneRoot.setStyle("-fx-background-color : " + MyColor.SUCCESS);
-			labelName.setStyle("-fx-fill-color : white");
-		} else if (device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
-			paneRoot.setStyle("-fx-background-color : " + MyColor.SECONDARY);
-			labelName.setStyle("-fx-fill-color : black");
-		} else if (device.getDevStateId().equals(DevStateHelper.DS_YI_CHANG)) {
-			paneRoot.setStyle("-fx-background-color : " + MyColor.DANGER);
-			labelName.setStyle("-fx-fill-color : white");
-		}
-
-		switch (device.getGear()) {
-		case GUAN:
-			group.selectToggle(btnOff);
-			break;
-		case KAI:
-			group.selectToggle(btnOn);
-			break;
-		default:
-			group.selectToggle(btnAuto);
-			break;
-		}
-
-		group.selectedToggleProperty().addListener((p0, p1, p2) -> {
-			if (p2 == btnOn) {
-				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOnOrder(), true);
-				device.setGear(Gear.KAI);
-			} else if (p2 == btnAuto) {
-				device.setGear(Gear.ZIDONG);
-			} else {
-				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOffOrder(), true);
-				device.setGear(Gear.GUAN);
-			}
-		});
-
-		paneRoot.setPadding(new Insets(4, 0, 4, 0));
-		return paneRoot;
-	}
-	
 	private GridPane getItemGridPane(Device device) {
 		GridPane paneRoot = new GridPane();
 		ColumnConstraints cc2 = new ColumnConstraints();
@@ -218,12 +152,12 @@ public class StateDeviceListView extends VBox {
 
 		group.selectedToggleProperty().addListener((p0, p1, p2) -> {
 			if (p2 == btnOn) {
-				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOnOrder(), true);
+				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOnOrder(), OrderType.CTRL_DEV, true);
 				device.setGear(Gear.KAI);
 			} else if (p2 == btnAuto) {
 				device.setGear(Gear.ZIDONG);
 			} else {
-				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOffOrder(), true);
+				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOffOrder(), OrderType.CTRL_DEV, true);
 				device.setGear(Gear.GUAN);
 			}
 		});

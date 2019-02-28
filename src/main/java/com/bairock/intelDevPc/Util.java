@@ -8,9 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Util {
 	
 	/**
-	 * 是否是用户信息登录, 否则为本地登录
+	 * 游客访问
 	 */
-	public static boolean USER_ADMIN;
+	public static boolean GUEST;
+	/**
+	 * 是否可以连接服务器, 没进入主界面之前或本地登录不可连接服务器
+	 */
+	public static boolean CAN_CONNECT_SERVER = false;
 
 	public static String getCtrlModelName(CtrlModel ctrlModel) {
 		if(ctrlModel == CtrlModel.REMOTE) {

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bairock.intelDevPc.SpringUtil;
+import com.bairock.intelDevPc.data.JxLinkage;
 import com.bairock.intelDevPc.service.LinkageService;
 import com.bairock.iot.intelDev.linkage.Linkage;
 
@@ -25,7 +26,8 @@ public class OnLinkageEnableChangeListener implements ChangeListener<Boolean>{
 	@Override
 	public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 		SimpleBooleanProperty boolProp = (SimpleBooleanProperty) observable;
-		Linkage linkage = (Linkage) boolProp.getBean();
+		JxLinkage jxlinkage = (JxLinkage) boolProp.getBean();
+		Linkage linkage = jxlinkage.getLinkage();
 		logger.info("linkage enable changed " + linkage.getName() + linkage.isEnable());
 		linkageService.updateLinkage(linkage);
 	}

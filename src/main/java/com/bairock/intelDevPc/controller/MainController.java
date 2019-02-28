@@ -1,23 +1,25 @@
 package com.bairock.intelDevPc.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.MainStateView;
+import com.bairock.intelDevPc.Util;
+import com.bairock.intelDevPc.comm.PadClient;
 import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.data.DeviceValueHistory;
-import com.bairock.intelDevPc.data.Result;
 import com.bairock.intelDevPc.data.UILayoutConfig;
-import com.bairock.intelDevPc.httpclient.HttpDownloadTask;
-import com.bairock.intelDevPc.httpclient.HttpUploadTask;
 import com.bairock.intelDevPc.repository.ConfigRepository;
 import com.bairock.intelDevPc.repository.DevGroupRepo;
-import com.bairock.intelDevPc.repository.DeviceValueHistoryRepo;
 import com.bairock.intelDevPc.repository.UILayoutConfigRepository;
+import com.bairock.intelDevPc.service.DeviceHistoryService;
 import com.bairock.intelDevPc.service.UserService;
+import com.bairock.intelDevPc.view.DeviceHistoryView;
 import com.bairock.intelDevPc.view.DevicesView;
 import com.bairock.intelDevPc.view.LinkageView;
 import com.bairock.intelDevPc.view.SettingsView;
@@ -28,8 +30,11 @@ import com.bairock.intelDevPc.view.UpDownloadDialog;
 import com.bairock.intelDevPc.view.ValueDeviceGridView;
 import com.bairock.intelDevPc.view.ValueDeviceListView;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
+import com.bairock.iot.intelDev.data.Result;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
+import com.bairock.iot.intelDev.http.HttpDownloadTask;
+import com.bairock.iot.intelDev.http.HttpUploadTask;
 import com.bairock.iot.intelDev.linkage.LinkageHolder;
 import com.bairock.iot.intelDev.user.DevGroup;
 
@@ -61,7 +66,9 @@ public class MainController {
 	@Autowired
 	private MainStateView mainStateView;
 	@Autowired
-	private DeviceValueHistoryRepo deviceValueHistoryRepo;
+	private DeviceHistoryService deviceHistoryService;
+//	@Autowired
+//	private DeviceValueHistoryRepo deviceValueHistoryRepo;
 	@FXML
 	private FlowPane fpSwitch;
 	@FXML
@@ -96,7 +103,8 @@ public class MainController {
 
 //	@FXML
 //	private LineChart<String,Number> chartValueHistory;
-
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private Config config;
 	@Autowired
@@ -115,6 +123,8 @@ public class MainController {
 	private UpDownloadDialog upDownloadDialog;
 	@Autowired
 	private SettingsView settingsView;
+	@Autowired
+	private DeviceHistoryView deviceHistoryView;
 
 	private StateDeviceListView stateDeviceListView;
 	private StateDeviceGridView stateDeviceGridView;
@@ -125,6 +135,16 @@ public class MainController {
 	private LineChart<String, Number> chartValueHistory;
 
 	public void init() {
+		if(Util.GUEST) {
+			Util.CAN_CONNECT_SERVER = false;
+		}else {
+			Util.CAN_CONNECT_SERVER = true;
+		}
+		if(Util.CAN_CONNECT_SERVER) {
+			if (!PadClient.getIns().isLinked()) {
+	            PadClient.getIns().link();
+	        }
+		}
 
 		mainStateView.getView().getScene().getWindow().setOnCloseRequest(e -> handlerExit());
 		initToggleButton();
@@ -300,7 +320,12 @@ public class MainController {
 	}
 	
 	public void setHistoryChart() {
-		List<DeviceValueHistory> list = deviceValueHistoryRepo.findByDeviceId(selectedValueDev.getId());
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		//获取今天历史纪录
+		List<DeviceValueHistory> list = deviceHistoryService.find(selectedValueDev.getLongCoding(), c.getTime(), new Date());
 		for(DeviceValueHistory h : list) {
 			try {
 				Thread.sleep(1);
@@ -326,7 +351,7 @@ public class MainController {
 	public void handleMenuUpload() {
 //		UploadClient uploadClient = new UploadClient();
 //		uploadClient.link();
-		HttpUploadTask task = new HttpUploadTask(UserService.user);
+		HttpUploadTask task = new HttpUploadTask(UserService.user, config.getServerName());
 		task.setOnExecutedListener(loginResult ->{
 			Platform.runLater(()->uploadResult(loginResult));
 		});
@@ -336,9 +361,9 @@ public class MainController {
 		IntelDevPcApplication.showView(UpDownloadDialog.class, Modality.WINDOW_MODAL);
 	}
 	
-	private void uploadResult(Result<Object> result) {
+	private void uploadResult(Result<Object> loginResult) {
 		UpDownloadDialogController controller = (UpDownloadDialogController) upDownloadDialog.getPresenter();
-		if(result.getCode() == 0) {
+		if(loginResult.getCode() == 0) {
 			controller.loadResult(true);
 		}else {
 			controller.loadResult(false);
@@ -347,7 +372,7 @@ public class MainController {
 
 	// 下载
 	public void handleMenuDownload() {
-		HttpDownloadTask task = new HttpDownloadTask();
+		HttpDownloadTask task = new HttpDownloadTask(config.getServerName(), UserService.user.getName(), UserService.getDevGroup().getName());
 		task.setOnExecutedListener(loginResult ->{
 			Platform.runLater(()->downloadResult(loginResult));
 		});
@@ -384,7 +409,7 @@ public class MainController {
 		groupDb.getListLinkageHolder().addAll(groupDownload.getListLinkageHolder());
 		devGroupRepo.saveAndFlush(groupDb);
 		
-		UserService.reloadDevGroup(groupDb);
+		userService.reloadDevGroup(groupDb);
 		reInit();
 		//关掉所有设备链接
 		DevChannelBridgeHelper.getIns().closeAllBridge();
@@ -393,6 +418,7 @@ public class MainController {
 		
 		UpDownloadDialogController controller = (UpDownloadDialogController) upDownloadDialog.getPresenter();
 		if(result.getCode() == 0) {
+			PadClient.getIns().sendUserInfo();
 			controller.loadResult(true);
 		}else {
 			controller.loadResult(false);
@@ -429,6 +455,12 @@ public class MainController {
 		config.setAutoLogin(false);
 		configRepository.saveAndFlush(config);
 		handlerExit();
+	}
+	// 历史纪录
+	@FXML
+	public void menuDeviceHistory() {
+		((DeviceHistoryCtrler) deviceHistoryView.getPresenter()).init();
+		IntelDevPcApplication.showView(DeviceHistoryView.class, Modality.NONE);
 	}
 
 	private void handlerExit() {

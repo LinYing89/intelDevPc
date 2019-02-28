@@ -8,25 +8,23 @@ import com.bairock.iot.intelDev.device.Coordinator;
 import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.DeviceAssistent;
+import com.bairock.iot.intelDev.device.SetDevModelTask;
 
 public class MyMessageAnalysiser extends MessageAnalysiser {
 
 	private CtrlModelDialogController ctrlModelDialogController = SpringUtil.getBean(CtrlModelDialogController.class);
 
 	@Override
-	public void deviceFeedback(Device device, String msg) {
+	public void deviceHandleAfter(Device device, String msg) {
 //		PadClient.getIns().sendIfSync("$" + msg);
 		updateDevice(device);
 	}
 
 	protected void updateDevice(Device device) {
-		if (device.getCtrlModel() != CtrlModel.LOCAL) {
-			device.setCtrlModel(CtrlModel.LOCAL);
-		}
-		if (null != ctrlModelDialogController && ctrlModelDialogController.setting
-				&& ctrlModelDialogController.deviceModelHelper != null
-				&& ctrlModelDialogController.deviceModelHelper.getDevToSet() == device
-				&& ctrlModelDialogController.deviceModelHelper.getCtrlModel() == CtrlModel.LOCAL) {
+		if (null != ctrlModelDialogController && SetDevModelTask.setting
+				&& ctrlModelDialogController.setDevModelThread.deviceModelHelper != null
+				&& ctrlModelDialogController.setDevModelThread.deviceModelHelper.getDevToSet() == device
+				&& ctrlModelDialogController.setDevModelThread.deviceModelHelper.getCtrlModel() == CtrlModel.LOCAL) {
 			ctrlModelDialogController.setModelProgressValue(3);
 		}
 	}
@@ -103,9 +101,8 @@ public class MyMessageAnalysiser extends MessageAnalysiser {
 	}
 
 	@Override
-	public void configDeviceCtrlModel(Device device, String msg) {
-		// TODO Auto-generated method stub
-
+	public void deviceHandleBefore(Device device, String msg) {
+		device.setCtrlModel(CtrlModel.LOCAL);
 	}
 
 }

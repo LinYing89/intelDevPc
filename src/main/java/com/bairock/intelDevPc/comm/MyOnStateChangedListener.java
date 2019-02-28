@@ -7,7 +7,6 @@ import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.Device.OnStateChangedListener;
 import com.bairock.iot.intelDev.device.devcollect.DevCollectClimateContainer;
-import com.bairock.iot.intelDev.device.devswitch.SubDev;
 import com.bairock.iot.intelDev.order.DeviceOrder;
 import com.bairock.iot.intelDev.order.OrderType;
 

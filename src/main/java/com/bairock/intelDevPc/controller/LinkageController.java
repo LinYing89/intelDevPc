@@ -1,5 +1,6 @@
 package com.bairock.intelDevPc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.comm.listener.OnLinkageEnableChangeListener;
+import com.bairock.intelDevPc.data.JxLinkage;
 import com.bairock.intelDevPc.repository.LinkageConditionRepository;
 import com.bairock.intelDevPc.repository.LinkageEffectRepository;
 import com.bairock.intelDevPc.repository.LinkageHolderRepository;
@@ -89,7 +91,7 @@ public class LinkageController {
 	@FXML
 	private ToggleButton toogleBtnSubChainEnable;
 	@FXML
-	private ListView<Linkage> listViewLinkage;
+	private ListView<JxLinkage> listViewLinkage;
 	@FXML
 	private ListView<LinkageCondition> listViewChainCondition;
 	@FXML
@@ -117,7 +119,7 @@ public class LinkageController {
 	@FXML
 	private ToggleButton toogleBtnTimingEnable;
 	@FXML
-	private ListView<Linkage> listViewTiming;
+	private ListView<JxLinkage> listViewTiming;
 	@FXML
 	private ListView<ZTimer> listViewTimingZTimer;
 	@FXML
@@ -138,7 +140,7 @@ public class LinkageController {
 	@FXML
 	private ToggleButton toogleBtnLoopEnable;
 	@FXML
-	private ListView<Linkage> listViewLoop;
+	private ListView<JxLinkage> listViewLoop;
 	@FXML
 	private ListView<LinkageCondition> listViewLoopCondition;
 	@FXML
@@ -158,7 +160,7 @@ public class LinkageController {
 	@FXML
 	private ToggleButton toogleBtnGuaguaEnable;
 	@FXML
-	private ListView<Linkage> listViewGuagua;
+	private ListView<JxLinkage> listViewGuagua;
 	@FXML
 	private ListView<LinkageCondition> listViewGuaguaCondition;
 	@FXML
@@ -261,7 +263,7 @@ public class LinkageController {
 				if (null == linkage) {
 					return;
 				}
-				selectedChain = (SubChain) linkage;
+				selectedChain = (SubChain) linkage.getLinkage();
 				refreshSubChainCondition();
 				refreshSubChainEffect();
 			});
@@ -296,7 +298,7 @@ public class LinkageController {
 				if (null == linkage) {
 					return;
 				}
-				selectedTiming = (Timing) linkage;
+				selectedTiming = (Timing) linkage.getLinkage();
 				refreshTimingTimer();
 				refreshTimingEffect();
 			});
@@ -348,7 +350,7 @@ public class LinkageController {
 				if (null == linkage) {
 					return;
 				}
-				selectedLoop = (ZLoop) linkage;
+				selectedLoop = (ZLoop) linkage.getLinkage();
 				refreshLoopCondition();
 				refreshLoopCount();
 				refreshListViewLoopDuration();
@@ -417,7 +419,7 @@ public class LinkageController {
 				if (null == linkage) {
 					return;
 				}
-				selectedGuagua = (SubChain) linkage;
+				selectedGuagua = (SubChain) linkage.getLinkage();
 				refreshGuaguaCondition();
 				refreshGuaguaEffect();
 			});
@@ -543,7 +545,7 @@ public class LinkageController {
 	// 编辑连锁
 	@FXML
 	public void menuEditSubChain() {
-		Linkage linkage = listViewLinkage.getSelectionModel().getSelectedItem();
+		Linkage linkage = listViewLinkage.getSelectionModel().getSelectedItem().getLinkage();
 		if (null != linkage) {
 			String name = linkage.getName();
 //			logger.info("edit " + name);
@@ -561,7 +563,7 @@ public class LinkageController {
 	// 删除连锁
 	@FXML
 	public void menuDelSubChain() {
-		Linkage linkage = listViewLinkage.getSelectionModel().getSelectedItem();
+		Linkage linkage = listViewLinkage.getSelectionModel().getSelectedItem().getLinkage();
 		if (null != linkage) {
 			if (null != linkage) {
 				chainHolder.removeLinkage(linkage);
@@ -685,7 +687,7 @@ public class LinkageController {
 	// 删除定时
 	@FXML
 	public void menuDelTiming() {
-		Linkage linkage = listViewTiming.getSelectionModel().getSelectedItem();
+		Linkage linkage = listViewTiming.getSelectionModel().getSelectedItem().getLinkage();
 		if (null != linkage) {
 			if (null != linkage) {
 				timingHolder.removeLinkage(linkage);
@@ -944,7 +946,7 @@ public class LinkageController {
 	// 编辑循环
 	@FXML
 	public void menuEditLoop() {
-		Linkage linkage = listViewLoop.getSelectionModel().getSelectedItem();
+		Linkage linkage = listViewLoop.getSelectionModel().getSelectedItem().getLinkage();
 		if (null != linkage) {
 			String name = linkage.getName();
 //			logger.info("edit " + name);
@@ -962,7 +964,7 @@ public class LinkageController {
 	// 删除循环
 	@FXML
 	public void menuDelLoop() {
-		Linkage linkage = listViewLoop.getSelectionModel().getSelectedItem();
+		Linkage linkage = listViewLoop.getSelectionModel().getSelectedItem().getLinkage();
 		if (null != linkage) {
 			if (null != linkage) {
 				loopHolder.removeLinkage(linkage);
@@ -1136,7 +1138,7 @@ public class LinkageController {
 	// 编辑呱呱
 	@FXML
 	public void menuEditGuagua() {
-		Linkage linkage = listViewGuagua.getSelectionModel().getSelectedItem();
+		Linkage linkage = listViewGuagua.getSelectionModel().getSelectedItem().getLinkage();
 		if (null != linkage) {
 			String name = linkage.getName();
 			RenameController renameController = (RenameController) renameView.getPresenter();
@@ -1153,7 +1155,7 @@ public class LinkageController {
 	// 删除呱呱
 	@FXML
 	public void menuDelGuagua() {
-		Linkage linkage = listViewGuagua.getSelectionModel().getSelectedItem();
+		Linkage linkage = listViewGuagua.getSelectionModel().getSelectedItem().getLinkage();
 		if (null != linkage) {
 			if (null != linkage) {
 				guaguaHolder.removeLinkage(linkage);
@@ -1223,18 +1225,21 @@ public class LinkageController {
 	 * @param listView 列表对象
 	 * @param holder   连锁持有者
 	 */
-	private void refreshListViewLinkageName(ListView<Linkage> listView, LinkageHolder holder) {
+	private void refreshListViewLinkageName(ListView<JxLinkage> listView, LinkageHolder holder) {
 		listView.getItems().clear();
 		List<Linkage> listChain = holder.getListLinkage();
+		List<JxLinkage> listLinkage = new ArrayList<>();
 
 		for (Linkage linkage : listChain) {
-			linkage.enableProperty().removeListener(linkageChangedListener);
-			linkage.enableProperty().addListener(linkageChangedListener);
+			JxLinkage jxlinkage = new JxLinkage(linkage);
+			jxlinkage.enableProperty().removeListener(linkageChangedListener);
+			jxlinkage.enableProperty().addListener(linkageChangedListener);
+			listLinkage.add(jxlinkage);
 		}
 
-		Callback<Linkage, ObservableValue<Boolean>> itemToBoolean = (Linkage item) -> item.enableProperty();
+		Callback<JxLinkage, ObservableValue<Boolean>> itemToBoolean = (JxLinkage item) -> item.enableProperty();
 		listView.setCellFactory(CheckBoxListCell.forListView(itemToBoolean, linkageNameConvert));
-		listView.getItems().addAll(listChain);
+		listView.getItems().addAll(listLinkage);
 
 		if (!listView.getItems().isEmpty()) {
 			listView.scrollTo(0);
@@ -1242,15 +1247,15 @@ public class LinkageController {
 	}
 
 	// 连锁名称对象转字符串名称
-	private StringConverter<Linkage> linkageNameConvert = new StringConverter<Linkage>() {
+	private StringConverter<JxLinkage> linkageNameConvert = new StringConverter<JxLinkage>() {
 
 		@Override
-		public String toString(Linkage object) {
-			return object.getName();
+		public String toString(JxLinkage object) {
+			return object.getLinkage().getName();
 		}
 
 		@Override
-		public Linkage fromString(String string) {
+		public JxLinkage fromString(String string) {
 			// TODO Auto-generated method stub
 			return null;
 		}

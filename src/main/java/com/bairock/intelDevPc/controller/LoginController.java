@@ -9,11 +9,11 @@ import com.bairock.intelDevPc.MainStateView;
 import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.comm.PadClient;
 import com.bairock.intelDevPc.data.Config;
-import com.bairock.intelDevPc.data.DevGroupLoginResult;
-import com.bairock.intelDevPc.data.Result;
-import com.bairock.intelDevPc.httpclient.LoginTask;
 import com.bairock.intelDevPc.repository.ConfigRepository;
 import com.bairock.intelDevPc.service.UserService;
+import com.bairock.iot.intelDev.data.DevGroupLoginResult;
+import com.bairock.iot.intelDev.data.Result;
+import com.bairock.iot.intelDev.http.LoginTask;
 
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.application.Platform;
@@ -54,7 +54,7 @@ public class LoginController {
 	
 	public void init() {
 		if(config.isAutoLogin()) {
-			Util.USER_ADMIN = true;
+			Util.GUEST = false;
 			showMain();
 		}
 		
@@ -102,7 +102,7 @@ public class LoginController {
 			logger.error("登录失败");
 			labelWaring.setText(result.getMsg());
 		}else {
-			Util.USER_ADMIN = true;
+			Util.GUEST = false;
 			logger.error("登录成功");
 			labelWaring.setText("登录成功");
 			logger.info("padPort: " + result.getData().getPadPort());
@@ -121,7 +121,7 @@ public class LoginController {
 	}
 	
 	public void loginLocal() {
-		Util.USER_ADMIN = false;
+		Util.GUEST = true;
 		showMain();
 	}
 	

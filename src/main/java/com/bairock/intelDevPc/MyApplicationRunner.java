@@ -1,7 +1,8 @@
-package com.bairock.intelDevPc.service;
+package com.bairock.intelDevPc;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 import com.bairock.intelDevPc.comm.MyMessageAnalysiser;
 import com.bairock.iot.intelDev.communication.DevChannelBridge;
@@ -9,18 +10,17 @@ import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
 import com.bairock.iot.intelDev.communication.DevServer;
 import com.bairock.iot.intelDev.communication.UdpServer;
 
-//@Service
-public class NetConfigService {
+@Component
+public class MyApplicationRunner implements ApplicationRunner {
 
-	@Autowired
-	public NetConfigService() {
-//		UdpServer.getIns().setUser(user);
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
 		UdpServer.getIns().run();
-		
+
 		try {
 			DevServer devServer = new DevServer();
 			devServer.run();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -29,4 +29,5 @@ public class NetConfigService {
 		DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
 		DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
 	}
+
 }

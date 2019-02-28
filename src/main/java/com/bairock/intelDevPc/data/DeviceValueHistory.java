@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 设备值历史纪录
  * @author 44489
@@ -24,10 +26,13 @@ public class DeviceValueHistory {
 	
 	//设备id
 	private String deviceId;
+	private String deviceName;
+	private String longCoding;
 	//设备值
 	private float value;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
 	private Date historyTime;
 
 	public long getId() {
@@ -44,6 +49,22 @@ public class DeviceValueHistory {
 
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
+	}
+
+	public String getDeviceName() {
+		return deviceName;
+	}
+
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
+	}
+
+	public String getLongCoding() {
+		return longCoding;
+	}
+
+	public void setLongCoding(String longCoding) {
+		this.longCoding = longCoding;
 	}
 
 	public float getValue() {
@@ -66,7 +87,7 @@ public class DeviceValueHistory {
 	}
 	
 	public String strTimeFormat() {
-		SimpleDateFormat sf = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat sf = new SimpleDateFormat("YYYY/MM/dd\nHH:mm:ss");
 		return sf.format(historyTime);
 	}
 }

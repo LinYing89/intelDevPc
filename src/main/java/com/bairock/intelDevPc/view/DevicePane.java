@@ -12,6 +12,7 @@ import com.bairock.iot.intelDev.device.Device.OnGearChangedListener;
 import com.bairock.iot.intelDev.device.Device.OnStateChangedListener;
 import com.bairock.iot.intelDev.device.Gear;
 import com.bairock.iot.intelDev.device.IStateDev;
+import com.bairock.iot.intelDev.order.OrderType;
 import com.bairock.iot.intelDev.user.MyHome;
 import com.bairock.iot.intelDev.user.MyHome.OnNameChangedListener;
 
@@ -169,10 +170,10 @@ public class DevicePane extends VBox {
 		System.out.println("handleChangeState");
 		IStateDev iStateDev = (IStateDev)device;
 		if(device.isKaiState()) {
-			IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOffOrder(), true);
+			IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOffOrder(), OrderType.CTRL_DEV, true);
 			device.setGear(Gear.GUAN);
 		}else {
-			IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOnOrder(), true);
+			IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOnOrder(), OrderType.CTRL_DEV, true);
 			device.setGear(Gear.KAI);
 		}
 	}
