@@ -98,7 +98,7 @@ public class UserService {
 		for(Device dev : group.getListDevice()) {
 			System.out.println(dev);
 			FindDevHelper.getIns().findDev(dev.getCoding());
-			dev.setDevStateId(DevStateHelper.DS_YI_CHANG);
+			dev.setDevStateId(DevStateHelper.DS_UNKNOW);
 			initDevice(dev);
 		}
 		for(LinkageHolder holder : group.getListLinkageHolder()) {

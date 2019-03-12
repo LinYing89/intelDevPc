@@ -15,38 +15,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.ExcelUtil;
 import com.bairock.intelDevPc.IntelDevPcApplication;
+import com.bairock.intelDevPc.data.ChartPlotBands;
+import com.bairock.intelDevPc.data.ChartValueHistory2;
 import com.bairock.intelDevPc.data.DeviceValueHistory;
 import com.bairock.intelDevPc.service.DeviceHistoryService;
 import com.bairock.intelDevPc.service.UserService;
-import com.bairock.intelDevPc.view.DeviceHistoryView;
+import com.bairock.intelDevPc.view.DeviceHistoryHtml;
 import com.bairock.intelDevPc.view.ExportExcelDialog;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.user.DevGroup;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.util.StringConverter;
 
 @FXMLController
-public class DeviceHistoryCtrler {
+public class DeviceHistoryHtmlCtrler {
 
 	@Autowired
 	private DeviceHistoryService deviceHistoryService;
 	@Autowired
-	private DeviceHistoryView deviceHistoryView;
+	private DeviceHistoryHtml deviceHistoryHtml;
 	@Autowired
 	private ExportExcelDialog exportExcelDialog;
 
@@ -57,8 +61,8 @@ public class DeviceHistoryCtrler {
 	@FXML
 	private DatePicker datePickerTo;
 	@FXML
-	private LineChart<String, Float> chartHistory;
-	private XYChart.Series<String, Float> seriesValueChart;
+	private WebView webview;
+
 	@FXML
 	private TableView<DeviceValueHistory> tableHistory;
 	@FXML
@@ -67,6 +71,8 @@ public class DeviceHistoryCtrler {
 	private TableColumn<DeviceValueHistory, String> tableColumnDeviceName;
 	@FXML
 	private TableColumn<DeviceValueHistory, Float> tableColumnValue;
+
+	private WebEngine webEngine;
 
 	private List<Device> listDevice = new ArrayList<>();
 	private List<DeviceValueHistory> listHistory;
@@ -80,9 +86,6 @@ public class DeviceHistoryCtrler {
 		tableColumnTime.setCellValueFactory(new PropertyValueFactory<>("historyTime"));
 		tableColumnDeviceName.setCellValueFactory(new PropertyValueFactory<>("deviceName"));
 		tableColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
-
-		seriesValueChart = new XYChart.Series<>();
-		chartHistory.getData().add(seriesValueChart);
 		choiceBoxDevice.setConverter(new StringConverter<Device>() {
 			@Override
 			public String toString(Device object) {
@@ -99,6 +102,7 @@ public class DeviceHistoryCtrler {
 	}
 
 	public void init() {
+
 		if (!inited) {
 			inited = true;
 			init1();
@@ -115,17 +119,21 @@ public class DeviceHistoryCtrler {
 		if (null != selectedDevice) {
 			choiceBoxDevice.getSelectionModel().select(selectedDevice);
 		}
+
+		webEngine = webview.getEngine();
+//		webEngine.load("https://www.highcharts.com.cn/demo/highcharts/line-time-series");
+		String url = DeviceHistoryHtmlCtrler.class.getResource("/html/deviceHistory2.html").toExternalForm();
+		webEngine.load(url);
+
 	}
 
 	public static ObservableList<DeviceValueHistory> getDeviceValueHistoryList(List<DeviceValueHistory> list) {
 		return FXCollections.<DeviceValueHistory>observableArrayList(list);
 	}
-
+	
 	// 查询按钮
 	@FXML
 	private void onBtnSearchAction() {
-		seriesValueChart.getData().clear();
-
 		selectedDevice = choiceBoxDevice.getSelectionModel().getSelectedItem();
 		ldFrom = datePickerFrom.getValue();
 		ldTo = datePickerTo.getValue();
@@ -145,9 +153,32 @@ public class DeviceHistoryCtrler {
 
 		listHistory = deviceHistoryService.find(selectedDevice.getLongCoding(), dateFrom, dateTo);
 
-		for (DeviceValueHistory dv : listHistory) {
-			seriesValueChart.getData().add(new XYChart.Data<String, Float>(dv.strTimeChartFormat(), dv.getValue()));
+		List<ChartValueHistory2> list = new ArrayList<>();
+		List<ChartPlotBands> listPlotBands = new ArrayList<>();
+		for (int i = 0; i < listHistory.size(); i++) {
+			DeviceValueHistory dv = listHistory.get(i);
+			list.add(new ChartValueHistory2(dv.getHistoryTime().toString(), dv.getValue()));
+			if (i != listHistory.size() - 1 && dv.isAbnormal()) {
+				ChartPlotBands cpb = new ChartPlotBands(i, i + 1);
+				listPlotBands.add(cpb);
+			}
 		}
+		ObjectMapper om = new ObjectMapper();
+		try {
+			webEngine.executeScript("setChartTitle('" + selectedDevice.getName() + "')");
+			String json = om.writeValueAsString(list);
+			if (selectedDevice instanceof DevCollect) {
+				webEngine.executeScript("setValueData('" + json + "')");
+			} else {
+				webEngine.executeScript("setStateData('" + json + "')");
+			}
+			String jsonBands = om.writeValueAsString(listPlotBands);
+			webEngine.executeScript("setPlotBands('" + jsonBands + "')");
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		tableHistory.setItems(getDeviceValueHistoryList(listHistory));
 
 	}
@@ -155,7 +186,7 @@ public class DeviceHistoryCtrler {
 	private String getStrTime(LocalDate ld) {
 		return ld.format(DateTimeFormatter.BASIC_ISO_DATE);
 	}
-
+	
 	// 导出按钮
 	@FXML
 	private void onBtnExportAction() {
@@ -190,7 +221,7 @@ public class DeviceHistoryCtrler {
 		fileChooser.setTitle("保存历史纪录");
 		fileChooser.setInitialFileName(fileName);
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XLS Files", "*.xls"));
-		File file = fileChooser.showSaveDialog(deviceHistoryView.getView().getScene().getWindow());
+		File file = fileChooser.showSaveDialog(deviceHistoryHtml.getView().getScene().getWindow());
 		if (file != null) {
 
 			((ExportExcelDialogCtrler) exportExcelDialog.getPresenter()).init(file.getAbsolutePath());
@@ -205,8 +236,6 @@ public class DeviceHistoryCtrler {
 			}).start();
 			IntelDevPcApplication.showView(ExportExcelDialog.class, Modality.WINDOW_MODAL);
 
-
 		}
 	}
-
 }

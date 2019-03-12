@@ -175,16 +175,19 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 				}
 				dev.setDevStateId(DevStateHelper.DS_ZHENG_CHANG);
 				dev.findSuperParent().setCtrlModel(CtrlModel.REMOTE);
-				((DevCollect) dev).getCollectProperty().setCurrentValue(Float.valueOf(orderBase.getData()));
+				try {
+					((DevCollect) dev).getCollectProperty().setCurrentValue(Float.valueOf(orderBase.getData()));
+				} catch (Exception e) {
+				}
 				isToCtrlModelDev(dev);
 				break;
 			case TO_REMOTE_CTRL_MODEL:
 				if (!orderBase.getData().equals("OK")) {
-					Platform.runLater(() ->{
+					Platform.runLater(() -> {
 						Alert alert = new Alert(AlertType.INFORMATION);
-			            alert.titleProperty().set("信息");
-			            alert.headerTextProperty().set("请先上传数据");
-			            alert.showAndWait();
+						alert.titleProperty().set("信息");
+						alert.headerTextProperty().set("请先上传数据");
+						alert.showAndWait();
 					});
 				} else {
 					if (null != ctrlModelDialogController && SetDevModelTask.setting) {
@@ -208,7 +211,7 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 		}
 
 	}
-	
+
 	public void sendUserInfo() {
 		if (null != UserService.user) {
 			DeviceOrder ob = new DeviceOrder();
@@ -226,7 +229,7 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 			}
 		}
 	}
-	
+
 	private boolean isToCtrlModelDev(Device device) {
 		if (null != ctrlModelDialogController && SetDevModelTask.setting
 				&& ctrlModelDialogController.setDevModelThread.deviceModelHelper != null

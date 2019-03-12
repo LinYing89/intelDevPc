@@ -19,8 +19,10 @@ import com.bairock.intelDevPc.repository.DevGroupRepo;
 import com.bairock.intelDevPc.repository.UILayoutConfigRepository;
 import com.bairock.intelDevPc.service.DeviceHistoryService;
 import com.bairock.intelDevPc.service.UserService;
+import com.bairock.intelDevPc.view.DeviceHistoryHtml;
 import com.bairock.intelDevPc.view.DeviceHistoryView;
 import com.bairock.intelDevPc.view.DevicesView;
+import com.bairock.intelDevPc.view.LinkageTable;
 import com.bairock.intelDevPc.view.LinkageView;
 import com.bairock.intelDevPc.view.SettingsView;
 import com.bairock.intelDevPc.view.SortDeviceView;
@@ -45,6 +47,8 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToggleButton;
@@ -120,11 +124,15 @@ public class MainController {
 	@Autowired
 	private LinkageView linkageView;
 	@Autowired
+	private LinkageTable linkageTableView;
+	@Autowired
 	private UpDownloadDialog upDownloadDialog;
 	@Autowired
 	private SettingsView settingsView;
 	@Autowired
 	private DeviceHistoryView deviceHistoryView;
+	@Autowired
+	private DeviceHistoryHtml deviceHistoryHtml;
 
 	private StateDeviceListView stateDeviceListView;
 	private StateDeviceGridView stateDeviceGridView;
@@ -333,7 +341,7 @@ public class MainController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			String time = h.strTimeFormat();
+			String time = h.strTimeChartFormat();
 			addValueHistoryToChart(time, h.getValue());
 		}
 	}
@@ -351,6 +359,12 @@ public class MainController {
 	public void handleMenuUpload() {
 //		UploadClient uploadClient = new UploadClient();
 //		uploadClient.link();
+		Alert warning = new Alert(Alert.AlertType.WARNING,"上传将用本地数据覆盖服务器上的数据, 并且不可恢复, 确定上传吗?");
+		warning.showAndWait();
+		if(warning.getResult() != ButtonType.OK) {
+			return;
+		}
+		
 		HttpUploadTask task = new HttpUploadTask(UserService.user, config.getServerName());
 		task.setOnExecutedListener(loginResult ->{
 			Platform.runLater(()->uploadResult(loginResult));
@@ -372,6 +386,12 @@ public class MainController {
 
 	// 下载
 	public void handleMenuDownload() {
+		Alert warning = new Alert(Alert.AlertType.WARNING,"下载将覆盖本地的设备信息, 并且不可恢复, 确定下载吗?");
+		warning.showAndWait();
+		if(warning.getResult() != ButtonType.OK) {
+			return;
+		}
+		
 		HttpDownloadTask task = new HttpDownloadTask(config.getServerName(), UserService.user.getName(), UserService.getDevGroup().getName());
 		task.setOnExecutedListener(loginResult ->{
 			Platform.runLater(()->downloadResult(loginResult));
@@ -406,7 +426,7 @@ public class MainController {
 			h.setDevGroup(groupDb);
 			groupDb.getListLinkageHolder().add(h);
 		}
-		groupDb.getListLinkageHolder().addAll(groupDownload.getListLinkageHolder());
+//		groupDb.getListLinkageHolder().addAll(groupDownload.getListLinkageHolder());
 		devGroupRepo.saveAndFlush(groupDb);
 		
 		userService.reloadDevGroup(groupDb);
@@ -442,6 +462,14 @@ public class MainController {
 		((LinkageController) linkageView.getPresenter()).init();
 		IntelDevPcApplication.showView(LinkageView.class, Modality.NONE);
 	}
+	
+	@FXML
+	public void menuLinkageTable() {
+		LinkageTableCtrler ctrler = (LinkageTableCtrler) linkageTableView.getPresenter();
+		ctrler.init();
+		IntelDevPcApplication.showView(LinkageTable.class, Modality.NONE);
+		ctrler.removeOnCheckTableListener();
+	}
 
 	@FXML
 	public void menuSettingsAction() {
@@ -459,8 +487,11 @@ public class MainController {
 	// 历史纪录
 	@FXML
 	public void menuDeviceHistory() {
-		((DeviceHistoryCtrler) deviceHistoryView.getPresenter()).init();
-		IntelDevPcApplication.showView(DeviceHistoryView.class, Modality.NONE);
+//		((DeviceHistoryCtrler) deviceHistoryView.getPresenter()).init();
+//		IntelDevPcApplication.showView(DeviceHistoryView.class, Modality.WINDOW_MODAL);
+		
+		((DeviceHistoryHtmlCtrler) deviceHistoryHtml.getPresenter()).init();
+		IntelDevPcApplication.showView(DeviceHistoryHtml.class, Modality.WINDOW_MODAL);
 	}
 
 	private void handlerExit() {

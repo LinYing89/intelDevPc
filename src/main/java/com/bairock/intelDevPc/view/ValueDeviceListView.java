@@ -11,6 +11,7 @@ import com.bairock.intelDevPc.controller.MainController;
 import com.bairock.intelDevPc.data.MyColor;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.iot.intelDev.device.CtrlModel;
+import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.Device.OnCtrlModelChangedListener;
 import com.bairock.iot.intelDev.device.Device.OnStateChangedListener;
@@ -244,6 +245,9 @@ public class ValueDeviceListView extends VBox {
 
 		@Override
 		public void onStateChanged(Device dev, String stateId) {
+			if (stateId.equals(DevStateHelper.DS_UNKNOW)) {
+				return;
+			}
 			Platform.runLater(() -> refresh());
 		}
 

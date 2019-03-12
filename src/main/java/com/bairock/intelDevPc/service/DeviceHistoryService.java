@@ -23,15 +23,21 @@ public class DeviceHistoryService {
 				+ "device_id varchar(255) NOT NULL,"
 				+ "device_long_coding varchar(25) NOT NULL,"
 				+ "device_name varchar(25) NOT NULL,"
+				+ "abnormal BIT NOT NULL,"
 				+ "value float NOT NULL,"
 				+ "history_time timestamp NOT NULL,"
 				+ "PRIMARY KEY (id))";
 		jdbcTemplate.execute(sql);
 	}
 	
+	public void alartTable() {
+		String sql = "select drop table table_name from hama.tables where table_name like device_history%";
+		jdbcTemplate.execute(sql);
+	}
+	
 	public void insert(DeviceValueHistory history) {
-		String sql = "insert into device_history_" + history.getLongCoding() + "(device_id, device_long_coding, device_name, value, history_time) values(?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, history.getDeviceId(), history.getLongCoding(), history.getDeviceName(), history.getValue(), history.getHistoryTime());
+		String sql = "insert into device_history_" + history.getLongCoding() + "(device_id, device_long_coding, device_name, abnormal, value, history_time) values(?, ?, ?, ?, ?, ?)";
+		jdbcTemplate.update(sql, history.getDeviceId(), history.getLongCoding(), history.getDeviceName(), history.isAbnormal(), history.getValue(), history.getHistoryTime());
 	}
 	
 	public List<DeviceValueHistory> find(String deviceLongCoding, Date startTime, Date endTime){

@@ -38,6 +38,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#menuAllDevices" text="所有设备" />
                   <MenuItem mnemonicParsing="false" onAction="#menuSortDevices" text="排序" />
                   <MenuItem mnemonicParsing="false" onAction="#menuLinkage" text="连锁" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuLinkageTable" text="连锁真值表" />
                   <MenuItem mnemonicParsing="false" onAction="#menuDeviceHistory" text="历史纪录" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="选项" />
@@ -45,9 +46,8 @@
                 </Menu>
             <Menu mnemonicParsing="false" text="视图">
               <items>
-                  <CheckMenuItem mnemonicParsing="false" text="历史曲线" />
+                  <CheckMenuItem mnemonicParsing="false" text="实时曲线" />
                   <CheckMenuItem mnemonicParsing="false" text="事件信息" />
-                  <CheckMenuItem mnemonicParsing="false" text="历史纪录" />
               </items>
             </Menu>
                 <Menu mnemonicParsing="false" text="帮助">
@@ -160,26 +160,11 @@
                                     <children>
                                         <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <tabs>
-                                    <Tab text="历史曲线">
+                                    <Tab text="实时曲线">
                                       <content>
                                         <AnchorPane fx:id="apaneValueLineChart" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                       </content>
                                     </Tab>
-                                                <Tab text="历史纪录">
-                                                    <content>
-                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                                            <children>
-                                                                <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                    <columns>
-                                                                        <TableColumn prefWidth="75.0" text="设备" />
-                                                                        <TableColumn prefWidth="75.0" text="状态" />
-                                                                        <TableColumn prefWidth="75.0" text="时间" />
-                                                                    </columns>
-                                                                </TableView>
-                                                            </children>
-                                                        </AnchorPane>
-                                                    </content>
-                                                </Tab>
                                             </tabs>
                                         </TabPane>
                                     </children>

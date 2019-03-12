@@ -215,7 +215,7 @@ public class StateDeviceListView extends VBox {
 
 	private OnGearChangedListener onGearChangedListener = new OnGearChangedListener() {
 		@Override
-		public void onGearChanged(Device dev, Gear gear) {
+		public void onGearChanged(Device dev, Gear gear, boolean touchDev) {
 			Platform.runLater(() -> refresh());
 		}
 	};
@@ -224,6 +224,9 @@ public class StateDeviceListView extends VBox {
 
 		@Override
 		public void onStateChanged(Device dev, String stateId) {
+			if (stateId.equals(DevStateHelper.DS_UNKNOW)) {
+				return;
+			}
 			Platform.runLater(() -> refresh());
 		}
 

@@ -29,6 +29,11 @@ public class UpDownloadDialogController {
 	public void init(int which) {
 		btnOk.setDisable(true);
 		this.which = which;
+		if(which == UPLOAD) {
+			labelMessage.setText("正在上传,请稍等...");
+		}else {
+			labelMessage.setText("正在下载,请稍等...");
+		}
 	}
 	
 	public void handlerOk() {

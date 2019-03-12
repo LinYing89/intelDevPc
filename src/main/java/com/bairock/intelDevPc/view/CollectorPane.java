@@ -108,6 +108,9 @@ public class CollectorPane extends VBox{
 
 		@Override
 		public void onStateChanged(Device dev, String stateId) {
+			if (stateId.equals(DevStateHelper.DS_UNKNOW)) {
+				return;
+			}
 			refreshState();
 		}
 

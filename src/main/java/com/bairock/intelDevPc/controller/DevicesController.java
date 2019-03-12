@@ -1,21 +1,25 @@
 package com.bairock.intelDevPc.controller;
 
-import java.util.Collections;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.Util;
+import com.bairock.intelDevPc.repository.DeviceImgRepo;
 import com.bairock.intelDevPc.repository.DeviceRepository;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.intelDevPc.view.CtrlModelDialogView;
+import com.bairock.iot.intelDev.data.DeviceImg;
 import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.DevHaveChild;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.MainCodeHelper;
+import com.bairock.iot.intelDev.device.devswitch.DevSwitch;
+import com.bairock.iot.intelDev.http.HttpDownloadDeviceImgTask;
 import com.bairock.iot.intelDev.user.DevGroup;
 
 import de.felixroske.jfxsupport.FXMLController;
@@ -30,19 +34,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 
 @FXMLController
 public class DevicesController {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+//	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private CtrlModelDialogView ctrlModelDialogView;
 	@Autowired
 	private MainController mainController;
-
+	@Autowired
+	private DeviceImgRepo deviceImgRepo;
+	private List<DeviceImg> listDeviceImg;
+	
 	@FXML
 	private TreeView<Device> treeViewDevices;
 	@FXML
@@ -66,6 +74,8 @@ public class DevicesController {
 	private boolean inited;
 
 	public void init1() {
+		listDeviceImg = deviceImgRepo.findAll();
+		
 		treeViewDevices.getSelectionModel().selectedItemProperty().addListener(changeListener);
 
 		treeViewDevices.setCellFactory((TreeView<Device> tv) -> {
@@ -113,10 +123,32 @@ public class DevicesController {
 		treeViewDevices.setRoot(root);
 
 		DevGroup devGroup = UserService.user.getListDevGroup().get(0);
-		for (Device dev : devGroup.getListDevice()) {
+		List<Device> listDevice = devGroup.getListDevice();
+		sortListDevice(listDevice);
+		for (Device dev : listDevice) {
 			initDevTree(dev, root);
 		}
 
+	}
+
+	//按设备编码排序
+	private void sortListDevice(List<Device> listDevice) {
+		listDevice.sort((a, b) -> a.getCoding().compareTo(b.getCoding()));
+		for (Device dev : listDevice) {
+			if (dev instanceof DevHaveChild) {
+				if (dev instanceof DevSwitch) {
+					//开关子设备按次设备号排序
+					try {
+						((DevHaveChild) dev).getListDev()
+								.sort((a, b) -> Integer.parseInt(a.getSubCode()) - Integer.parseInt(b.getSubCode()));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					sortListDevice(((DevHaveChild) dev).getListDev());
+				}
+			}
+		}
 	}
 
 	private void initDevTree(Device dev, TreeItem<Device> root) {
@@ -124,7 +156,6 @@ public class DevicesController {
 		root.getChildren().add(item1);
 		if (dev instanceof DevHaveChild) {
 			List<Device> list = ((DevHaveChild) dev).getListDev();
-			Collections.sort(list);
 			for (Device dd : list) {
 				initDevTree(dd, item1);
 			}
@@ -132,7 +163,7 @@ public class DevicesController {
 	}
 
 	public void refresh() {
-		if(null == treeViewDevices) {
+		if (null == treeViewDevices) {
 			return;
 		}
 		treeViewDevices.refresh();
@@ -160,6 +191,16 @@ public class DevicesController {
 		treeViewDevices.refresh();
 		deviceRepository.saveAndFlush(selectedDevice);
 	}
+	@FXML
+	private void onMouseClicked() {
+		String path = HttpDownloadDeviceImgTask.imgSavePath + MainCodeHelper.getIns().getMc(selectedDevice.getMainCodeId()) + ".png";
+		try {
+			Desktop.getDesktop().open(new File(path));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private ChangeListener<TreeItem<Device>> changeListener = new ChangeListener<TreeItem<Device>>() {
 
@@ -168,7 +209,7 @@ public class DevicesController {
 				TreeItem<Device> newValue) {
 			if (null != newValue) {
 				selectedDevice = newValue.getValue();
-				logger.info("changed dev " + selectedDevice.getName());
+//				logger.info("changed dev " + selectedDevice.getName());
 				tfDeviceName.setText(selectedDevice.getName());
 				labelMainCode.setText(MainCodeHelper.getIns().getMc(selectedDevice.getMainCodeId()));
 				labelLongCoding.setText(selectedDevice.getLongCoding());
@@ -183,7 +224,30 @@ public class DevicesController {
 				} else {
 					btnCtrlModel.setVisible(false);
 				}
+
+				if (canShowImg(selectedDevice)) {
+					imageDevice.setVisible(true);
+					String imgName = MainCodeHelper.getIns().getMc(selectedDevice.getMainCodeId()) + ".png";
+					String path = "file:" + HttpDownloadDeviceImgTask.imgSavePath + imgName;
+					try {
+						imageDevice.setImage(new Image(path));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					imageDevice.setVisible(false);
+				}
 			}
 		}
 	};
+	
+	private boolean canShowImg(Device dev) {
+		String mc = MainCodeHelper.getIns().getMc(dev.getMainCodeId());
+		for(DeviceImg di : listDeviceImg) {
+			if(di.getCode().equals(mc)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

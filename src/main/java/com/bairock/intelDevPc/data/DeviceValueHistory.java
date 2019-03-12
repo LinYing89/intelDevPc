@@ -28,6 +28,7 @@ public class DeviceValueHistory {
 	private String deviceId;
 	private String deviceName;
 	private String longCoding;
+	private boolean abnormal;
 	//设备值
 	private float value;
 	
@@ -67,6 +68,14 @@ public class DeviceValueHistory {
 		this.longCoding = longCoding;
 	}
 
+	public boolean isAbnormal() {
+		return abnormal;
+	}
+
+	public void setAbnormal(boolean abnormal) {
+		this.abnormal = abnormal;
+	}
+
 	public float getValue() {
 		return value;
 	}
@@ -86,8 +95,18 @@ public class DeviceValueHistory {
 		this.historyTime = historyTime;
 	}
 	
-	public String strTimeFormat() {
+	public String strTimeChartFormat() {
 		SimpleDateFormat sf = new SimpleDateFormat("YYYY/MM/dd\nHH:mm:ss");
+		return sf.format(historyTime);
+	}
+	
+	public String strTimeFileNameFormat() {
+		SimpleDateFormat sf = new SimpleDateFormat("YYYYMMddHHmmss");
+		return sf.format(historyTime);
+	}
+	
+	public String strTimeFormat() {
+		SimpleDateFormat sf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
 		return sf.format(historyTime);
 	}
 }
