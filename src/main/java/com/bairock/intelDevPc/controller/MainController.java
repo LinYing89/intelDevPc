@@ -20,7 +20,6 @@ import com.bairock.intelDevPc.repository.UILayoutConfigRepository;
 import com.bairock.intelDevPc.service.DeviceHistoryService;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.intelDevPc.view.DeviceHistoryHtml;
-import com.bairock.intelDevPc.view.DeviceHistoryView;
 import com.bairock.intelDevPc.view.DevicesView;
 import com.bairock.intelDevPc.view.LinkageTable;
 import com.bairock.intelDevPc.view.LinkageView;
@@ -130,8 +129,6 @@ public class MainController {
 	@Autowired
 	private SettingsView settingsView;
 	@Autowired
-	private DeviceHistoryView deviceHistoryView;
-	@Autowired
 	private DeviceHistoryHtml deviceHistoryHtml;
 
 	private StateDeviceListView stateDeviceListView;
@@ -160,7 +157,14 @@ public class MainController {
 
 		DevGroup group = UserService.getDevGroup();
 		Stage stage = IntelDevPcApplication.getStage();
-		stage.setTitle(UserService.user.getName() + "-" + group.getName() + ":" + group.getPetName());
+		
+		String groupName = "";
+        if(null == group.getPetName() || group.getPetName().isEmpty()){
+            groupName = group.getName();
+        }else{
+            groupName = group.getPetName();
+        }
+		stage.setTitle(UserService.user.getName() + "-" + groupName);
 
 		refreshDevicePane();
 
@@ -316,6 +320,21 @@ public class MainController {
 			labelServerState.setStyle("-fx-text-fill : #CD6839;");
 		}
 		Platform.runLater(() -> labelServerState.setText(text));
+	}
+	
+	//被踢掉显示提示
+	public void showLogoutDialog() {
+		Platform.runLater(() -> {
+			Alert warning = new Alert(Alert.AlertType.WARNING,"该账号已在其他设备上本地登录!");
+			warning.showAndWait();
+			if(warning.getResult() == ButtonType.OK) {
+				config.setAutoLogin(false);
+				configRepository.saveAndFlush(config);
+				handlerExit();
+				return;
+			}
+		});
+		
 	}
 
 	public void refreshValueChartTitle(String title) {

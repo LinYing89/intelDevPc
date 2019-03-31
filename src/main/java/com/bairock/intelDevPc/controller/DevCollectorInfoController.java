@@ -2,19 +2,24 @@ package com.bairock.intelDevPc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.repository.CollectPropertyRepository;
+import com.bairock.intelDevPc.view.CalibrationDialog;
 import com.bairock.intelDevPc.view.DevCollectorInfo;
+import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
 import com.bairock.iot.intelDev.device.devcollect.CollectProperty;
 import com.bairock.iot.intelDev.device.devcollect.CollectSignalSource;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 
 @FXMLController
 public class DevCollectorInfoController {
@@ -23,6 +28,8 @@ public class DevCollectorInfoController {
 	private DevCollectorInfo devCollectorInfo;
 	@Autowired
 	private CollectPropertyRepository collectPropertyRepository;
+	@Autowired
+	private CalibrationDialog calibrationDialog;
 	
 	private DevCollect devCollect;
 	
@@ -42,6 +49,8 @@ public class DevCollectorInfoController {
 	private TextField txta;
 	@FXML
 	private TextField txtb;
+	@FXML
+	private TextField txtCalibration;
 	@FXML
 	private ChoiceBox<String> comboBoxSignalSource;
 	@FXML
@@ -115,6 +124,40 @@ public class DevCollectorInfoController {
 			hboxAValue.setVisible(false);
 			hboxSignValue.setVisible(false);
 			break;
+		}
+	}
+	
+	//标定按钮点击
+	@FXML
+	public void onCalibrationAction() {
+		if(!devCollect.isNormal()) {
+			Alert warning = new Alert(Alert.AlertType.WARNING,"设备异常");
+			warning.showAndWait();
+			return;
+		}
+		String strValue = txtCalibration.getText();
+		try {
+			int iValue = Integer.parseInt(strValue);
+			if(iValue >=0 && iValue <= 10) {
+				String order = devCollect.createCalibrationOrder(iValue);
+				
+				devCollect.setCalibrationnListener(res ->{
+					devCollect.getCollectProperty().setCalibrationValue((float) iValue);
+					collectPropertyRepository.saveAndFlush(devCollect.getCollectProperty());
+					((CalibrationDialogCtrler) calibrationDialog.getPresenter()).calibrationOk();
+				});
+				
+				((CalibrationDialogCtrler) calibrationDialog.getPresenter()).init();
+				DevChannelBridgeHelper.getIns().sendDevOrder(devCollect, order, true);
+				IntelDevPcApplication.showView(CalibrationDialog.class, Modality.WINDOW_MODAL);
+			}else {
+				Alert warning = new Alert(Alert.AlertType.WARNING,"输入范围为0-10");
+				warning.showAndWait();
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			Alert warning = new Alert(Alert.AlertType.WARNING,"格式错误");
+			warning.showAndWait();
 		}
 	}
 	

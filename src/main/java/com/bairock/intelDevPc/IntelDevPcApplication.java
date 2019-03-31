@@ -141,9 +141,9 @@ public class IntelDevPcApplication extends AbstractJavaFxApplicationSupport {
 //		}
 //	}
 	
-	private static String createDeviceOrder(Device device, OrderType orderType, String order){
+	public static String createDeviceOrder(Device device, OrderType orderType, String order){
         DeviceOrder ob = new DeviceOrder();
-        ob.setOrderType(OrderType.CTRL_DEV);
+        ob.setOrderType(orderType);
         ob.setLongCoding(device.getLongCoding());
         ob.setData(order);
         return Util.orderBaseToString(ob);

@@ -39,7 +39,7 @@ public class EditLinkageEffectController {
 	private boolean inited;
 	
 	private void init1() {
-		choiceBoxState.getItems().addAll("ON", "OFF");
+		choiceBoxState.getItems().addAll("开", "关");
 		choiceBoxDevice.setConverter(new StringConverter<Device>() {
 			@Override
 			public String toString(Device object) {

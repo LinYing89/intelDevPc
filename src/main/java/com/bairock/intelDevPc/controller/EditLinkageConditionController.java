@@ -115,13 +115,13 @@ public class EditLinkageConditionController {
 
 	private void enableStateCompareValue() {
 		choiceBoxCompareSymbol.getSelectionModel().select(1);
-		choiceBoxCompareSymbol.setDisable(false);
+		choiceBoxCompareSymbol.setDisable(true);
 		choiceBoxCompareValue.setDisable(false);
 		txtCompareValue.setDisable(true);
 	}
 
 	private void enableValueCompareValue() {
-		choiceBoxCompareSymbol.setDisable(true);
+		choiceBoxCompareSymbol.setDisable(false);
 		choiceBoxCompareValue.setDisable(true);
 		txtCompareValue.setDisable(false);
 	}

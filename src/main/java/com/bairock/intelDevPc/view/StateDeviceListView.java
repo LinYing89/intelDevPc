@@ -6,6 +6,7 @@ import java.util.List;
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
 import com.bairock.intelDevPc.Util;
+import com.bairock.intelDevPc.comm.PadClient;
 import com.bairock.intelDevPc.controller.DevSwitchController;
 import com.bairock.intelDevPc.data.MyColor;
 import com.bairock.intelDevPc.service.UserService;
@@ -132,7 +133,7 @@ public class StateDeviceListView extends VBox {
 			paneRoot.setStyle("-fx-background-color : " + MyColor.TRANSPARENT);
 			labelName.setStyle("-fx-text-fill : black");
 			labelCtrlModel.setStyle("-fx-text-fill : black");
-		} else if (device.getDevStateId().equals(DevStateHelper.DS_YI_CHANG)) {
+		} else if (!device.isNormal() || device.getDevStateId().equals(DevStateHelper.DS_UNKNOW)) {
 			paneRoot.setStyle("-fx-background-color : " + MyColor.DANGER);
 			labelName.setStyle("-fx-text-fill : white");
 			labelCtrlModel.setStyle("-fx-text-fill : white");
@@ -151,6 +152,7 @@ public class StateDeviceListView extends VBox {
 		}
 
 		group.selectedToggleProperty().addListener((p0, p1, p2) -> {
+			
 			if (p2 == btnOn) {
 				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOnOrder(), OrderType.CTRL_DEV, true);
 				device.setGear(Gear.KAI);
@@ -160,6 +162,10 @@ public class StateDeviceListView extends VBox {
 				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOffOrder(), OrderType.CTRL_DEV, true);
 				device.setGear(Gear.GUAN);
 			}
+			//向服务器发送档位, 不能在监听器中发送, 因为如果是远程登录, 当收到服务器档位改变后不可以再向服务器发送
+			//宫格中, 列表中, 属性界面中三个地方一致处理
+			String gearOrder = IntelDevPcApplication.createDeviceOrder(device, OrderType.GEAR, device.getGear().toString());
+			PadClient.getIns().send(gearOrder);
 		});
 		
 		paneRoot.setPadding(new Insets(4, 0, 4, 0));

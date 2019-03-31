@@ -5,6 +5,7 @@ import java.util.Date;
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
 import com.bairock.intelDevPc.Util;
+import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.data.DeviceValueHistory;
 import com.bairock.intelDevPc.service.DeviceHistoryService;
 import com.bairock.iot.intelDev.communication.RefreshCollectorValueHelper;
@@ -16,12 +17,14 @@ import com.bairock.iot.intelDev.device.IStateDev;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.device.devcollect.DevCollectClimateContainer;
 import com.bairock.iot.intelDev.order.DeviceOrder;
+import com.bairock.iot.intelDev.order.LoginModel;
 import com.bairock.iot.intelDev.order.OrderType;
 
 public class MyOnStateChangedListener implements OnStateChangedListener {
 
 //	private MainController mainController = SpringUtil.getBean(MainController.class);
 	private DeviceHistoryService deviceHistoryService = SpringUtil.getBean(DeviceHistoryService.class);
+	private Config config = SpringUtil.getBean(Config.class);
 
 	@Override
 	public void onStateChanged(Device dev, String stateId) {
@@ -29,7 +32,7 @@ public class MyOnStateChangedListener implements OnStateChangedListener {
 			return;
 		}
 		// 本地设备才往服务器发送状态，远程设备只接收服务器状态
-		if (dev.findSuperParent().getCtrlModel() == CtrlModel.LOCAL) {
+		if (config.getLoginModel().equals(LoginModel.LOCAL) && dev.findSuperParent().getCtrlModel() == CtrlModel.LOCAL) {
 			DeviceOrder devOrder = new DeviceOrder(OrderType.STATE, dev.getId(), dev.getLongCoding(), stateId);
 			String strOrder = Util.orderBaseToString(devOrder);
 			PadClient.getIns().send(strOrder);
@@ -72,10 +75,6 @@ public class MyOnStateChangedListener implements OnStateChangedListener {
 	@Override
 	public void onNormalToAbnormal(Device dev) {
 		IntelDevPcApplication.addOfflineDevCoding(dev);
-		// 本地设备才往服务器发送状态，远程设备只接收服务器状态
-//        if(!(dev instanceof SubDev) && dev.findSuperParent().getCtrlModel() == CtrlModel.LOCAL) {
-//            PadClient.getIns().send(dev.createAbnormalOrder());
-//        }
 		if (dev instanceof DevCollectClimateContainer) {
 			RefreshCollectorValueHelper.getIns().endRefresh(dev);
 		}

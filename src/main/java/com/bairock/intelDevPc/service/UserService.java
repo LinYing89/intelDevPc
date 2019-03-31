@@ -13,6 +13,7 @@ import com.bairock.intelDevPc.comm.MyOnCurrentValueChangedListener;
 import com.bairock.intelDevPc.comm.MyOnGearChangedListener;
 import com.bairock.intelDevPc.comm.MyOnSortIndexChangedListener;
 import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
+import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.repository.UserRepository;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
 import com.bairock.iot.intelDev.communication.FindDevHelper;
@@ -29,6 +30,7 @@ import com.bairock.iot.intelDev.linkage.SubChain;
 import com.bairock.iot.intelDev.linkage.guagua.GuaguaHelper;
 import com.bairock.iot.intelDev.linkage.timing.Timing;
 import com.bairock.iot.intelDev.linkage.timing.ZTimer;
+import com.bairock.iot.intelDev.order.LoginModel;
 import com.bairock.iot.intelDev.order.OrderType;
 import com.bairock.iot.intelDev.user.DevGroup;
 import com.bairock.iot.intelDev.user.User;
@@ -37,6 +39,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class UserService {
 
+	@Autowired
+	private Config config;
+	
 	public static User user;
 
 	private UserRepository userRepository;
@@ -128,7 +133,9 @@ public class UserService {
 		
 		LinkageTab.getIns().SetOnOrderSendListener((device, order, ctrlModel) ->{
 			if(null != order) {
-				IntelDevPcApplication.sendOrder(device, order, OrderType.CTRL_DEV, false);
+				if(null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
+					IntelDevPcApplication.sendOrder(device, order, OrderType.CTRL_DEV, false);
+				}
 			}
 		});
 		
@@ -137,7 +144,9 @@ public class UserService {
 		GuaguaHelper.getIns().stopCheckGuaguaThread();
 		GuaguaHelper.getIns().startCheckGuaguaThread();
 		GuaguaHelper.getIns().setOnOrderSendListener((guagua, s, ctrlModel) ->{
-			IntelDevPcApplication.sendOrder(guagua.findSuperParent(), s, OrderType.CTRL_DEV, true);
+			if(null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
+				IntelDevPcApplication.sendOrder(guagua.findSuperParent(), s, OrderType.CTRL_DEV, true);
+			}
 		}); 
 	}
 	

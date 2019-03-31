@@ -4,11 +4,17 @@ import java.io.IOException;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
+import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.controller.CtrlModelDialogController;
 import com.bairock.intelDevPc.controller.MainController;
+import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.service.UserService;
+import com.bairock.iot.intelDev.communication.DevChannelBridge;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
+import com.bairock.iot.intelDev.communication.DevServer;
+import com.bairock.iot.intelDev.communication.FindDevHelper;
 import com.bairock.iot.intelDev.device.CtrlModel;
+import com.bairock.iot.intelDev.device.DevHaveChild;
 import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.Gear;
@@ -16,6 +22,7 @@ import com.bairock.iot.intelDev.device.IStateDev;
 import com.bairock.iot.intelDev.device.SetDevModelTask;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.order.DeviceOrder;
+import com.bairock.iot.intelDev.order.LoginModel;
 import com.bairock.iot.intelDev.order.OrderType;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,6 +45,7 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 
 	private MainController mainController = SpringUtil.getBean(MainController.class);
 	private CtrlModelDialogController ctrlModelDialogController = SpringUtil.getBean(CtrlModelDialogController.class);
+	private Config config = SpringUtil.getBean(Config.class);
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) {
@@ -127,16 +135,20 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 			switch (orderBase.getOrderType()) {
 			case HEAD_USER_INFO:
 				sendUserInfo();
+				if (config.getLoginModel().equals(LoginModel.LOCAL)) {
+					// 发送设备状态
+					sendInitStateToServer();
+				}
 				break;
 			case HEAD_SYN:
 				syncDevMsg = true;
-				order = om.writeValueAsString(orderBase);
-				send(order);
+//				order = om.writeValueAsString(orderBase);
+				send(strData);
 				break;
 			case HEAD_NOT_SYN:
 				syncDevMsg = false;
-				order = om.writeValueAsString(orderBase);
-				send(order);
+//				order = om.writeValueAsString(orderBase);
+				send(strData);
 				break;
 			case GEAR:
 				Device dev = UserService.getDevGroup().findDeviceWithCoding(orderBase.getLongCoding());
@@ -144,6 +156,9 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 					return;
 				}
 				dev.setGear(Gear.valueOf(orderBase.getData()));
+				if(config.getLoginModel().equals(LoginModel.LOCAL)) {
+					send(strData);
+				}
 				break;
 			case CTRL_DEV:
 				dev = UserService.getDevGroup().findDeviceWithCoding(orderBase.getLongCoding());
@@ -196,6 +211,22 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 					}
 				}
 				break;
+			case LOGOUT:
+				// 登出
+				Util.CAN_CONNECT_SERVER = false;
+				// 关闭服务器连接
+				DevServer.getIns().close();
+				channel.close();
+
+				// 关闭本地服务器
+				for (DevChannelBridge db : DevChannelBridgeHelper.getIns().getListDevChannelBridge()) {
+					db.close();
+				}
+
+				// 停止寻找设备
+				FindDevHelper.getIns().enable = false;
+				mainController.showLogoutDialog();
+				break;
 			default:
 				break;
 			}
@@ -218,6 +249,7 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 			ob.setOrderType(OrderType.HEAD_USER_INFO);
 			ob.setUsername(UserService.user.getName());
 			ob.setDevGroupName(UserService.getDevGroup().getName());
+			ob.setData(config.getLoginModel());
 			ObjectMapper om = new ObjectMapper();
 			String order;
 			try {
@@ -226,6 +258,42 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+	}
+
+	private void sendInitStateToServer() {
+		for (Device d : UserService.getDevGroup().getListDevice()) {
+			sendInitStateToServer(d);
+		}
+	}
+
+	// 发送设备状态到服务器
+	private void sendInitStateToServer(Device dev) {
+		if (null != dev && dev.isNormal() && dev.isVisibility()) {
+			// 从缓存中读取对象, 保存状态一致
+			DeviceOrder devOrder = null;
+			if (dev instanceof DevCollect) {
+				devOrder = new DeviceOrder(OrderType.VALUE, dev.getId(), dev.getLongCoding(),
+						String.valueOf(((DevCollect) dev).getCollectProperty().getCurrentValue()));
+			} else {
+				devOrder = new DeviceOrder(OrderType.STATE, dev.getId(), dev.getLongCoding(), dev.getDevStateId());
+				if (dev instanceof IStateDev) {
+					// 发送档位
+					DeviceOrder devo = new DeviceOrder(OrderType.GEAR, dev.getId(), dev.getLongCoding(),
+							dev.getGear().toString());
+					String strOrder = Util.orderBaseToString(devo);
+					send(strOrder);
+				}
+			}
+			if (null != devOrder) {
+				String strOrder = Util.orderBaseToString(devOrder);
+				send(strOrder);
+			}
+			if (dev instanceof DevHaveChild) {
+				for (Device d : ((DevHaveChild) dev).getListDev()) {
+					sendInitStateToServer(d);
+				}
 			}
 		}
 	}

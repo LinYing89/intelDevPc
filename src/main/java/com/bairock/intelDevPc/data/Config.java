@@ -26,6 +26,8 @@ public class Config {
 	@Column(columnDefinition="boolean default false",nullable=false)
 	private boolean autoLogin;
 	
+	private String loginModel;
+	
 	public long getId() {
 		return id;
 	}
@@ -68,5 +70,11 @@ public class Config {
 	}
 	public void setAutoLogin(boolean autoLogin) {
 		this.autoLogin = autoLogin;
+	}
+	public String getLoginModel() {
+		return loginModel;
+	}
+	public void setLoginModel(String loginModel) {
+		this.loginModel = loginModel;
 	}
 }

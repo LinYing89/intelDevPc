@@ -14,6 +14,7 @@ import com.bairock.intelDevPc.service.UserService;
 import com.bairock.iot.intelDev.data.DevGroupLoginResult;
 import com.bairock.iot.intelDev.data.Result;
 import com.bairock.iot.intelDev.http.LoginTask;
+import com.bairock.iot.intelDev.order.LoginModel;
 
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.application.Platform;
@@ -67,22 +68,19 @@ public class LoginController {
 //		mainStateView.getView().getScene().getWindow().setOnCloseRequest(e -> handlerExit());
 	}
 	
-//	@Autowired
-//	private UserService userService;
-	
-//	private String serverIp = "192.168.1.112";
-	//登录
-	public void login() {
-		System.out.println("login");
-		
+	private void login(String loginModel) {
+
 		labelWaring.setText("正在登录...");
 		gridPane.setDisable(true);
+		
+		config.setLoginModel(loginModel);
+		configRepository.saveAndFlush(config);
 		
 		String userName = txtUserName.getText();
 		String groupName = txtGroupName.getText();
 		String groupPsd = txtGroupPsd.getText();
 //		String url = String.format("http://%s/hamaSer/ClientLoginServlet?name=%s&group=%s&psd=%s", config.getServerName(), userName, groupName, groupPsd);
-		String url = String.format("http://%s/group/client/devGroupLogin/%s/%s/%s", config.getServerName(), userName, groupName, groupPsd);
+		String url = String.format("http://%s/group/client/devGroupLogin/%s/%s/%s/%s", config.getServerName(), loginModel, userName, groupName, groupPsd);
 		//开启线程登录
 		LoginTask loginTask = new LoginTask(url);
 		loginTask.setOnExecutedListener(loginResult ->{
@@ -93,6 +91,19 @@ public class LoginController {
 //		userService.initUser();
 //		IntelDevPcApplication.showView(MainStateView.class);
 //		((MainController)mainStateView.getPresenter()).init();
+	
+	}
+	
+	//远程登录
+	@FXML
+	public void onLoginRemoteAction() {
+		login(LoginModel.REMOTE);
+	}
+
+	//本地登录
+	@FXML
+	public void onLoginLocalAction() {
+		login(LoginModel.LOCAL);
 	}
 	
 	

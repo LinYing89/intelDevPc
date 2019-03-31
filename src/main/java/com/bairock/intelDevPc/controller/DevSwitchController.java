@@ -1,8 +1,11 @@
 package com.bairock.intelDevPc.controller;
 
+import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.Util;
+import com.bairock.intelDevPc.comm.PadClient;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.Gear;
+import com.bairock.iot.intelDev.order.OrderType;
 
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.fxml.FXML;
@@ -46,6 +49,7 @@ public class DevSwitchController {
 			break;
 		}
 		toogleGroupGear.selectedToggleProperty().addListener((o, oldBtn, newBtn) -> {
+			
 			if(newBtn == radioKai) {
 				device.setGear(Gear.KAI);
 			}else if(newBtn == radioGuan) {
@@ -53,6 +57,10 @@ public class DevSwitchController {
 			}else {
 				device.setGear(Gear.ZIDONG);
 			}
+			//向服务器发送档位, 不能在监听器中发送, 因为如果是远程登录, 当收到服务器档位改变后不可以再向服务器发送
+			//宫格中, 列表中, 属性界面中三个地方一致处理
+			String gearOrder = IntelDevPcApplication.createDeviceOrder(device, OrderType.GEAR, device.getGear().toString());
+			PadClient.getIns().send(gearOrder);
 		});
 	}
 }

@@ -22,6 +22,8 @@ import com.bairock.intelDevPc.view.EditLinkageEffectView;
 import com.bairock.intelDevPc.view.EditLoopDurationView;
 import com.bairock.intelDevPc.view.EditTimingZTimerView;
 import com.bairock.intelDevPc.view.RenameView;
+import com.bairock.iot.intelDev.device.DevStateHelper;
+import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.linkage.ChainHolder;
 import com.bairock.iot.intelDev.linkage.Effect;
 import com.bairock.iot.intelDev.linkage.Linkage;
@@ -193,7 +195,13 @@ public class LinkageController {
 					protected void updateItem(Effect item, boolean empty) {
 						super.updateItem(item, empty);
 						if (null != item && !empty) {
-							String name = String.format("%-4s %-4s", item.getDevice().getName(), item.effectStateStr());
+							String stateStr = null;
+							if(item.getDsId().equals(DevStateHelper.DS_KAI)) {
+								stateStr = "开";
+							}else {
+								stateStr = "关";
+							}
+							String name = String.format("%-4s %-4s", item.getDevice().getName(), stateStr);
 							this.setText(name);
 							setGraphic(null);
 						} else {
@@ -232,7 +240,12 @@ public class LinkageController {
 					protected void updateItem(LinkageCondition item, boolean empty) {
 						super.updateItem(item, empty);
 						if (null != item && !empty) {
-							String compareValueStr = item.getCompareValue() == 0 ? "关" : "开";
+							String compareValueStr = null;
+							if(item.getDevice() instanceof DevCollect) {
+								compareValueStr = String.valueOf(item.getCompareValue());
+							}else{
+								compareValueStr = item.getCompareValue() == 0 ? "关" : "开";
+							}
 							String name = String.format("%-4s %-5s %-2s %s", item.getLogic().toString(),
 									item.getDevice().getName(), item.compareSymbolStr(), compareValueStr);
 							this.setText(name);

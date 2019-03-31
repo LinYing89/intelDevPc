@@ -18,6 +18,7 @@ import com.bairock.iot.intelDev.communication.UdpServer;
 import com.bairock.iot.intelDev.data.DeviceImg;
 import com.bairock.iot.intelDev.http.CheckDevImgVersionCode;
 import com.bairock.iot.intelDev.http.HttpDownloadDeviceImgTask;
+import com.bairock.iot.intelDev.order.LoginModel;
 
 @Component
 public class MyApplicationRunner implements ApplicationRunner {
@@ -29,20 +30,20 @@ public class MyApplicationRunner implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		UdpServer.getIns().run();
+		if (config.getLoginModel().equals(LoginModel.LOCAL)) {
+			UdpServer.getIns().run();
 
-		try {
-			DevServer devServer = new DevServer();
-			devServer.run();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			try {
+				DevServer.getIns().run();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-		DevChannelBridge.analysiserName = MyMessageAnalysiser.class.getName();
+			DevChannelBridge.analysiserName = MyMessageAnalysiser.class.getName();
 //		DevChannelBridgeHelper.getIns().setUser(user);
-		DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
-		DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
-
+			DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
+			DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
+		}
 		List<DeviceImg> list = deviceImgRepo.findAll();
 
 		HttpDownloadDeviceImgTask.imgSavePath = System.getProperty("user.home") + "\\dafa\\devImg\\";
@@ -62,14 +63,14 @@ public class MyApplicationRunner implements ApplicationRunner {
 
 	public void checkDeviceImg(List<DeviceImg> listRemote, List<DeviceImg> listLocal) {
 		for (DeviceImg devImg : listRemote) {
-			//默认更新
+			// 默认更新
 			boolean update = true;
 			for (DeviceImg devImgLocal : listLocal) {
 				if (devImgLocal.getCode().equals(devImg.getCode())) {
 					if (devImgLocal.getVersionCode() >= devImg.getVersionCode()) {
-						//如果本地版本号>=远程版本号, 检查本地图片是否存在
+						// 如果本地版本号>=远程版本号, 检查本地图片是否存在
 						File file = new File(HttpDownloadDeviceImgTask.imgSavePath + devImg.getCode() + ".png");
-						//如果本地图片存在, 不更新, 不存在则更新 
+						// 如果本地图片存在, 不更新, 不存在则更新
 						if (file.exists()) {
 							update = false;
 							break;

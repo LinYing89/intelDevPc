@@ -79,7 +79,7 @@ public class CollectorPane extends VBox{
 	}
 	
 	public void refreshState() {
-		if(device.getDevStateId().equals(DevStateHelper.DS_YI_CHANG)) {
+		if(!device.isNormal()) {
 			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.DANGER);
 		}else {
 			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.INFO);

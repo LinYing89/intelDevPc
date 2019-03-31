@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
+import com.bairock.intelDevPc.comm.PadClient;
 import com.bairock.intelDevPc.controller.DevSwitchController;
 import com.bairock.intelDevPc.data.MyColor;
 import com.bairock.iot.intelDev.device.DevStateHelper;
@@ -107,7 +108,7 @@ public class DevicePane extends VBox {
 			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.SUCCESS);
 		}else if(device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
 			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.SECONDARY);
-		}else if(device.getDevStateId().equals(DevStateHelper.DS_YI_CHANG)) {
+		}else if(!device.isNormal()) {
 			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.DANGER);
 		}
 	}
@@ -172,6 +173,7 @@ public class DevicePane extends VBox {
 	private void handleChangeState(MouseEvent event) {
 		System.out.println("handleChangeState");
 		IStateDev iStateDev = (IStateDev)device;
+		
 		if(device.isKaiState()) {
 			IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOffOrder(), OrderType.CTRL_DEV, true);
 			device.setGear(Gear.GUAN);
@@ -179,6 +181,10 @@ public class DevicePane extends VBox {
 			IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOnOrder(), OrderType.CTRL_DEV, true);
 			device.setGear(Gear.KAI);
 		}
+		//向服务器发送档位, 不能在监听器中发送, 因为如果是远程登录, 当收到服务器档位改变后不可以再向服务器发送
+		//宫格中, 列表中, 属性界面中三个地方一致处理
+		String gearOrder = IntelDevPcApplication.createDeviceOrder(device, OrderType.GEAR, device.getGear().toString());
+		PadClient.getIns().send(gearOrder);
 	}
 
 	@FXML
