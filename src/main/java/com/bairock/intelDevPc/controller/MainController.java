@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.MainStateView;
 import com.bairock.intelDevPc.Util;
+import com.bairock.intelDevPc.comm.MyMessageAnalysiser;
 import com.bairock.intelDevPc.comm.PadClient;
 import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.data.DeviceValueHistory;
@@ -30,13 +31,17 @@ import com.bairock.intelDevPc.view.StateDeviceListView;
 import com.bairock.intelDevPc.view.UpDownloadDialog;
 import com.bairock.intelDevPc.view.ValueDeviceGridView;
 import com.bairock.intelDevPc.view.ValueDeviceListView;
+import com.bairock.iot.intelDev.communication.DevChannelBridge;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
+import com.bairock.iot.intelDev.communication.DevServer;
+import com.bairock.iot.intelDev.communication.UdpServer;
 import com.bairock.iot.intelDev.data.Result;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.http.HttpDownloadTask;
 import com.bairock.iot.intelDev.http.HttpUploadTask;
 import com.bairock.iot.intelDev.linkage.LinkageHolder;
+import com.bairock.iot.intelDev.order.LoginModel;
 import com.bairock.iot.intelDev.user.DevGroup;
 
 import de.felixroske.jfxsupport.FXMLController;
@@ -150,6 +155,8 @@ public class MainController {
 	            PadClient.getIns().link();
 	        }
 		}
+		
+		initLocalConfig();
 
 		mainStateView.getView().getScene().getWindow().setOnCloseRequest(e -> handlerExit());
 		initToggleButton();
@@ -520,5 +527,32 @@ public class MainController {
 		uiConfig.setDividerView(splitePaneView.getDividerPositions()[0]);
 		uiConfigRepository.saveAndFlush(uiConfig);
 		System.exit(0);
+	}
+	
+	private void initLocalConfig() {
+		if(null == config.getLoginModel()) {
+			Alert warning = new Alert(Alert.AlertType.WARNING,"登录过期, 请退出重新登录.");
+			warning.showAndWait();
+			if(warning.getResult() != ButtonType.OK) {
+				config.setAutoLogin(false);
+				configRepository.saveAndFlush(config);
+				handlerExit();
+				return;
+			}
+		}
+		
+		if (config.getLoginModel().equals(LoginModel.LOCAL)) {
+			UdpServer.getIns().run();
+
+			try {
+				DevServer.getIns().run();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			DevChannelBridge.analysiserName = MyMessageAnalysiser.class.getName();
+			DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
+			DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
+		}
 	}
 }

@@ -179,7 +179,13 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 				if (null == dev) {
 					return;
 				}
-				dev.findSuperParent().setCtrlModel(CtrlModel.REMOTE);
+				Device devParent = dev.findSuperParent();
+
+                if(!devParent.isNormal()){
+                    devParent.setDevStateId(DevStateHelper.DS_ZHENG_CHANG);
+                }
+                devParent.setCtrlModel(CtrlModel.REMOTE);
+                
 				dev.setDevStateId(orderBase.getData());
 				isToCtrlModelDev(dev);
 				break;

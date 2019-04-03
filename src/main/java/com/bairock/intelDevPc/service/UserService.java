@@ -41,141 +41,144 @@ public class UserService {
 
 	@Autowired
 	private Config config;
-	
+
 	public static User user;
 
 	private UserRepository userRepository;
 	private DeviceHistoryService deviceHistoryService;
-	
+
 	public static DevGroup getDevGroup() {
 		return user.getListDevGroup().get(0);
 	}
-	
+
 	@Autowired
 	public UserService(UserRepository userRepository, DeviceHistoryService deviceHistoryService) {
 		this.userRepository = userRepository;
 		this.deviceHistoryService = deviceHistoryService;
-		//initUser();
+		// initUser();
 	}
-	
+
 	public void cleanUser() {
 		List<User> list = userRepository.findAll();
-		for(User user : list) {
+		for (User user : list) {
 			userRepository.deleteById(user.getId());
 			userRepository.flush();
 		}
 	}
-	
+
 	public void addUser(User user) {
 		userRepository.saveAndFlush(user);
 	}
-	
+
 	public void update(User user) {
 		userRepository.saveAndFlush(user);
 	}
-	
+
 	@Transactional
 	public void initUser() {
-		
+
 		DevGroup group = null;
-		
+
 		List<User> listUser = userRepository.findAll();
-		if(listUser.isEmpty()) {
+		if (listUser.isEmpty()) {
 			user = new User("test123", "a123456", "", "", "admin", new Date());
 			group = new DevGroup("1", "a123", "g1");
 			group.setId(UUID.randomUUID().toString());
 			user.addGroup(group);
 			userRepository.saveAndFlush(user);
-		}else {
+		} else {
 			user = listUser.get(0);
 			group = user.getListDevGroup().get(0);
 		}
 		DevChannelBridgeHelper.getIns().setUser(user);
 		UdpServer.getIns().setUser(user);
-		
+
 		reloadDevGroup(group);
-		
+
 	}
-	
+
 	public void reloadDevGroup(DevGroup group) {
 		System.out.println("userServer group " + (group.getUser() == user));
 		FindDevHelper.getIns().cleanAll();
-		for(Device dev : group.getListDevice()) {
+		for (Device dev : group.getListDevice()) {
 			System.out.println(dev);
 			FindDevHelper.getIns().findDev(dev.getCoding());
 			dev.setDevStateId(DevStateHelper.DS_UNKNOW);
 			initDevice(dev);
 		}
-		for(LinkageHolder holder : group.getListLinkageHolder()) {
-			for(Linkage linkage : holder.getListLinkage()) {
+		for (LinkageHolder holder : group.getListLinkageHolder()) {
+			for (Linkage linkage : holder.getListLinkage()) {
 				linkage.getListEffect();
-				if(linkage instanceof SubChain) {
+				if (linkage instanceof SubChain) {
 					((SubChain) linkage).getListCondition();
-				}else if(linkage instanceof Timing) {
-					for(ZTimer timer : ((Timing) linkage).getListZTimer()) {
+				} else if (linkage instanceof Timing) {
+					for (ZTimer timer : ((Timing) linkage).getListZTimer()) {
 						timer.getListTimes();
 					}
 				}
 			}
 		}
-		
+
 		List<Device> list = group.findListIStateDev(true);
 		LinkageTab.getIns().getListLinkageTabRow().clear();
-		for(Device dev : list) {
+		for (Device dev : list) {
 			LinkageTab.getIns().addTabRow(dev);
 		}
-		
+
 		LinkageHelper.getIns().setChain(group.getChainHolder());
 		LinkageHelper.getIns().setLoop(group.getLoopHolder());
 		LinkageHelper.getIns().setTiming(group.getTimingHolder());
-		
+
 		GuaguaHelper.getIns().setGuaguaHolder(group.getGuaguaHolder());
-		
-		LinkageTab.getIns().SetOnOrderSendListener((device, order, ctrlModel) ->{
-			if(null != order) {
-				if(null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
-					IntelDevPcApplication.sendOrder(device, order, OrderType.CTRL_DEV, false);
+
+		if (null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
+			LinkageTab.getIns().SetOnOrderSendListener((device, order, ctrlModel) -> {
+				if (null != order) {
+					if (null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
+						IntelDevPcApplication.sendOrder(device, order, OrderType.CTRL_DEV, false);
+					}
 				}
-			}
-		});
-		
-		LinkageHelper.getIns().stopCheckLinkageThread();
-		LinkageHelper.getIns().startCheckLinkageThread();
-		GuaguaHelper.getIns().stopCheckGuaguaThread();
-		GuaguaHelper.getIns().startCheckGuaguaThread();
-		GuaguaHelper.getIns().setOnOrderSendListener((guagua, s, ctrlModel) ->{
-			if(null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
-				IntelDevPcApplication.sendOrder(guagua.findSuperParent(), s, OrderType.CTRL_DEV, true);
-			}
-		}); 
+			});
+
+			LinkageHelper.getIns().stopCheckLinkageThread();
+			LinkageHelper.getIns().startCheckLinkageThread();
+			GuaguaHelper.getIns().stopCheckGuaguaThread();
+			GuaguaHelper.getIns().startCheckGuaguaThread();
+			GuaguaHelper.getIns().setOnOrderSendListener((guagua, s, ctrlModel) -> {
+				if (null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
+					IntelDevPcApplication.sendOrder(guagua.findSuperParent(), s, OrderType.CTRL_DEV, true);
+				}
+			});
+		}
 	}
-	
+
 	private void initDevice(Device dev) {
 		dev.addOnStateChangedListener(new MyOnStateChangedListener());
 		dev.addOnGearChangedListener(new MyOnGearChangedListener());
 //		dev.setOnCtrlModelChanged(new MyOnCtrlModelChangedListener());
 		dev.setOnSortIndexChangedListener(new MyOnSortIndexChangedListener());
 		deviceHistoryService.createTable(dev.getLongCoding());
-		if(dev instanceof DevHaveChild) {
-			for(Device dd : ((DevHaveChild) dev).getListDev()) {
+		if (dev instanceof DevHaveChild) {
+			for (Device dd : ((DevHaveChild) dev).getListDev()) {
 				initDevice(dd);
 			}
 		}
-		if(dev instanceof DevCollect) {
-			((DevCollect) dev).getCollectProperty().addOnCurrentValueChangedListener(new MyOnCurrentValueChangedListener());
+		if (dev instanceof DevCollect) {
+			((DevCollect) dev).getCollectProperty()
+					.addOnCurrentValueChangedListener(new MyOnCurrentValueChangedListener());
 		}
 	}
-	
-	public static String getUserJson(User user){
-        String json = null;
-        if(null != user){
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                json = mapper.writeValueAsString(user);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        return json;
-    }
+
+	public static String getUserJson(User user) {
+		String json = null;
+		if (null != user) {
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				json = mapper.writeValueAsString(user);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return json;
+	}
 }

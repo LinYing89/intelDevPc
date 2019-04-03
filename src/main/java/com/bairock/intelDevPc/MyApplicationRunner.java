@@ -8,17 +8,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import com.bairock.intelDevPc.comm.MyMessageAnalysiser;
 import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.repository.DeviceImgRepo;
-import com.bairock.iot.intelDev.communication.DevChannelBridge;
-import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
-import com.bairock.iot.intelDev.communication.DevServer;
-import com.bairock.iot.intelDev.communication.UdpServer;
 import com.bairock.iot.intelDev.data.DeviceImg;
 import com.bairock.iot.intelDev.http.CheckDevImgVersionCode;
 import com.bairock.iot.intelDev.http.HttpDownloadDeviceImgTask;
-import com.bairock.iot.intelDev.order.LoginModel;
 
 @Component
 public class MyApplicationRunner implements ApplicationRunner {
@@ -30,20 +24,20 @@ public class MyApplicationRunner implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		if (config.getLoginModel().equals(LoginModel.LOCAL)) {
-			UdpServer.getIns().run();
-
-			try {
-				DevServer.getIns().run();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			DevChannelBridge.analysiserName = MyMessageAnalysiser.class.getName();
-//		DevChannelBridgeHelper.getIns().setUser(user);
-			DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
-			DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
-		}
+//		if (null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
+//			UdpServer.getIns().run();
+//
+//			try {
+//				DevServer.getIns().run();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//			DevChannelBridge.analysiserName = MyMessageAnalysiser.class.getName();
+////		DevChannelBridgeHelper.getIns().setUser(user);
+//			DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
+//			DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
+//		}
 		List<DeviceImg> list = deviceImgRepo.findAll();
 
 		HttpDownloadDeviceImgTask.imgSavePath = System.getProperty("user.home") + "\\dafa\\devImg\\";

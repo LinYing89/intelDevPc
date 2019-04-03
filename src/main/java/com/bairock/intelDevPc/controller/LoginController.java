@@ -121,6 +121,7 @@ public class LoginController {
 			config.setDevPort(result.getData().getDevPort());
 			UserService.user.setName(txtUserName.getText());
 			UserService.getDevGroup().setName(txtGroupName.getText());
+			UserService.getDevGroup().setPetName(result.getData().getDevGroupPetName());
 			UserService.getDevGroup().setPsd(txtGroupPsd.getText());
 			userService.update(UserService.user);
 //			userService.initUser();
