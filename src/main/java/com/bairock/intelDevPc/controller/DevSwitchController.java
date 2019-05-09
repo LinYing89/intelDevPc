@@ -33,11 +33,14 @@ public class DevSwitchController {
 	@FXML
 	private RadioButton radioGuan;
 	
+	private Device device;
+	
 	public void init(Device device) {
+	    this.device = device;
 		labelName.setText(device.getName());
 		labelLongCoding.setText(device.getLongCoding());
 		labelCtrlModel.setText(Util.getCtrlModelName(device.findSuperParent().getCtrlModel()));
-		switch(device.getGear()) {
+		switch(this.device.getGear()) {
 		case KAI:
 			radioKai.setSelected(true);
 			break;
@@ -51,15 +54,15 @@ public class DevSwitchController {
 		toogleGroupGear.selectedToggleProperty().addListener((o, oldBtn, newBtn) -> {
 			
 			if(newBtn == radioKai) {
-				device.setGear(Gear.KAI);
+			    this.device.setGear(Gear.KAI);
 			}else if(newBtn == radioGuan) {
-				device.setGear(Gear.GUAN);
+			    this.device.setGear(Gear.GUAN);
 			}else {
-				device.setGear(Gear.ZIDONG);
+			    this.device.setGear(Gear.ZIDONG);
 			}
 			//向服务器发送档位, 不能在监听器中发送, 因为如果是远程登录, 当收到服务器档位改变后不可以再向服务器发送
 			//宫格中, 列表中, 属性界面中三个地方一致处理
-			String gearOrder = IntelDevPcApplication.createDeviceOrder(device, OrderType.GEAR, device.getGear().toString());
+			String gearOrder = IntelDevPcApplication.createDeviceOrder(this.device, OrderType.GEAR, this.device.getGear().toString());
 			PadClient.getIns().send(gearOrder);
 		});
 	}

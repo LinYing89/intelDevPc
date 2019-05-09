@@ -67,7 +67,7 @@ public class CollectorPane extends VBox{
 		}
 		this.device = device;
 		labelName.setText(device.getName());
-		labelValue.setText(String.valueOf(device.getCollectProperty().getCurrentValue()));
+		refreshValue();
 		refreshState();
 		this.device.addOnStateChangedListener(onStateChangedListener);
 		this.device.addOnNameChangedListener(onNameChangedListener);
@@ -85,12 +85,16 @@ public class CollectorPane extends VBox{
 			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.INFO);
 		}
 	}
+	
+	public void refreshValue() {
+        labelValue.setText(device.getCollectProperty().getValueWithSymbol());
+    }
 
 	private OnCurrentValueChangedListener onCurrentValueChangedListener = new OnCurrentValueChangedListener() {
 
 		@Override
 		public void onCurrentValueChanged(DevCollect dev, Float value) {
-			Platform.runLater(()->labelValue.setText(String.valueOf(value)));
+			Platform.runLater(()->refreshValue());
 		}
 		
 	};

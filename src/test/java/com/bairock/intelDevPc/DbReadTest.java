@@ -27,7 +27,7 @@ public class DbReadTest {
 	public void testInsertUser() {
 		List<User> list = userRepository.findAll();
 		for(User user : list) {
-			System.out.println("user:" + user.getName());
+			System.out.println("user:" + user.getUserid());
 			for(DevGroup group : user.getListDevGroup()) {
 				System.out.println("group:" + group.getName());
 				for(Device dev : group.getListDevice()) {

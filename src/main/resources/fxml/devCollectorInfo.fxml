@@ -42,7 +42,7 @@
                <children>
                   <TextField fx:id="txtCalibration" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onCalibrationAction" text="标定" />
-                  <Label text="取值范围0 - 10" textFill="#8a8a8a" />
+                  <Label text="取值范围0 - 100" textFill="#8a8a8a" />
                </children>
             </HBox>
          </children>

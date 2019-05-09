@@ -19,9 +19,12 @@ import com.bairock.intelDevPc.repository.ConfigRepository;
 import com.bairock.intelDevPc.repository.DevGroupRepo;
 import com.bairock.intelDevPc.repository.UILayoutConfigRepository;
 import com.bairock.intelDevPc.service.DeviceHistoryService;
+import com.bairock.intelDevPc.service.DownloadService;
+import com.bairock.intelDevPc.service.UploadService;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.intelDevPc.view.DeviceHistoryHtml;
 import com.bairock.intelDevPc.view.DevicesView;
+import com.bairock.intelDevPc.view.DragDeviceView;
 import com.bairock.intelDevPc.view.LinkageTable;
 import com.bairock.intelDevPc.view.LinkageView;
 import com.bairock.intelDevPc.view.SettingsView;
@@ -39,7 +42,6 @@ import com.bairock.iot.intelDev.data.Result;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.http.HttpDownloadTask;
-import com.bairock.iot.intelDev.http.HttpUploadTask;
 import com.bairock.iot.intelDev.linkage.LinkageHolder;
 import com.bairock.iot.intelDev.order.LoginModel;
 import com.bairock.iot.intelDev.user.DevGroup;
@@ -75,8 +77,10 @@ public class MainController {
 	private MainStateView mainStateView;
 	@Autowired
 	private DeviceHistoryService deviceHistoryService;
-//	@Autowired
-//	private DeviceValueHistoryRepo deviceValueHistoryRepo;
+	@Autowired
+	private UploadService uploadService;
+	@Autowired
+	private DownloadService downloadService;
 	@FXML
 	private FlowPane fpSwitch;
 	@FXML
@@ -124,6 +128,8 @@ public class MainController {
 	@Autowired
 	private DevicesView devicesView;
 	@Autowired
+	private DragDeviceView dragDeviceView;
+	@Autowired
 	private SortDeviceView sortDeviceView;
 	@Autowired
 	private LinkageView linkageView;
@@ -145,15 +151,20 @@ public class MainController {
 	private LineChart<String, Number> chartValueHistory;
 
 	public void init() {
-		if(Util.GUEST) {
+		userService.initUser();
+		UserService.getDevGroup().setUserid(config.getUserid());
+		UserService.getDevGroup().setName(config.getDevGroupName());
+		UserService.getDevGroup().setPetName(config.getDevGroupPetname());
+
+		if (Util.GUEST) {
 			Util.CAN_CONNECT_SERVER = false;
-		}else {
+		} else {
 			Util.CAN_CONNECT_SERVER = true;
 		}
-		if(Util.CAN_CONNECT_SERVER) {
+		if (Util.CAN_CONNECT_SERVER) {
 			if (!PadClient.getIns().isLinked()) {
-	            PadClient.getIns().link();
-	        }
+				PadClient.getIns().link();
+			}
 		}
 		
 		initLocalConfig();
@@ -162,21 +173,20 @@ public class MainController {
 		initToggleButton();
 		refreshServerState(IntelDevPcApplication.SERVER_CONNECTED);
 
-		DevGroup group = UserService.getDevGroup();
 		Stage stage = IntelDevPcApplication.getStage();
-		
+
 		String groupName = "";
-        if(null == group.getPetName() || group.getPetName().isEmpty()){
-            groupName = group.getName();
-        }else{
-            groupName = group.getPetName();
-        }
-		stage.setTitle(UserService.user.getName() + "-" + groupName);
+		if (null == config.getDevGroupPetname() || config.getDevGroupPetname().isEmpty()) {
+			groupName = config.getDevGroupName();
+		} else {
+			groupName = config.getDevGroupPetname();
+		}
+		stage.setTitle(config.getUserid() + "-" + groupName);
 
 		refreshDevicePane();
 
 		initLineChart();
-		
+
 		splitePaneRoot.setDividerPositions(uiConfig.getDividerRoot());
 		splitePaneDevice.setDividerPositions(uiConfig.getDividerDevice());
 		splitePaneView.setDividerPositions(uiConfig.getDividerView());
@@ -203,13 +213,13 @@ public class MainController {
 		AnchorPane.setTopAnchor(chartValueHistory, 0.0);
 		AnchorPane.setRightAnchor(chartValueHistory, 0.0);
 		AnchorPane.setBottomAnchor(chartValueHistory, 0.0);
-		
+
 		DevGroup devGroup = UserService.user.getListDevGroup().get(0);
 		List<DevCollect> listDev = devGroup.findListCollectDev(true);
-		if(listDev.size() > 0) {
+		if (listDev.size() > 0) {
 //			selectedValueDev = listDev.get(0);
 //			refreshValueChartTitle(selectedValueDev.getName());
-			
+
 //			setHistoryChart();
 		}
 	}
@@ -328,39 +338,40 @@ public class MainController {
 		}
 		Platform.runLater(() -> labelServerState.setText(text));
 	}
-	
-	//被踢掉显示提示
+
+	// 被踢掉显示提示
 	public void showLogoutDialog() {
 		Platform.runLater(() -> {
-			Alert warning = new Alert(Alert.AlertType.WARNING,"该账号已在其他设备上本地登录!");
+			Alert warning = new Alert(Alert.AlertType.WARNING, "该账号已在其他设备上本地登录!");
 			warning.showAndWait();
-			if(warning.getResult() == ButtonType.OK) {
+			if (warning.getResult() == ButtonType.OK) {
 				config.setAutoLogin(false);
 				configRepository.saveAndFlush(config);
 				handlerExit();
 				return;
 			}
 		});
-		
+
 	}
 
 	public void refreshValueChartTitle(String title) {
 		chartValueHistory.setTitle(title);
 	}
-	
+
 	public void removeValueHistory() {
 		seriesValueChart.getData().clear();
 		setHistoryChart();
 	}
-	
+
 	public void setHistoryChart() {
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.HOUR_OF_DAY, 0);
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.SECOND, 0);
-		//获取今天历史纪录
-		List<DeviceValueHistory> list = deviceHistoryService.find(selectedValueDev.getLongCoding(), c.getTime(), new Date());
-		for(DeviceValueHistory h : list) {
+		// 获取今天历史纪录
+		List<DeviceValueHistory> list = deviceHistoryService.find(selectedValueDev.getLongCoding(), c.getTime(),
+				new Date());
+		for (DeviceValueHistory h : list) {
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -374,7 +385,7 @@ public class MainController {
 
 	public void addValueHistoryToChart(String time, float value) {
 		Platform.runLater(() -> {
-			if(seriesValueChart.getData().size() > 500) {
+			if (seriesValueChart.getData().size() > 500) {
 				seriesValueChart.getData().remove(0);
 			}
 			seriesValueChart.getData().add(new XYChart.Data<String, Number>(time, value));
@@ -385,88 +396,84 @@ public class MainController {
 	public void handleMenuUpload() {
 //		UploadClient uploadClient = new UploadClient();
 //		uploadClient.link();
-		Alert warning = new Alert(Alert.AlertType.WARNING,"上传将用本地数据覆盖服务器上的数据, 并且不可恢复, 确定上传吗?");
+		Alert warning = new Alert(Alert.AlertType.WARNING, "上传将用本地数据覆盖服务器上的数据, 并且不可恢复, 确定上传吗?");
 		warning.showAndWait();
-		if(warning.getResult() != ButtonType.OK) {
+		if (warning.getResult() != ButtonType.OK) {
 			return;
 		}
-		
-		HttpUploadTask task = new HttpUploadTask(UserService.user, config.getServerName());
-		task.setOnExecutedListener(loginResult ->{
-			Platform.runLater(()->uploadResult(loginResult));
-		});
-		task.start();
-		
+
+		uploadService.upload();
+//		HttpUploadTask task = new HttpUploadTask(UserService.getDevGroup(), config.getServerName());
+//		task.setOnExecutedListener(loginResult -> {
+//			Platform.runLater(() -> uploadResult(loginResult));
+//		});
+//		task.start();
+
 		((UpDownloadDialogController) upDownloadDialog.getPresenter()).init(UpDownloadDialogController.UPLOAD);
 		IntelDevPcApplication.showView(UpDownloadDialog.class, Modality.WINDOW_MODAL);
-	}
-	
-	private void uploadResult(Result<Object> loginResult) {
-		UpDownloadDialogController controller = (UpDownloadDialogController) upDownloadDialog.getPresenter();
-		if(loginResult.getCode() == 0) {
-			controller.loadResult(true);
-		}else {
-			controller.loadResult(false);
-		}
 	}
 
 	// 下载
 	public void handleMenuDownload() {
-		Alert warning = new Alert(Alert.AlertType.WARNING,"下载将覆盖本地的设备信息, 并且不可恢复, 确定下载吗?");
+		Alert warning = new Alert(Alert.AlertType.WARNING, "下载将覆盖本地的设备信息, 并且不可恢复, 确定下载吗?");
 		warning.showAndWait();
-		if(warning.getResult() != ButtonType.OK) {
+		if (warning.getResult() != ButtonType.OK) {
 			return;
 		}
+
+		downloadService.download();
 		
-		HttpDownloadTask task = new HttpDownloadTask(config.getServerName(), UserService.user.getName(), UserService.getDevGroup().getName());
-		task.setOnExecutedListener(loginResult ->{
-			Platform.runLater(()->downloadResult(loginResult));
-		});
-		task.start();
+//		HttpDownloadTask task = new HttpDownloadTask(config.getServerName(), config.getUserid(),
+//				config.getDevGroupName());
+//		task.setOnExecutedListener(loginResult -> {
+//			Platform.runLater(() -> downloadResult(loginResult));
+//		});
+//		task.start();
 		((UpDownloadDialogController) upDownloadDialog.getPresenter()).init(UpDownloadDialogController.DOWNLOAD);
 		IntelDevPcApplication.showView(UpDownloadDialog.class, Modality.WINDOW_MODAL);
 	}
+
+	// 下载结果
 	private void downloadResult(Result<DevGroup> result) {
-		DevGroup groupDb = UserService.getDevGroup();
-		DevGroup groupDownload = result.getData();
-		
-		DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
-		
-		List<Device> listOldDevice = new ArrayList<>(groupDb.getListDevice());
-		
+		UpDownloadDialogController controller = (UpDownloadDialogController) upDownloadDialog.getPresenter();
+		if (result.getCode() == 0) {
+			DevGroup groupDb = UserService.getDevGroup();
+			DevGroup groupDownload = result.getData();
+
+			DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
+
+			List<Device> listOldDevice = new ArrayList<>(groupDb.getListDevice());
+
 //		groupDb.getListDevice().clear();
-		for(Device dev : listOldDevice) {
-			groupDb.removeDevice(dev);
-		}
-		for(Device dev : groupDownload.getListDevice()) {
-			groupDb.addDevice(dev);
-		}
+			for (Device dev : listOldDevice) {
+				groupDb.removeDevice(dev);
+			}
+			for (Device dev : groupDownload.getListDevice()) {
+				groupDb.addDevice(dev);
+			}
 //		groupDb.getListDevice().addAll(groupUpload.getListDevice());
 //		groupDb.getListLinkageHolder().clear();
-		List<LinkageHolder> listOldLinkageHolder = new ArrayList<>(groupDb.getListLinkageHolder());
-		for(LinkageHolder h : listOldLinkageHolder) {
-			h.setDevGroup(null);
-			groupDb.getListLinkageHolder().remove(h);
-		}
-		for(LinkageHolder h : groupDownload.getListLinkageHolder()) {
-			h.setDevGroup(groupDb);
-			groupDb.getListLinkageHolder().add(h);
-		}
+			List<LinkageHolder> listOldLinkageHolder = new ArrayList<>(groupDb.getListLinkageHolder());
+			for (LinkageHolder h : listOldLinkageHolder) {
+				h.setDevGroup(null);
+				groupDb.getListLinkageHolder().remove(h);
+			}
+			for (LinkageHolder h : groupDownload.getListLinkageHolder()) {
+				h.setDevGroup(groupDb);
+				groupDb.getListLinkageHolder().add(h);
+			}
 //		groupDb.getListLinkageHolder().addAll(groupDownload.getListLinkageHolder());
-		devGroupRepo.saveAndFlush(groupDb);
-		
-		userService.reloadDevGroup(groupDb);
-		reInit();
-		//关掉所有设备链接
-		DevChannelBridgeHelper.getIns().closeAllBridge();
-		
-		DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
-		
-		UpDownloadDialogController controller = (UpDownloadDialogController) upDownloadDialog.getPresenter();
-		if(result.getCode() == 0) {
+			devGroupRepo.saveAndFlush(groupDb);
+
+			userService.reloadDevGroup(groupDb);
+			reInit();
+			// 关掉所有设备链接
+			DevChannelBridgeHelper.getIns().closeAllBridge();
+
+			DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
 			PadClient.getIns().sendUserInfo();
 			controller.loadResult(true);
-		}else {
+		} else {
 			controller.loadResult(false);
 		}
 	}
@@ -488,7 +495,7 @@ public class MainController {
 		((LinkageController) linkageView.getPresenter()).init();
 		IntelDevPcApplication.showView(LinkageView.class, Modality.NONE);
 	}
-	
+
 	@FXML
 	public void menuLinkageTable() {
 		LinkageTableCtrler ctrler = (LinkageTableCtrler) linkageTableView.getPresenter();
@@ -510,12 +517,13 @@ public class MainController {
 		configRepository.saveAndFlush(config);
 		handlerExit();
 	}
+
 	// 历史纪录
 	@FXML
 	public void menuDeviceHistory() {
 //		((DeviceHistoryCtrler) deviceHistoryView.getPresenter()).init();
 //		IntelDevPcApplication.showView(DeviceHistoryView.class, Modality.WINDOW_MODAL);
-		
+
 		((DeviceHistoryHtmlCtrler) deviceHistoryHtml.getPresenter()).init();
 		IntelDevPcApplication.showView(DeviceHistoryHtml.class, Modality.WINDOW_MODAL);
 	}
@@ -528,19 +536,26 @@ public class MainController {
 		uiConfigRepository.saveAndFlush(uiConfig);
 		System.exit(0);
 	}
-	
+
+	// 组态视图
+	@FXML
+	public void onDragItemAction() {
+		((DragDeviceCtrler) dragDeviceView.getPresenter()).init();
+		IntelDevPcApplication.showView(DragDeviceView.class, Modality.WINDOW_MODAL);
+	}
+
 	private void initLocalConfig() {
-		if(null == config.getLoginModel()) {
-			Alert warning = new Alert(Alert.AlertType.WARNING,"登录过期, 请退出重新登录.");
+		if (null == config.getLoginModel()) {
+			Alert warning = new Alert(Alert.AlertType.WARNING, "登录过期, 请退出重新登录.");
 			warning.showAndWait();
-			if(warning.getResult() != ButtonType.OK) {
+			if (warning.getResult() != ButtonType.OK) {
 				config.setAutoLogin(false);
 				configRepository.saveAndFlush(config);
 				handlerExit();
 				return;
 			}
 		}
-		
+
 		if (config.getLoginModel().equals(LoginModel.LOCAL)) {
 			UdpServer.getIns().run();
 

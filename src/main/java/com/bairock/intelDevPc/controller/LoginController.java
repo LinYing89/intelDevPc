@@ -10,7 +10,6 @@ import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.comm.PadClient;
 import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.repository.ConfigRepository;
-import com.bairock.intelDevPc.service.UserService;
 import com.bairock.iot.intelDev.data.DevGroupLoginResult;
 import com.bairock.iot.intelDev.data.Result;
 import com.bairock.iot.intelDev.http.LoginTask;
@@ -19,6 +18,7 @@ import com.bairock.iot.intelDev.order.LoginModel;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -50,8 +50,6 @@ public class LoginController {
 	private Config config;
 	@Autowired
 	private ConfigRepository configRepository;
-	@Autowired
-	private UserService userService;
 	
 	public void init() {
 		if(config.isAutoLogin()) {
@@ -62,13 +60,21 @@ public class LoginController {
 		cbAutoLogin.setSelected(false);
 		
 		labelAppName.setText(config.getAppTitle());
-		txtUserName.setText(UserService.user.getName());
-		txtGroupName.setText(UserService.user.getListDevGroup().get(0).getName());
-		txtGroupPsd.setText(UserService.user.getListDevGroup().get(0).getPsd());
+		txtUserName.setText(config.getUserid());
+		txtGroupName.setText(config.getDevGroupName());
+		txtGroupPsd.setText("");
 //		mainStateView.getView().getScene().getWindow().setOnCloseRequest(e -> handlerExit());
 	}
 	
 	private void login(String loginModel) {
+		String userName = txtUserName.getText();
+		String groupName = txtGroupName.getText();
+		String groupPsd = txtGroupPsd.getText();
+		if(userName.isEmpty() || groupName.isEmpty() || groupPsd.isEmpty()) {
+			Alert warning = new Alert(Alert.AlertType.WARNING, "输入不能为空!");
+			warning.showAndWait();
+			return;
+		}
 
 		labelWaring.setText("正在登录...");
 		gridPane.setDisable(true);
@@ -76,9 +82,6 @@ public class LoginController {
 		config.setLoginModel(loginModel);
 		configRepository.saveAndFlush(config);
 		
-		String userName = txtUserName.getText();
-		String groupName = txtGroupName.getText();
-		String groupPsd = txtGroupPsd.getText();
 //		String url = String.format("http://%s/hamaSer/ClientLoginServlet?name=%s&group=%s&psd=%s", config.getServerName(), userName, groupName, groupPsd);
 		String url = String.format("http://%s/group/client/devGroupLogin/%s/%s/%s/%s", config.getServerName(), loginModel, userName, groupName, groupPsd);
 		//开启线程登录
@@ -119,11 +122,20 @@ public class LoginController {
 			logger.info("padPort: " + result.getData().getPadPort());
 			config.setPadPort(result.getData().getPadPort());
 			config.setDevPort(result.getData().getDevPort());
-			UserService.user.setName(txtUserName.getText());
-			UserService.getDevGroup().setName(txtGroupName.getText());
-			UserService.getDevGroup().setPetName(result.getData().getDevGroupPetName());
-			UserService.getDevGroup().setPsd(txtGroupPsd.getText());
-			userService.update(UserService.user);
+			String userid = txtUserName.getText();
+			String devGroupName = txtGroupName.getText();
+			config.setUserid(userid);
+			config.setDevGroupName(devGroupName);
+			config.setDevGroupPetname(result.getData().getDevGroupPetName());
+			configRepository.saveAndFlush(config);
+//			UserService.user.setUserid(userid);
+//			UserService.getDevGroup().setUserid(userid);
+//			UserService.getDevGroup().setId(result.getData().getDevGroupId());
+//			UserService.getDevGroup().setName(devGroupName);
+//			UserService.getDevGroup().setPetName(result.getData().getDevGroupPetName());
+//			UserService.getDevGroup().setPsd(txtGroupPsd.getText());
+			//不能保存, 保存则可能由多个组的纪录
+//			devGroupRepo.saveAndFlush(UserService.getDevGroup());
 //			userService.initUser();
 			PadClient.getIns().closeHandler();
 			

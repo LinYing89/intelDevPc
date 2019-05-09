@@ -48,6 +48,7 @@
               <items>
                   <CheckMenuItem mnemonicParsing="false" text="实时曲线" />
                   <CheckMenuItem mnemonicParsing="false" text="事件信息" />
+                  <MenuItem mnemonicParsing="false" onAction="#onDragItemAction" text="组态视图" />
               </items>
             </Menu>
                 <Menu mnemonicParsing="false" text="帮助">

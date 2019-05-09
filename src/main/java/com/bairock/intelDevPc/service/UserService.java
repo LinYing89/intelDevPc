@@ -1,6 +1,5 @@
 package com.bairock.intelDevPc.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,18 +8,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
+import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.comm.MyOnCurrentValueChangedListener;
 import com.bairock.intelDevPc.comm.MyOnGearChangedListener;
 import com.bairock.intelDevPc.comm.MyOnSortIndexChangedListener;
 import com.bairock.intelDevPc.comm.MyOnStateChangedListener;
 import com.bairock.intelDevPc.data.Config;
+import com.bairock.intelDevPc.repository.DevGroupRepo;
 import com.bairock.intelDevPc.repository.UserRepository;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
 import com.bairock.iot.intelDev.communication.FindDevHelper;
 import com.bairock.iot.intelDev.communication.UdpServer;
+import com.bairock.iot.intelDev.data.DragDevice;
+import com.bairock.iot.intelDev.data.DragDeviceHelper;
 import com.bairock.iot.intelDev.device.DevHaveChild;
 import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.Device;
+import com.bairock.iot.intelDev.device.IStateDev;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.linkage.Linkage;
 import com.bairock.iot.intelDev.linkage.LinkageHelper;
@@ -41,19 +45,25 @@ public class UserService {
 
 	@Autowired
 	private Config config;
+	@Autowired
+	private DragDeviceService dragDeviceService;
 
 	public static User user;
+	private static DevGroup group;
 
 	private UserRepository userRepository;
+	private DevGroupRepo groupRepository;
 	private DeviceHistoryService deviceHistoryService;
 
 	public static DevGroup getDevGroup() {
-		return user.getListDevGroup().get(0);
+		return group;
 	}
 
 	@Autowired
-	public UserService(UserRepository userRepository, DeviceHistoryService deviceHistoryService) {
+	public UserService(UserRepository userRepository, DevGroupRepo groupRepository,
+			DeviceHistoryService deviceHistoryService) {
 		this.userRepository = userRepository;
+		this.groupRepository = groupRepository;
 		this.deviceHistoryService = deviceHistoryService;
 		// initUser();
 	}
@@ -76,19 +86,29 @@ public class UserService {
 
 	@Transactional
 	public void initUser() {
-
-		DevGroup group = null;
-
 		List<User> listUser = userRepository.findAll();
-		if (listUser.isEmpty()) {
-			user = new User("test123", "a123456", "", "", "admin", new Date());
+		if (listUser.isEmpty() || null == config.getDevGroupName() || config.getDevGroupName().isEmpty()) {
+			user = new User();
+			user.setUserid("test123");
+			user.setPassword("a123456");
 			group = new DevGroup("1", "a123", "g1");
 			group.setId(UUID.randomUUID().toString());
 			user.addGroup(group);
 			userRepository.saveAndFlush(user);
+			config.setAutoLogin(false);
 		} else {
 			user = listUser.get(0);
-			group = user.getListDevGroup().get(0);
+			// 从数据库读取组数据
+			List<DevGroup> listGroup = groupRepository.findAll();
+			group = listGroup.get(0);
+			//保持组的唯一, 删掉多余的, 正常情况下不会有多个
+			if(listGroup.size() > 1) {
+				for(int i=1; i<listGroup.size(); i++) {
+					groupRepository.deleteById((listGroup.get(i).getId()));
+				}
+			}
+			group.setUserid(user.getUserid());
+			user.addGroup(group);
 		}
 		DevChannelBridgeHelper.getIns().setUser(user);
 		UdpServer.getIns().setUser(user);
@@ -100,6 +120,7 @@ public class UserService {
 	public void reloadDevGroup(DevGroup group) {
 		System.out.println("userServer group " + (group.getUser() == user));
 		FindDevHelper.getIns().cleanAll();
+		DragDeviceHelper.getIns().getDragDevices().clear();
 		for (Device dev : group.getListDevice()) {
 			System.out.println(dev);
 			FindDevHelper.getIns().findDev(dev.getCoding());
@@ -134,7 +155,8 @@ public class UserService {
 		if (null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
 			LinkageTab.getIns().SetOnOrderSendListener((device, order, ctrlModel) -> {
 				if (null != order) {
-					if (null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL)) {
+				    boolean deviceIsNormal = device.isNormal() && device.findSuperParent().isNormal();
+					if (null != config.getLoginModel() && config.getLoginModel().equals(LoginModel.LOCAL) && deviceIsNormal) {
 						IntelDevPcApplication.sendOrder(device, order, OrderType.CTRL_DEV, false);
 					}
 				}
@@ -150,6 +172,8 @@ public class UserService {
 				}
 			});
 		}
+		//初始化组态界面配置数据
+        Util.initDragConfig(group.getId());
 	}
 
 	private void initDevice(Device dev) {
@@ -166,7 +190,22 @@ public class UserService {
 		if (dev instanceof DevCollect) {
 			((DevCollect) dev).getCollectProperty()
 					.addOnCurrentValueChangedListener(new MyOnCurrentValueChangedListener());
+			findDragDevice(dev);
+		}else if(dev instanceof IStateDev) {
+			findDragDevice(dev);
 		}
+	}
+	
+	private void findDragDevice(Device dev) {
+		DragDevice dragDevice = dragDeviceService.findByDeviceId(dev.getId());
+		if(null == dragDevice) {
+			dragDevice = new DragDevice();
+			dragDevice.setId(UUID.randomUUID().toString());
+			dragDevice.setDeviceId(dev.getId());
+			dragDeviceService.insert(dragDevice);
+		}
+		dragDevice.setDevice(dev);
+		DragDeviceHelper.getIns().addDragDevice(dragDevice);
 	}
 
 	public static String getUserJson(User user) {

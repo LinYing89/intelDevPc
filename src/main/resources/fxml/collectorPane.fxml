@@ -13,7 +13,6 @@
       <HBox fx:id="hboxStateBackground" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #4F94CD;" VBox.vgrow="ALWAYS">
          <children>
             <Label fx:id="labelValue" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 24;" text="50.00" />
-            <Label text="\%" textFill="WHITE" />
          </children>
          <cursor>
             <Cursor fx:constant="DEFAULT" />

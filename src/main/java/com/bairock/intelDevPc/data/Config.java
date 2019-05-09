@@ -14,7 +14,6 @@ public class Config {
 	private long id;
 	
 	private String serverName = "051801.cn";
-	private int upDownloadPort = 10004;
 	//pad连接服务器的端口
 	private int padPort = 10002;
 	//设备连接服务器的端口
@@ -25,6 +24,12 @@ public class Config {
 	
 	@Column(columnDefinition="boolean default false",nullable=false)
 	private boolean autoLogin;
+	
+	//登录的账号
+	private String userid;
+	//登录的组名
+	private String devGroupName;
+	private String devGroupPetname;
 	
 	private String loginModel;
 	
@@ -39,12 +44,6 @@ public class Config {
 	}
 	public void setServerName(String serverName) {
 		this.serverName = serverName;
-	}
-	public int getUpDownloadPort() {
-		return upDownloadPort;
-	}
-	public void setUpDownloadPort(int upDownloadPort) {
-		this.upDownloadPort = upDownloadPort;
 	}
 	public int getPadPort() {
 		return padPort;
@@ -70,6 +69,24 @@ public class Config {
 	}
 	public void setAutoLogin(boolean autoLogin) {
 		this.autoLogin = autoLogin;
+	}
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+	public String getDevGroupName() {
+		return devGroupName;
+	}
+	public void setDevGroupName(String devGroupName) {
+		this.devGroupName = devGroupName;
+	}
+	public String getDevGroupPetname() {
+		return devGroupPetname;
+	}
+	public void setDevGroupPetname(String devGroupPetname) {
+		this.devGroupPetname = devGroupPetname;
 	}
 	public String getLoginModel() {
 		return loginModel;

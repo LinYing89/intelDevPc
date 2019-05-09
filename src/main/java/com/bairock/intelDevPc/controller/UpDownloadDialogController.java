@@ -59,9 +59,7 @@ public class UpDownloadDialogController {
 		setMessage(str);
 	}
 	
-	private void setMessage(String message) {
+	public void setMessage(String message) {
 		Platform.runLater(()->{labelMessage.setText(message);});
 	}
-	
-	
 }

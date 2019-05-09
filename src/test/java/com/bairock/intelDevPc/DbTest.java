@@ -28,20 +28,20 @@ public class DbTest {
 	@Test
 	public void testInsertUser() {
 		
-		List<User> list = userRepository.findAll();
-		for(User user : list) {
-			userRepository.deleteById(user.getId());
-			userRepository.flush();
-		}
-		
-		User user = new User("test123", "a123", "444@qq.com", "171", "admin", new Date());
-		DevGroup group = new DevGroup("1", "a123", "g1");
-		group.setId(UUID.randomUUID().toString());
-		user.addGroup(group);
-		DevSwitchThreeRoad dsor = new DevSwitchThreeRoad(MainCodeHelper.KG_3LU_2TAI, "0001");
-		group.addDevice(dsor);
-		Pressure pressure = (Pressure) DeviceAssistent.createDeviceByMcId(MainCodeHelper.YE_WEI, "0001");
-		group.addDevice(pressure);
-		userRepository.saveAndFlush(user);
+//		List<User> list = userRepository.findAll();
+//		for(User user : list) {
+//			userRepository.deleteById(user.getId());
+//			userRepository.flush();
+//		}
+//		
+//		User user = new User("test123", "a123", "444@qq.com", "171", "admin", new Date());
+//		DevGroup group = new DevGroup("1", "a123", "g1");
+//		group.setId(UUID.randomUUID().toString());
+//		user.addGroup(group);
+//		DevSwitchThreeRoad dsor = new DevSwitchThreeRoad(MainCodeHelper.KG_3LU_2TAI, "0001");
+//		group.addDevice(dsor);
+//		Pressure pressure = (Pressure) DeviceAssistent.createDeviceByMcId(MainCodeHelper.YE_WEI, "0001");
+//		group.addDevice(pressure);
+//		userRepository.saveAndFlush(user);
 	}
 }

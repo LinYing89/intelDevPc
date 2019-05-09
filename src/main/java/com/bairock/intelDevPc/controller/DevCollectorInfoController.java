@@ -137,12 +137,12 @@ public class DevCollectorInfoController {
 		}
 		String strValue = txtCalibration.getText();
 		try {
-			int iValue = Integer.parseInt(strValue);
-			if(iValue >=0 && iValue <= 10) {
+			float iValue = Float.parseFloat(strValue);
+			if(iValue >=0 && iValue <= 100) {
 				String order = devCollect.createCalibrationOrder(iValue);
 				
 				devCollect.setCalibrationnListener(res ->{
-					devCollect.getCollectProperty().setCalibrationValue((float) iValue);
+					devCollect.getCollectProperty().setCalibrationValue(iValue);
 					collectPropertyRepository.saveAndFlush(devCollect.getCollectProperty());
 					((CalibrationDialogCtrler) calibrationDialog.getPresenter()).calibrationOk();
 				});
@@ -151,7 +151,7 @@ public class DevCollectorInfoController {
 				DevChannelBridgeHelper.getIns().sendDevOrder(devCollect, order, true);
 				IntelDevPcApplication.showView(CalibrationDialog.class, Modality.WINDOW_MODAL);
 			}else {
-				Alert warning = new Alert(Alert.AlertType.WARNING,"输入范围为0-10");
+				Alert warning = new Alert(Alert.AlertType.WARNING,"输入范围为0-100");
 				warning.showAndWait();
 			}
 		}catch (Exception e) {

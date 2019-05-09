@@ -253,8 +253,8 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 		if (null != UserService.user) {
 			DeviceOrder ob = new DeviceOrder();
 			ob.setOrderType(OrderType.HEAD_USER_INFO);
-			ob.setUsername(UserService.user.getName());
-			ob.setDevGroupName(UserService.getDevGroup().getName());
+			ob.setUsername(config.getUserid());
+			ob.setDevGroupName(config.getDevGroupName());
 			ob.setData(config.getLoginModel());
 			ObjectMapper om = new ObjectMapper();
 			String order;

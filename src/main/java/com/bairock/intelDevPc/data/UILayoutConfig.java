@@ -34,7 +34,7 @@ public class UILayoutConfig {
 	// 主界面工具视图SplitPane divider位置
 	@Column(columnDefinition = "double default 0.5", nullable = false)
 	private double dividerView = 0.5;
-
+	
 	public long getId() {
 		return id;
 	}
@@ -82,4 +82,5 @@ public class UILayoutConfig {
 	public void setDividerView(double dividerView) {
 		this.dividerView = dividerView;
 	}
+
 }

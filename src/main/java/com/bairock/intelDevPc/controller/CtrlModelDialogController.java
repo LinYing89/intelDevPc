@@ -55,7 +55,7 @@ public class CtrlModelDialogController {
 			newCtrlModel = CtrlModel.LOCAL;
 		}
 
-		setDevModelThread = new SetDevModelTask(UserService.user.getName(), UserService.getDevGroup().getName(), device, newCtrlModel, config.getServerName(), config.getDevPort());
+		setDevModelThread = new SetDevModelTask(UserService.user.getUserid(), UserService.getDevGroup().getName(), device, newCtrlModel, config.getServerName(), config.getDevPort());
 		setDevModelThread.setOnProgressListener(new OnProgressListener() {
 			
 			@Override
