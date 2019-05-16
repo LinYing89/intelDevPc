@@ -8,17 +8,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
+import com.bairock.intelDevPc.SpringUtil;
 import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.repository.DeviceImgRepo;
 import com.bairock.intelDevPc.repository.DeviceRepository;
 import com.bairock.intelDevPc.service.UserService;
 import com.bairock.intelDevPc.view.CtrlModelDialogView;
+import com.bairock.intelDevPc.view.EditDeviceCoding;
 import com.bairock.iot.intelDev.data.DeviceImg;
 import com.bairock.iot.intelDev.device.CtrlModel;
 import com.bairock.iot.intelDev.device.DevHaveChild;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.MainCodeHelper;
 import com.bairock.iot.intelDev.device.devswitch.DevSwitch;
+import com.bairock.iot.intelDev.device.devswitch.SubDev;
 import com.bairock.iot.intelDev.http.HttpDownloadDeviceImgTask;
 import com.bairock.iot.intelDev.user.DevGroup;
 
@@ -61,6 +64,8 @@ public class DevicesController {
 	private Label labelMainCode;
 	@FXML
 	private Label labelLongCoding;
+	@FXML
+	private Button btnEditCoding;
 	@FXML
 	private Button btnCtrlModel;
 	@FXML
@@ -183,6 +188,22 @@ public class DevicesController {
 		IntelDevPcApplication.showView(CtrlModelDialogView.class, Modality.APPLICATION_MODAL,
 				ctrler.onStageCreatedListener);
 	}
+	
+	/**
+	 * 编辑设备编码
+	 */
+	@FXML
+	private void onEditCodingAction() {
+	    String mainCode = MainCodeHelper.getIns().getMc(selectedDevice.getMainCodeId());
+	    EditDeviceCoding view = SpringUtil.getBean(EditDeviceCoding.class);
+	    ((EditDeviceCodingController) view.getPresenter()).init(mainCode, selectedDevice.getSubCode());
+	    IntelDevPcApplication.showView(EditDeviceCoding.class, Modality.APPLICATION_MODAL);
+	    if(EditDeviceCodingController.newSubCoding != null) {
+	        selectedDevice.setSubCode(EditDeviceCodingController.newSubCoding);
+	        deviceRepository.saveAndFlush(selectedDevice);
+	        labelLongCoding.setText(selectedDevice.getLongCoding());
+	    }
+	}
 
 	@FXML
 	private void handlerSave() {
@@ -213,6 +234,11 @@ public class DevicesController {
 				tfDeviceName.setText(selectedDevice.getName());
 				labelMainCode.setText(MainCodeHelper.getIns().getMc(selectedDevice.getMainCodeId()));
 				labelLongCoding.setText(selectedDevice.getLongCoding());
+				if(selectedDevice instanceof SubDev) {
+				    btnEditCoding.setVisible(false);
+				}else {
+				    btnEditCoding.setVisible(true);
+				}
 				cbVisibility.setSelected(!selectedDevice.isVisibility());
 				if (selectedDevice.getParent() == null) {
 					btnCtrlModel.setVisible(true);

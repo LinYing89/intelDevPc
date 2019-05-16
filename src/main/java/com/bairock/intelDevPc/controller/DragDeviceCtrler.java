@@ -62,6 +62,8 @@ public class DragDeviceCtrler {
     @FXML
     private ToggleButton toggleBtnReplace;
     @FXML
+    private ToggleButton toggleBtnHideName;
+    @FXML
     private Pane paneBackground;
     @FXML
     private ImageView imgBackground;
@@ -78,9 +80,21 @@ public class DragDeviceCtrler {
                     toggleBtnReplace.setText("调整位置");
                 }
             });
+            toggleBtnHideName.selectedProperty().addListener((p0, p1, p2) -> {
+                if (p2) {
+                    toggleBtnHideName.setText("显示设备名称");
+                } else {
+                    toggleBtnHideName.setText("隐藏设备名称");
+                }
+                showName(!p2);
+                Util.DRAG_CONFIG.setShowDeviceName(!p2);
+                Util.saveDragConfig();
+            });
             imgBackground.setImage(new Image("file:///" + Util.DRAG_CONFIG.getDragViewBackgroundImagePath()));
             imgBackground.setFitWidth(Util.DRAG_CONFIG.getDragBackgroundWidth());
             imgBackground.setFitHeight(Util.DRAG_CONFIG.getDragBackgroundHeight());
+            
+            toggleBtnHideName.setSelected(!Util.DRAG_CONFIG.isShowDeviceName());
         }
     }
 
@@ -108,6 +122,7 @@ public class DragDeviceCtrler {
             ContextMenu contextMenu = new ContextMenu();
             MenuItem menuChangeIcon = new MenuItem("选择系统图标");
             MenuItem menuChangePic = new MenuItem("选择本地图片");
+            MenuItem menuChangePicSize = new MenuItem("更改图片尺寸");
             menuChangeIcon.setOnAction(e -> {
                 clickedDragDeviceNode.getDragDevice().setImageType(DragDevice.IMG_ICON);
                 IntelDevPcApplication.showView(ChoiceIconView.class, Modality.WINDOW_MODAL);
@@ -139,14 +154,28 @@ public class DragDeviceCtrler {
                     dragDeviceRepository.saveAndFlush(clickedDragDeviceNode.getDragDevice());
                 }
             });
+            menuChangePicSize.setOnAction(e -> {
+                showChangeIconSizeDialog(false);
+            });
             contextMenu.getItems().add(menuChangeIcon);
             contextMenu.getItems().add(menuChangePic);
+            contextMenu.getItems().add(menuChangePicSize);
             ds.setOnContextMenuRequested(v -> {
                 contextMenu.show(imgBackground, v.getScreenX(), v.getScreenY());
             });
         }
+        showName(Util.DRAG_CONFIG.isShowDeviceName());
     }
 
+    private void showName(boolean showable) {
+        for(Node node : paneBackground.getChildren()) {
+            if (node instanceof DragDeviceNode) {
+                DragDeviceNode n = (DragDeviceNode) node;
+                n.showName(showable);
+            }
+        }
+    }
+    
     private void setDragListener(DragDeviceNode ds) {
         ds.setOnMousePressed(mouseEvent -> {
             dragBeginLayoutX = mouseEvent.getSceneX() - ds.getLayoutX();
@@ -215,6 +244,85 @@ public class DragDeviceCtrler {
             Util.DRAG_CONFIG.setDragViewBackgroundImagePath(path);
             Util.saveDragConfig();
         }
+    }
+    
+    private void showChangeIconSizeDialog(boolean allIcon) {
+        Stage state = new Stage();
+        state.setTitle("图标尺寸");
+        
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+        
+        // 创建Label对象，放到第0列，第0行
+        Label labelWidth = new Label("宽度:");
+        grid.add(labelWidth, 0, 0);
+        // 创建文本输入框，放到第1列，第0行
+        NumberTextField txtWidth = new NumberTextField();
+        txtWidth.setText(String.valueOf(clickedDragDeviceNode.getDragDevice().getImageWidth()));
+        grid.add(txtWidth, 1, 0);
+
+        Label labelHight = new Label("高度:");
+        grid.add(labelHight, 0, 1);
+        NumberTextField txtHight = new NumberTextField();
+        txtHight.setText(String.valueOf(clickedDragDeviceNode.getDragDevice().getImageHeight()));
+        grid.add(txtHight, 1, 1);
+
+        Label labelWarning = new Label();
+        grid.add(labelWarning, 1, 2);
+
+        Button btn = new Button("保存");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(btn);// 将按钮控件作为子节点
+        btn.setOnAction(e -> {
+            String strWidth = txtWidth.getText();
+            String strHight = txtHight.getText();
+            if (strWidth.isEmpty() || strHight.isEmpty()) {
+                labelWarning.setText("输入不可为空!");
+                return;
+            }
+            int width;
+            int height;
+            try {
+                width = Integer.parseInt(strWidth);
+                height = Integer.parseInt(strHight);
+            } catch (Exception ex) {
+                labelWarning.setText("输入只能为数字!");
+                return;
+            }
+            if(allIcon) {
+                for(Node node : paneBackground.getChildren()) {
+                    if (node instanceof DragDeviceNode) {
+                        DragDeviceNode n = (DragDeviceNode) node;
+                        changeIconSize(n, width, height);
+                    }
+                }
+            }else {
+                changeIconSize(clickedDragDeviceNode, width, height);
+            }
+            state.close();
+        });
+        grid.add(hbBtn, 1, 4);// 将HBox pane放到grid中的第1列，第4行
+
+        Scene scene = new Scene(grid, 300, 275);
+        state.setScene(scene);
+
+        state.showAndWait();
+    }
+    
+    private void changeIconSize(DragDeviceNode node, int width, int height) {
+        node.getDragDevice().setImageWidth(width);
+        node.getDragDevice().setImageHeight(height);
+        node.setImageWidthAndHeight(width, height);
+        dragDeviceRepository.saveAndFlush(node.getDragDevice());
+    }
+    
+    @FXML
+    public void onChangeAllIconAction(){
+        showChangeIconSizeDialog(true);
     }
 
     @FXML

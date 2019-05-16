@@ -253,6 +253,26 @@ public class IntelDevPcApplication extends AbstractJavaFxApplicationSupport {
         }
         newStage.showAndWait();
     }
+    
+    public static void showViewMax(final Class<? extends AbstractFxmlView> window, String title) {
+        final AbstractFxmlView view = SpringUtil.getBean(window);
+        Stage newStage = new Stage();
+
+        Scene newScene;
+        if (view.getView().getScene() != null) {
+            // This view was already shown so
+            // we have a scene for it and use this one.
+            newScene = view.getView().getScene();
+        } else {
+            newScene = new Scene(view.getView());
+        }
+
+        newStage.setTitle(title);
+        newStage.setScene(newScene);
+        newStage.initOwner(getStage());
+        newStage.setMaximized(true);
+        newStage.showAndWait();
+    }
 
     public interface OnStageCreatedListener {
         void onStageCreated(Stage newStage);

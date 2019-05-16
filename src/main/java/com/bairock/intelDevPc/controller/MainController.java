@@ -1,6 +1,5 @@
 package com.bairock.intelDevPc.controller;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +15,6 @@ import com.bairock.intelDevPc.data.Config;
 import com.bairock.intelDevPc.data.DeviceValueHistory;
 import com.bairock.intelDevPc.data.UILayoutConfig;
 import com.bairock.intelDevPc.repository.ConfigRepository;
-import com.bairock.intelDevPc.repository.DevGroupRepo;
 import com.bairock.intelDevPc.repository.UILayoutConfigRepository;
 import com.bairock.intelDevPc.service.DeviceHistoryService;
 import com.bairock.intelDevPc.service.DownloadService;
@@ -38,11 +36,8 @@ import com.bairock.iot.intelDev.communication.DevChannelBridge;
 import com.bairock.iot.intelDev.communication.DevChannelBridgeHelper;
 import com.bairock.iot.intelDev.communication.DevServer;
 import com.bairock.iot.intelDev.communication.UdpServer;
-import com.bairock.iot.intelDev.data.Result;
 import com.bairock.iot.intelDev.device.Device;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
-import com.bairock.iot.intelDev.http.HttpDownloadTask;
-import com.bairock.iot.intelDev.linkage.LinkageHolder;
 import com.bairock.iot.intelDev.order.LoginModel;
 import com.bairock.iot.intelDev.user.DevGroup;
 
@@ -71,8 +66,6 @@ public class MainController {
 
 	public static Device selectedValueDev;
 
-	@Autowired
-	private DevGroupRepo devGroupRepo;
 	@Autowired
 	private MainStateView mainStateView;
 	@Autowired
@@ -433,51 +426,6 @@ public class MainController {
 		IntelDevPcApplication.showView(UpDownloadDialog.class, Modality.WINDOW_MODAL);
 	}
 
-	// 下载结果
-	private void downloadResult(Result<DevGroup> result) {
-		UpDownloadDialogController controller = (UpDownloadDialogController) upDownloadDialog.getPresenter();
-		if (result.getCode() == 0) {
-			DevGroup groupDb = UserService.getDevGroup();
-			DevGroup groupDownload = result.getData();
-
-			DevChannelBridgeHelper.getIns().stopSeekDeviceOnLineThread();
-
-			List<Device> listOldDevice = new ArrayList<>(groupDb.getListDevice());
-
-//		groupDb.getListDevice().clear();
-			for (Device dev : listOldDevice) {
-				groupDb.removeDevice(dev);
-			}
-			for (Device dev : groupDownload.getListDevice()) {
-				groupDb.addDevice(dev);
-			}
-//		groupDb.getListDevice().addAll(groupUpload.getListDevice());
-//		groupDb.getListLinkageHolder().clear();
-			List<LinkageHolder> listOldLinkageHolder = new ArrayList<>(groupDb.getListLinkageHolder());
-			for (LinkageHolder h : listOldLinkageHolder) {
-				h.setDevGroup(null);
-				groupDb.getListLinkageHolder().remove(h);
-			}
-			for (LinkageHolder h : groupDownload.getListLinkageHolder()) {
-				h.setDevGroup(groupDb);
-				groupDb.getListLinkageHolder().add(h);
-			}
-//		groupDb.getListLinkageHolder().addAll(groupDownload.getListLinkageHolder());
-			devGroupRepo.saveAndFlush(groupDb);
-
-			userService.reloadDevGroup(groupDb);
-			reInit();
-			// 关掉所有设备链接
-			DevChannelBridgeHelper.getIns().closeAllBridge();
-
-			DevChannelBridgeHelper.getIns().startSeekDeviceOnLineThread();
-			PadClient.getIns().sendUserInfo();
-			controller.loadResult(true);
-		} else {
-			controller.loadResult(false);
-		}
-	}
-
 	public void menuAllDevices() {
 		System.out.println("menuAllDevices");
 		((DevicesController) devicesView.getPresenter()).init();
@@ -541,9 +489,16 @@ public class MainController {
 	@FXML
 	public void onDragItemAction() {
 		((DragDeviceCtrler) dragDeviceView.getPresenter()).init();
-		IntelDevPcApplication.showView(DragDeviceView.class, Modality.WINDOW_MODAL);
+		IntelDevPcApplication.showViewMax(DragDeviceView.class, "组态视图");
 	}
-
+	
+	// 组态视图
+    @FXML
+	public void onDragViewAction(){
+        ((DragDeviceCtrler) dragDeviceView.getPresenter()).init();
+        IntelDevPcApplication.showViewMax(DragDeviceView.class, "组态视图");
+	}
+    
 	private void initLocalConfig() {
 		if (null == config.getLoginModel()) {
 			Alert warning = new Alert(Alert.AlertType.WARNING, "登录过期, 请退出重新登录.");

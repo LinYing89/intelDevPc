@@ -99,6 +99,9 @@ public class DownloadService {
             try {
                 loginResult = mapper.readValue(result.getData(), new TypeReference<Result<List<DragDevice>>>(){});
                 dragDevices = loginResult.getData();
+                if(null == dragDevices) {
+                    upDownloadDialogController.loadResult(false);
+                }
                 upDownloadDialogController.setMessage("下载组态配置信息...");
                 downloadDragConfig();
             } catch (IOException e) {

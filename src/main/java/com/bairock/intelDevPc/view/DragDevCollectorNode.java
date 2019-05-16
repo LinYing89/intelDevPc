@@ -33,9 +33,9 @@ public class DragDevCollectorNode extends DragDeviceNode {
 
     public void refreshState() {
         if(!devCollector.isNormal()) {
-            paneState.setStyle("-fx-background-color : " + MyColor.DANGER);
+            labelValue.setStyle("-fx-background-color : " + MyColor.DANGER);
         }else {
-            paneState.setStyle("-fx-background-color : " + MyColor.INFO);
+            labelValue.setStyle("-fx-background-color : " + MyColor.INFO);
         }
     }
     

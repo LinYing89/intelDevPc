@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bairock.intelDevPc.controller.DragDeviceCtrler">
    <children>
       <HBox spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -18,6 +17,8 @@
             <ToggleButton fx:id="toggleBtnReplace" mnemonicParsing="false" text="调整位置" />
             <Button mnemonicParsing="false" onAction="#onChangeBackgroundAction" text="更换背景" />
             <Button mnemonicParsing="false" onAction="#onBackgroundSize" text="背景图尺寸" />
+            <ToggleButton fx:id="toggleBtnHideName" mnemonicParsing="false" text="隐藏设备名称" />
+            <Button mnemonicParsing="false" onAction="#onChangeAllIconAction" text="所有图标尺寸" />
          </children>
          <padding>
             <Insets bottom="3.0" left="3.0" top="3.0" />

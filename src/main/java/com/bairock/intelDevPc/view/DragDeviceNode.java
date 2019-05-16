@@ -9,13 +9,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
-public abstract class DragDeviceNode extends AnchorPane{
+public abstract class DragDeviceNode extends VBox{
 
-    @FXML
-    protected Pane paneState;
     @FXML
     protected Label labelValue;
     @FXML
@@ -39,6 +36,7 @@ public abstract class DragDeviceNode extends AnchorPane{
         this.setLayoutY(dragDevice.getLayouty());
         this.dragDevice = dragDevice;
         labelName.setText(dragDevice.getDevice().getName());
+        setImageWidthAndHeight(dragDevice.getImageWidth(), dragDevice.getImageHeight());
     }
     
     public DragDevice getDragDevice() {
@@ -47,6 +45,24 @@ public abstract class DragDeviceNode extends AnchorPane{
 
     public void setDragDevice(DragDevice dragDevice) {
         this.dragDevice = dragDevice;
+    }
+    
+    public void showName(boolean showable) {
+        labelName.setVisible(showable);
+//        labelName.setManaged(showable);
+    }
+    
+    public void setImageWidthAndHeight(int width, int height) {
+        setImageWidth(width);
+        setImageHeight(height);
+    }
+    
+    public void setImageWidth(int width) {
+        image.setFitWidth(width);
+    }
+    
+    public void setImageHeight(int height) {
+        image.setFitHeight(height);
     }
     
     public void refreshImage() {

@@ -55,11 +55,11 @@ public class DragDevSwitchNode extends DragDeviceNode {
 
     public void refreshState() {
         if (device.getDevStateId().equals(DevStateHelper.DS_KAI)) {
-            paneState.setStyle("-fx-background-color : " + MyColor.SUCCESS);
+            labelValue.setStyle("-fx-background-color : " + MyColor.SUCCESS);
         } else if (device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
-            paneState.setStyle("-fx-background-color : " + MyColor.SECONDARY);
+            labelValue.setStyle("-fx-background-color : " + MyColor.SECONDARY);
         } else if (!device.isNormal()) {
-            paneState.setStyle("-fx-background-color : " + MyColor.DANGER);
+            labelValue.setStyle("-fx-background-color : " + MyColor.DANGER);
         }
     }
 

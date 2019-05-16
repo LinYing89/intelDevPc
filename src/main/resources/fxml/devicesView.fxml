@@ -42,7 +42,12 @@
                   <Label text="设备编码:" GridPane.rowIndex="2" />
                   <Label text="图片:" GridPane.rowIndex="4" GridPane.valignment="TOP" />
                   <Label fx:id="labelMainCode" text="A1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="labelLongCoding" text="A10001" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <Label fx:id="labelLongCoding" text="A10001" />
+                        <Button fx:id="btnEditCoding" mnemonicParsing="false" onAction="#onEditCodingAction" text="编辑" />
+                     </children>
+                  </HBox>
                   <ImageView fx:id="imageDevice" fitHeight="260.0" fitWidth="300.0" onMouseClicked="#onMouseClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <cursor>
                         <Cursor fx:constant="HAND" />
