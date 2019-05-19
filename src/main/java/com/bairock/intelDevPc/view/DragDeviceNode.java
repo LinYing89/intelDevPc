@@ -52,6 +52,10 @@ public abstract class DragDeviceNode extends VBox{
 //        labelName.setManaged(showable);
     }
     
+    public void showIcon(boolean showable) {
+        image.setVisible(showable);
+    }
+    
     public void setImageWidthAndHeight(int width, int height) {
         setImageWidth(width);
         setImageHeight(height);

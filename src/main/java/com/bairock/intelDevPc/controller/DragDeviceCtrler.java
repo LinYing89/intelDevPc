@@ -64,6 +64,8 @@ public class DragDeviceCtrler {
     @FXML
     private ToggleButton toggleBtnHideName;
     @FXML
+    private ToggleButton toggleBtnHideIcon;
+    @FXML
     private Pane paneBackground;
     @FXML
     private ImageView imgBackground;
@@ -90,11 +92,22 @@ public class DragDeviceCtrler {
                 Util.DRAG_CONFIG.setShowDeviceName(!p2);
                 Util.saveDragConfig();
             });
+            toggleBtnHideIcon.selectedProperty().addListener((p0, p1, p2) -> {
+                if (p2) {
+                    toggleBtnHideIcon.setText("显示设备图标");
+                } else {
+                    toggleBtnHideIcon.setText("隐藏设备图标");
+                }
+                showIcon(!p2);
+                Util.DRAG_CONFIG.setShowDeviceIcon(!p2);
+                Util.saveDragConfig();
+            });
             imgBackground.setImage(new Image("file:///" + Util.DRAG_CONFIG.getDragViewBackgroundImagePath()));
             imgBackground.setFitWidth(Util.DRAG_CONFIG.getDragBackgroundWidth());
             imgBackground.setFitHeight(Util.DRAG_CONFIG.getDragBackgroundHeight());
             
             toggleBtnHideName.setSelected(!Util.DRAG_CONFIG.isShowDeviceName());
+            toggleBtnHideIcon.setSelected(!Util.DRAG_CONFIG.isShowDeviceIcon());
         }
     }
 
@@ -165,6 +178,7 @@ public class DragDeviceCtrler {
             });
         }
         showName(Util.DRAG_CONFIG.isShowDeviceName());
+        showIcon(Util.DRAG_CONFIG.isShowDeviceIcon());
     }
 
     private void showName(boolean showable) {
@@ -172,6 +186,15 @@ public class DragDeviceCtrler {
             if (node instanceof DragDeviceNode) {
                 DragDeviceNode n = (DragDeviceNode) node;
                 n.showName(showable);
+            }
+        }
+    }
+    
+    private void showIcon(boolean showable) {
+        for(Node node : paneBackground.getChildren()) {
+            if (node instanceof DragDeviceNode) {
+                DragDeviceNode n = (DragDeviceNode) node;
+                n.showIcon(showable);
             }
         }
     }

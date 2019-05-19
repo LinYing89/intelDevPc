@@ -17,8 +17,9 @@
             <ToggleButton fx:id="toggleBtnReplace" mnemonicParsing="false" text="调整位置" />
             <Button mnemonicParsing="false" onAction="#onChangeBackgroundAction" text="更换背景" />
             <Button mnemonicParsing="false" onAction="#onBackgroundSize" text="背景图尺寸" />
-            <ToggleButton fx:id="toggleBtnHideName" mnemonicParsing="false" text="隐藏设备名称" />
             <Button mnemonicParsing="false" onAction="#onChangeAllIconAction" text="所有图标尺寸" />
+            <ToggleButton fx:id="toggleBtnHideIcon" mnemonicParsing="false" text="隐藏设备图标" />
+            <ToggleButton fx:id="toggleBtnHideName" mnemonicParsing="false" text="隐藏设备名称" />
          </children>
          <padding>
             <Insets bottom="3.0" left="3.0" top="3.0" />
