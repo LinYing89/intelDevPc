@@ -37,6 +37,8 @@ public abstract class DragDeviceNode extends VBox{
         this.dragDevice = dragDevice;
         labelName.setText(dragDevice.getDevice().getName());
         setImageWidthAndHeight(dragDevice.getImageWidth(), dragDevice.getImageHeight());
+        setImageRotate(dragDevice.getRotate());
+//        image.setRotate(10);
     }
     
     public DragDevice getDragDevice() {
@@ -54,6 +56,10 @@ public abstract class DragDeviceNode extends VBox{
     
     public void showIcon(boolean showable) {
         image.setVisible(showable);
+    }
+    
+    public void setImageRotate(double rotate) {
+        image.setRotate(rotate);
     }
     
     public void setImageWidthAndHeight(int width, int height) {

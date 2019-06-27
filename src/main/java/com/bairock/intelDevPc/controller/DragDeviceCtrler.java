@@ -136,6 +136,7 @@ public class DragDeviceCtrler {
             MenuItem menuChangeIcon = new MenuItem("选择系统图标");
             MenuItem menuChangePic = new MenuItem("选择本地图片");
             MenuItem menuChangePicSize = new MenuItem("更改图片尺寸");
+            MenuItem menuRotate = new MenuItem("图标旋转");
             menuChangeIcon.setOnAction(e -> {
                 clickedDragDeviceNode.getDragDevice().setImageType(DragDevice.IMG_ICON);
                 IntelDevPcApplication.showView(ChoiceIconView.class, Modality.WINDOW_MODAL);
@@ -170,9 +171,13 @@ public class DragDeviceCtrler {
             menuChangePicSize.setOnAction(e -> {
                 showChangeIconSizeDialog(false);
             });
+            menuRotate.setOnAction(e -> {
+                showImageRotate();
+            });
             contextMenu.getItems().add(menuChangeIcon);
             contextMenu.getItems().add(menuChangePic);
             contextMenu.getItems().add(menuChangePicSize);
+            contextMenu.getItems().add(menuRotate);
             ds.setOnContextMenuRequested(v -> {
                 contextMenu.show(imgBackground, v.getScreenX(), v.getScreenY());
             });
@@ -331,6 +336,60 @@ public class DragDeviceCtrler {
         grid.add(hbBtn, 1, 4);// 将HBox pane放到grid中的第1列，第4行
 
         Scene scene = new Scene(grid, 300, 275);
+        state.setScene(scene);
+
+        state.showAndWait();
+    }
+    
+    private void showImageRotate() {
+        Stage state = new Stage();
+        state.setTitle("图标旋转");
+        
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+        
+        // 创建Label对象，放到第0列，第0行
+        Label labelWidth = new Label("旋转角度:");
+        grid.add(labelWidth, 0, 0);
+        // 创建文本输入框，放到第1列，第0行
+        NumberTextField txtWidth = new NumberTextField();
+        txtWidth.setText(String.valueOf(clickedDragDeviceNode.getDragDevice().getRotate()));
+        grid.add(txtWidth, 1, 0);
+
+        Label labelNote = new Label("负数为逆时针旋转");
+        labelNote.setStyle("-fx-text-fill : grey");
+        grid.add(labelNote, 1, 1);
+        
+        Label labelWarning = new Label();
+        grid.add(labelWarning, 1, 2);
+
+        Button btn = new Button("保存");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(btn);// 将按钮控件作为子节点
+        btn.setOnAction(e -> {
+            String strRotate = txtWidth.getText();
+            if (strRotate.isEmpty()) {
+                strRotate = "0";
+            }
+            double rotate;
+            try {
+                rotate = Double.parseDouble(strRotate);
+            } catch (Exception ex) {
+                labelWarning.setText("输入只能为数字!");
+                return;
+            }
+            clickedDragDeviceNode.getDragDevice().setRotate(rotate);
+            clickedDragDeviceNode.setImageRotate(rotate);
+            dragDeviceRepository.saveAndFlush(clickedDragDeviceNode.getDragDevice());
+            state.close();
+        });
+        grid.add(hbBtn, 1, 4);// 将HBox pane放到grid中的第1列，第4行
+
+        Scene scene = new Scene(grid, 400, 275);
         state.setScene(scene);
 
         state.showAndWait();

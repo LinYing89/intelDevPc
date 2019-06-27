@@ -152,7 +152,11 @@ public class StateDeviceListView extends VBox {
 		}
 
 		group.selectedToggleProperty().addListener((p0, p1, p2) -> {
-			
+		    //再次点击已经选中按钮, 则p2为null
+			if(null == p2) {
+			    p1.setSelected(true);
+			    return;
+			}
 			if (p2 == btnOn) {
 				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOnOrder(), OrderType.CTRL_DEV, true);
 				device.setGear(Gear.KAI);
