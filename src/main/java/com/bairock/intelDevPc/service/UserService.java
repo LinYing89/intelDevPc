@@ -197,9 +197,9 @@ public class UserService {
 	}
 	
 	private void findDragDevice(Device dev) {
-	    if(!dev.isVisibility()) {
-	        return;
-	    }
+//	    if(!dev.isVisibility()) {
+//	        return;
+//	    }
 		DragDevice dragDevice = dragDeviceService.findByDeviceId(dev.getId());
 		if(null == dragDevice) {
 			dragDevice = new DragDevice();

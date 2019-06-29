@@ -123,6 +123,10 @@ public class DragDeviceCtrler {
             }
         }
         for (DragDevice dg : DragDeviceHelper.getIns().getDragDevices()) {
+            //不显示隐藏的设备
+            if(!dg.getDevice().isVisibility()) {
+                continue;
+            }
             DragDeviceNode ds = null;
             if (dg.getDevice() instanceof IStateDev) {
                 ds = new DragDevSwitchNode(dg);
