@@ -116,7 +116,7 @@ public class IntelDevPcApplication extends AbstractJavaFxApplicationSupport {
             break;
         case REMOTE:
             Device superParent = device.findSuperParent();
-            if (!immediately && superParent.canSend()) {
+            if (immediately && superParent.canSend()) {
                 superParent.setLastOrder(order);
                 superParent.resetLastCommunicationTime();
                 devOrder = createDeviceOrder(device, orderType, order);

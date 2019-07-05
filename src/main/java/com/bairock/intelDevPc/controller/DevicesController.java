@@ -116,7 +116,7 @@ public class DevicesController {
 
     private boolean inited;
 
-    private ContextMenu treeviewContextMenu = new ContextMenu();
+    private ContextMenu treeviewContextMenu = null;
 
     public void init1() {
         listDeviceImg = deviceImgRepo.findAll();
@@ -152,7 +152,11 @@ public class DevicesController {
             if (null == selectedDevice || selectedDevice instanceof SubDev) {
                 return;
             }
-            treeviewContextMenu.getItems().clear();
+            if(null == treeviewContextMenu) {
+                treeviewContextMenu = new ContextMenu();
+            }else {
+                treeviewContextMenu.getItems().clear();
+            }
             if (selectedDevice.getId().equals("0") || selectedDevice instanceof Coordinator) {
                 MenuItem menuAdd = new MenuItem("添加设备");
                 treeviewContextMenu.getItems().add(menuAdd);
@@ -496,6 +500,8 @@ public class DevicesController {
 
     @FXML
     private void treevewOnMouseClicked() {
-        treeviewContextMenu.hide();
+        if(null != treeviewContextMenu) {
+            treeviewContextMenu.hide();
+        }
     }
 }

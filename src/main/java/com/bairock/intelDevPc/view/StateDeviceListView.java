@@ -45,218 +45,229 @@ import javafx.util.Callback;
 
 public class StateDeviceListView extends VBox {
 
-	private DevSwitchInfo devSwitchInfo = SpringUtil.getBean(DevSwitchInfo.class);
+    private DevSwitchInfo devSwitchInfo = SpringUtil.getBean(DevSwitchInfo.class);
 
-	@FXML
-	private ListView<Device> lvDevices;
+    @FXML
+    private ListView<Device> lvDevices;
 
-	private Callback<ListView<Device>, ListCell<Device>> deviceCellFactory;
+    private Callback<ListView<Device>, ListCell<Device>> deviceCellFactory;
 
-	public StateDeviceListView() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/deviceListPane.fxml"));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
+    public StateDeviceListView() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/deviceListPane.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
 
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
-		String urlString = this.getClass().getResource("/css/valueDeviceListView.css").toExternalForm();
-		this.getStylesheets().add(urlString);
-		deviceCellFactory = new Callback<ListView<Device>, ListCell<Device>>() {
-			@Override
-			public ListCell<Device> call(ListView<Device> param) {
-				return new ListCell<Device>() {
-					@Override
-					protected void updateItem(Device item, boolean empty) {
-						super.updateItem(item, empty);
-						if (null != item && !empty) {
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+        String urlString = this.getClass().getResource("/css/valueDeviceListView.css").toExternalForm();
+        this.getStylesheets().add(urlString);
+        deviceCellFactory = new Callback<ListView<Device>, ListCell<Device>>() {
+            @Override
+            public ListCell<Device> call(ListView<Device> param) {
+                return new ListCell<Device>() {
+                    @Override
+                    protected void updateItem(Device item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (null != item && !empty) {
 //							this.setText(item.getName());
-							this.setPadding(new Insets(1, 0, 0, 0));
-							setGraphic(getItemGridPane(item));
-						} else {
-							this.setText(null);
-							setGraphic(null);
-						}
-					}
-				};
-			}
-		};
-		lvDevices.setCellFactory(deviceCellFactory);
+                            this.setPadding(new Insets(1, 0, 0, 0));
+                            setGraphic(getItemGridPane(item));
+                        } else {
+                            this.setText(null);
+                            setGraphic(null);
+                        }
+                    }
+                };
+            }
+        };
+        lvDevices.setCellFactory(deviceCellFactory);
 
-		AnchorPane.setLeftAnchor(this, 0.0);
-		AnchorPane.setTopAnchor(this, 0.0);
-		AnchorPane.setRightAnchor(this, 0.0);
-		AnchorPane.setBottomAnchor(this, 0.0);
-	}
+        AnchorPane.setLeftAnchor(this, 0.0);
+        AnchorPane.setTopAnchor(this, 0.0);
+        AnchorPane.setRightAnchor(this, 0.0);
+        AnchorPane.setBottomAnchor(this, 0.0);
+    }
 
-	private GridPane getItemGridPane(Device device) {
-		GridPane paneRoot = new GridPane();
-		ColumnConstraints cc2 = new ColumnConstraints();
-		cc2.setPercentWidth(40);
-		paneRoot.getColumnConstraints().add(cc2);
-		ColumnConstraints cc3 = new ColumnConstraints();
-		cc3.setPercentWidth(40);
-		paneRoot.getColumnConstraints().add(cc3);
-		
-		Label labelName = new Label(device.getName());
-		labelName.setId("labelName");
-		labelName.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-			((DevSwitchController) devSwitchInfo.getPresenter()).init(device);
-			IntelDevPcApplication.showView(DevSwitchInfo.class, Modality.WINDOW_MODAL);
-		});
-		labelName.setCursor(Cursor.HAND);
+    private GridPane getItemGridPane(Device device) {
+        GridPane paneRoot = new GridPane();
+        ColumnConstraints cc2 = new ColumnConstraints();
+        cc2.setPercentWidth(40);
+        paneRoot.getColumnConstraints().add(cc2);
+        ColumnConstraints cc3 = new ColumnConstraints();
+        cc3.setPercentWidth(40);
+        paneRoot.getColumnConstraints().add(cc3);
+
+        Label labelName = new Label(device.getName());
+        labelName.setId("labelName");
+        labelName.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            ((DevSwitchController) devSwitchInfo.getPresenter()).init(device);
+            IntelDevPcApplication.showView(DevSwitchInfo.class, Modality.WINDOW_MODAL);
+        });
+        labelName.setCursor(Cursor.HAND);
 //		labelName.setPadding(new Insets(0, 0, 0, 8));
-		paneRoot.addColumn(0, labelName);
+        paneRoot.addColumn(0, labelName);
 
-		HBox hbox = new HBox();
-		hbox.setSpacing(10);
-		ToggleButton btnOn = new ToggleButton("开");
-		ToggleButton btnAuto = new ToggleButton("自动");
-		ToggleButton btnOff = new ToggleButton("关");
-		ToggleGroup group = new ToggleGroup();
-		group.getToggles().addAll(btnOn, btnAuto, btnOff);
-		hbox.getChildren().addAll(btnOn, btnAuto, btnOff);
-		hbox.setAlignment(Pos.CENTER);
-		paneRoot.addColumn(1, hbox);
-		
-		String ctrlModel = Util.getCtrlModelName(device.findSuperParent().getCtrlModel());
-		Label labelCtrlModel = new Label(ctrlModel);
-		paneRoot.addColumn(2, labelCtrlModel);
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+        ToggleButton btnOn = new ToggleButton("开");
+        ToggleButton btnAuto = new ToggleButton("自动");
+        ToggleButton btnOff = new ToggleButton("关");
+        ToggleGroup group = new ToggleGroup();
+        group.getToggles().addAll(btnOn, btnAuto, btnOff);
+        hbox.getChildren().addAll(btnOn, btnAuto, btnOff);
+        hbox.setAlignment(Pos.CENTER);
+        paneRoot.addColumn(1, hbox);
 
-		if (device.getDevStateId().equals(DevStateHelper.DS_KAI)) {
-			paneRoot.setStyle("-fx-background-color : " + MyColor.SUCCESS);
-			labelName.setStyle("-fx-text-fill : white");
-			labelCtrlModel.setStyle("-fx-text-fill : white");
-		} else if (device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
-			paneRoot.setStyle("-fx-background-color : " + MyColor.TRANSPARENT);
-			labelName.setStyle("-fx-text-fill : black");
-			labelCtrlModel.setStyle("-fx-text-fill : black");
-		} else if (!device.isNormal() || device.getDevStateId().equals(DevStateHelper.DS_UNKNOW)) {
-			paneRoot.setStyle("-fx-background-color : " + MyColor.DANGER);
-			labelName.setStyle("-fx-text-fill : white");
-			labelCtrlModel.setStyle("-fx-text-fill : white");
-		}
-		
-		switch (device.getGear()) {
-		case GUAN:
-			group.selectToggle(btnOff);
-			break;
-		case KAI:
-			group.selectToggle(btnOn);
-			break;
-		default:
-			group.selectToggle(btnAuto);
-			break;
-		}
+        String ctrlModel = Util.getCtrlModelName(device.findSuperParent().getCtrlModel());
+        Label labelCtrlModel = new Label(ctrlModel);
+        paneRoot.addColumn(2, labelCtrlModel);
 
-		group.selectedToggleProperty().addListener((p0, p1, p2) -> {
-		    //再次点击已经选中按钮, 则p2为null
-			if(null == p2) {
-			    p1.setSelected(true);
-			    return;
-			}
-			if (p2 == btnOn) {
-				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOnOrder(), OrderType.CTRL_DEV, true);
-				device.setGear(Gear.KAI);
-			} else if (p2 == btnAuto) {
-				device.setGear(Gear.ZIDONG);
-			} else {
-				IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOffOrder(), OrderType.CTRL_DEV, true);
-				device.setGear(Gear.GUAN);
-			}
-			//向服务器发送档位, 不能在监听器中发送, 因为如果是远程登录, 当收到服务器档位改变后不可以再向服务器发送
-			//宫格中, 列表中, 属性界面中三个地方一致处理
-			String gearOrder = IntelDevPcApplication.createDeviceOrder(device, OrderType.GEAR, device.getGear().toString());
-			PadClient.getIns().send(gearOrder);
-		});
-		
-		paneRoot.setPadding(new Insets(4, 0, 4, 0));
-		return paneRoot;
-	}
+        if (device.getDevStateId().equals(DevStateHelper.DS_KAI)) {
+            paneRoot.setStyle("-fx-background-color : " + MyColor.SUCCESS);
+            labelName.setStyle("-fx-text-fill : white");
+            labelCtrlModel.setStyle("-fx-text-fill : white");
+        } else if (device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
+            paneRoot.setStyle("-fx-background-color : " + MyColor.TRANSPARENT);
+            labelName.setStyle("-fx-text-fill : black");
+            labelCtrlModel.setStyle("-fx-text-fill : black");
+        } else if (!device.isNormal() || device.getDevStateId().equals(DevStateHelper.DS_UNKNOW)) {
+            paneRoot.setStyle("-fx-background-color : " + MyColor.DANGER);
+            labelName.setStyle("-fx-text-fill : white");
+            labelCtrlModel.setStyle("-fx-text-fill : white");
+        }
 
-	public void refresh() {
-		if (null != lvDevices) {
-			lvDevices.refresh();
-		}
-	}
-	
-	public void destory() {
-		DevGroup devGroup = UserService.user.getListDevGroup().get(0);
-		List<Device> listDev = devGroup.findListIStateDev(true);
-		for (Device dev : listDev) {
-			dev.removeOnStateChangedListener(onStateChangedListener);
-			dev.removeOnGearChangedListener(onGearChangedListener);
-			dev.removeOnNameChangedListener(onNameChangedListener);
-			dev.removeOnCtrlModelChangedListener(onCtrlModelChangedListener);
-		}
-	}
+        switch (device.getGear()) {
+        case GUAN:
+            group.selectToggle(btnOff);
+            break;
+        case KAI:
+            group.selectToggle(btnOn);
+            break;
+        default:
+            group.selectToggle(btnAuto);
+            break;
+        }
 
-	public void updateItem() {
-		DevGroup devGroup = UserService.user.getListDevGroup().get(0);
-		List<Device> listDev = devGroup.findListIStateDev(true);
-		for (Device dev : listDev) {
-			dev.addOnStateChangedListener(onStateChangedListener);
-			dev.addOnGearChangedListener(onGearChangedListener);
-			dev.addOnNameChangedListener(onNameChangedListener);
-			dev.addOnCtrlModelChangedListener(onCtrlModelChangedListener);
-		}
-		lvDevices.getItems().clear();
-		lvDevices.getItems().addAll(listDev);
-	}
+        group.selectedToggleProperty().addListener((p0, p1, p2) -> {
+            // 再次点击已经选中按钮, 则p2为null
+            if (null == p2) {
+                p1.setSelected(true);
+                return;
+            }
+            if (p2 == btnOn) {
+                // 先改档位再发命令, 防止发了命令, 档位没变, 先被连锁发出了原档位的命令
+                device.setGear(Gear.KAI);
+                //先发档位命令
+                sendGear(device);
+                IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOnOrder(), OrderType.CTRL_DEV,
+                        true);
+            } else if (p2 == btnAuto) {
+                device.setGear(Gear.ZIDONG);
+                sendGear(device);
+            } else {
+                device.setGear(Gear.GUAN);
+                sendGear(device);
+                IntelDevPcApplication.sendOrder(device, ((IStateDev) device).getTurnOffOrder(), OrderType.CTRL_DEV,
+                        true);
+            }
 
-	private OnNameChangedListener onNameChangedListener = new OnNameChangedListener() {
+        });
 
-		@Override
-		public void onNameChanged(MyHome myHome, String name) {
-			refresh();
-		}
+        paneRoot.setPadding(new Insets(4, 0, 4, 0));
+        return paneRoot;
+    }
 
-	};
-	
-	private OnCtrlModelChangedListener onCtrlModelChangedListener = new OnCtrlModelChangedListener() {
+    private void sendGear(Device device) {
+        // 向服务器发送档位, 不能在监听器中发送, 因为如果是远程登录, 当收到服务器档位改变后不可以再向服务器发送
+        // 宫格中, 列表中, 属性界面中三个地方一致处理
+        String gearOrder = IntelDevPcApplication.createDeviceOrder(device, OrderType.GEAR, device.getGear().toString());
+        PadClient.getIns().send(gearOrder);
+    }
 
-		@Override
-		public void onCtrlModelChanged(Device dev, CtrlModel ctrlModel) {
-			Platform.runLater(() -> refresh());
-		}
-	};
+    public void refresh() {
+        if (null != lvDevices) {
+            lvDevices.refresh();
+        }
+    }
 
-	private OnGearChangedListener onGearChangedListener = new OnGearChangedListener() {
-		@Override
-		public void onGearChanged(Device dev, Gear gear, boolean touchDev) {
-			Platform.runLater(() -> refresh());
-		}
-	};
+    public void destory() {
+        DevGroup devGroup = UserService.user.getListDevGroup().get(0);
+        List<Device> listDev = devGroup.findListIStateDev(true);
+        for (Device dev : listDev) {
+            dev.removeOnStateChangedListener(onStateChangedListener);
+            dev.removeOnGearChangedListener(onGearChangedListener);
+            dev.removeOnNameChangedListener(onNameChangedListener);
+            dev.removeOnCtrlModelChangedListener(onCtrlModelChangedListener);
+        }
+    }
 
-	private OnStateChangedListener onStateChangedListener = new OnStateChangedListener() {
+    public void updateItem() {
+        DevGroup devGroup = UserService.user.getListDevGroup().get(0);
+        List<Device> listDev = devGroup.findListIStateDev(true);
+        for (Device dev : listDev) {
+            dev.addOnStateChangedListener(onStateChangedListener);
+            dev.addOnGearChangedListener(onGearChangedListener);
+            dev.addOnNameChangedListener(onNameChangedListener);
+            dev.addOnCtrlModelChangedListener(onCtrlModelChangedListener);
+        }
+        lvDevices.getItems().clear();
+        lvDevices.getItems().addAll(listDev);
+    }
 
-		@Override
-		public void onStateChanged(Device dev, String stateId) {
-			if (stateId.equals(DevStateHelper.DS_UNKNOW)) {
-				return;
-			}
-			Platform.runLater(() -> refresh());
-		}
+    private OnNameChangedListener onNameChangedListener = new OnNameChangedListener() {
 
-		@Override
-		public void onNormalToAbnormal(Device dev) {
-			// TODO Auto-generated method stub
+        @Override
+        public void onNameChanged(MyHome myHome, String name) {
+            refresh();
+        }
 
-		}
+    };
 
-		@Override
-		public void onAbnormalToNormal(Device dev) {
-			// TODO Auto-generated method stub
+    private OnCtrlModelChangedListener onCtrlModelChangedListener = new OnCtrlModelChangedListener() {
 
-		}
+        @Override
+        public void onCtrlModelChanged(Device dev, CtrlModel ctrlModel) {
+            Platform.runLater(() -> refresh());
+        }
+    };
 
-		@Override
-		public void onNoResponse(Device dev) {
-			// TODO Auto-generated method stub
+    private OnGearChangedListener onGearChangedListener = new OnGearChangedListener() {
+        @Override
+        public void onGearChanged(Device dev, Gear gear, boolean touchDev) {
+            Platform.runLater(() -> refresh());
+        }
+    };
 
-		}
+    private OnStateChangedListener onStateChangedListener = new OnStateChangedListener() {
 
-	};
+        @Override
+        public void onStateChanged(Device dev, String stateId) {
+            if (stateId.equals(DevStateHelper.DS_UNKNOW)) {
+                return;
+            }
+            Platform.runLater(() -> refresh());
+        }
+
+        @Override
+        public void onNormalToAbnormal(Device dev) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onAbnormalToNormal(Device dev) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onNoResponse(Device dev) {
+            // TODO Auto-generated method stub
+
+        }
+
+    };
 }

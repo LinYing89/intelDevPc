@@ -174,25 +174,22 @@ public class DevicePane extends VBox {
 		IStateDev iStateDev = (IStateDev)device;
 		
 		if(device.getGear() == Gear.KAI) {
+		    device.setGear(Gear.GUAN);
+		    sendGear(device);
 		    IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOffOrder(), OrderType.CTRL_DEV, true);
-            device.setGear(Gear.GUAN);
 		}else {
+		    device.setGear(Gear.KAI);
+		    sendGear(device);
 		    IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOnOrder(), OrderType.CTRL_DEV, true);
-            device.setGear(Gear.KAI);
 		}
-		
-//		if(device.isKaiState()) {
-//			IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOffOrder(), OrderType.CTRL_DEV, true);
-//			device.setGear(Gear.GUAN);
-//		}else {
-//			IntelDevPcApplication.sendOrder(device, iStateDev.getTurnOnOrder(), OrderType.CTRL_DEV, true);
-//			device.setGear(Gear.KAI);
-//		}
-		//向服务器发送档位, 不能在监听器中发送, 因为如果是远程登录, 当收到服务器档位改变后不可以再向服务器发送
-		//宫格中, 列表中, 属性界面中三个地方一致处理
-		String gearOrder = IntelDevPcApplication.createDeviceOrder(device, OrderType.GEAR, device.getGear().toString());
-		PadClient.getIns().send(gearOrder);
 	}
+	
+	private void sendGear(Device device) {
+        // 向服务器发送档位, 不能在监听器中发送, 因为如果是远程登录, 当收到服务器档位改变后不可以再向服务器发送
+        // 宫格中, 列表中, 属性界面中三个地方一致处理
+        String gearOrder = IntelDevPcApplication.createDeviceOrder(device, OrderType.GEAR, device.getGear().toString());
+        PadClient.getIns().send(gearOrder);
+    }
 
 	@FXML
 	private void handleReleased(MouseEvent event) {
