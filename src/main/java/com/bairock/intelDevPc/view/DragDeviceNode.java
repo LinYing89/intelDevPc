@@ -83,7 +83,7 @@ public abstract class DragDeviceNode extends VBox{
                 image.setImage(new Image(dragDevice.getImageName()));
             }
         }catch(IllegalArgumentException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

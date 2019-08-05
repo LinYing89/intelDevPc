@@ -79,22 +79,26 @@ public class CollectorPane extends VBox{
 	}
 	
 	public void refreshState() {
-		if(!device.isNormal()) {
-			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.DANGER);
-		}else {
-			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.INFO);
-		}
+	    Platform.runLater(()->{
+	        if(!device.isNormal()) {
+	            hboxStateBackground.setStyle("-fx-background-color : " + MyColor.DANGER);
+	        }else {
+	            hboxStateBackground.setStyle("-fx-background-color : " + MyColor.INFO);
+	        }
+	    });
 	}
 	
 	public void refreshValue() {
-        labelValue.setText(device.getCollectProperty().getValueWithSymbol());
+	    Platform.runLater(()->{
+	        labelValue.setText(device.getCollectProperty().getValueWithSymbol());
+	    });
     }
 
 	private OnCurrentValueChangedListener onCurrentValueChangedListener = new OnCurrentValueChangedListener() {
 
 		@Override
 		public void onCurrentValueChanged(DevCollect dev, Float value) {
-			Platform.runLater(()->refreshValue());
+		    refreshValue();
 		}
 		
 	};

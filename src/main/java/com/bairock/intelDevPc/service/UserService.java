@@ -87,11 +87,14 @@ public class UserService {
 	@Transactional
 	public void initUser() {
 		List<User> listUser = userRepository.findAll();
-		if (listUser.isEmpty() || null == config.getDevGroupName() || config.getDevGroupName().isEmpty()) {
+		List<DevGroup> listGroup = groupRepository.findAll();
+		if (listUser.isEmpty() || listGroup.isEmpty() || null == config.getDevGroupName() || config.getDevGroupName().isEmpty()) {
 			user = new User();
-			user.setUserid("test123");
-			user.setPassword("a123456");
-			group = new DevGroup("1", "a123", "g1");
+			user.setUserid(config.getUserid());
+//			user.setPassword("a123456");
+			group = new DevGroup();
+			group.setName(config.getDevGroupName());
+			group.setPetName(config.getDevGroupPetname());
 			group.setId(UUID.randomUUID().toString());
 			user.addGroup(group);
 			userRepository.saveAndFlush(user);
@@ -99,7 +102,7 @@ public class UserService {
 		} else {
 			user = listUser.get(0);
 			// 从数据库读取组数据
-			List<DevGroup> listGroup = groupRepository.findAll();
+//			List<DevGroup> listGroup = groupRepository.findAll();
 			group = listGroup.get(0);
 			//保持组的唯一, 删掉多余的, 正常情况下不会有多个
 			if(listGroup.size() > 1) {

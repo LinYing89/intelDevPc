@@ -150,6 +150,12 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 //				order = om.writeValueAsString(orderBase);
 				send(strData);
 				break;
+			case REFRESH_STATE:
+                if (config.getLoginModel().equals(LoginModel.LOCAL)) {
+                    // 发送设备状态
+                    sendInitStateToServer();
+                }
+                break;
 			case GEAR:
 				Device dev = UserService.getDevGroup().findDeviceWithCoding(orderBase.getLongCoding());
 				if (null == dev) {
@@ -166,12 +172,13 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 					return;
 				}
 				dev.setCtrlModel(CtrlModel.REMOTE);
-				IStateDev stateDev = (IStateDev) dev;
-				if (orderBase.getData().equals(DevStateHelper.DS_KAI)) {
-					order = stateDev.getTurnOnOrder();
-				} else {
-					order = stateDev.getTurnOffOrder();
-				}
+//				IStateDev stateDev = (IStateDev) dev;
+//				if (orderBase.getData().equals(DevStateHelper.DS_KAI)) {
+//					order = stateDev.getTurnOnOrder();
+//				} else {
+//					order = stateDev.getTurnOffOrder();
+//				}
+				order = orderBase.getData();
 				DevChannelBridgeHelper.getIns().sendDevOrder(dev, order, true);
 				break;
 			case STATE:

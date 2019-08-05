@@ -103,14 +103,16 @@ public class DevicePane extends VBox {
 	}
 	
 	public void refreshState() {
-		if(device.getDevStateId().equals(DevStateHelper.DS_KAI)) {
-//			Platform.runLater(()->scheduleLabel.setText("0%"));
-			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.SUCCESS);
-		}else if(device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
-			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.SECONDARY);
-		}else if(!device.isNormal()) {
-			hboxStateBackground.setStyle("-fx-background-color : " + MyColor.DANGER);
-		}
+	    Platform.runLater(() -> {
+	        if(device.getDevStateId().equals(DevStateHelper.DS_KAI)) {
+//	          Platform.runLater(()->scheduleLabel.setText("0%"));
+	            hboxStateBackground.setStyle("-fx-background-color : " + MyColor.SUCCESS);
+	        }else if(device.getDevStateId().equals(DevStateHelper.DS_GUAN)) {
+	            hboxStateBackground.setStyle("-fx-background-color : " + MyColor.SECONDARY);
+	        }else if(!device.isNormal()) {
+	            hboxStateBackground.setStyle("-fx-background-color : " + MyColor.DANGER);
+	        }
+	    });
 	}
 
 	private OnNameChangedListener onNameChangedListener = new OnNameChangedListener() {
