@@ -19,3 +19,5 @@ javafx:
     title: 呱呱物联
 logging:
   file: ./logs/inteldevpc/info.log
+
+  

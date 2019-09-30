@@ -58,7 +58,7 @@ public class PadClient {
 				ph.addLast("decoder", new StringDecoder(Charset.forName("UTF-8")));
 				ph.addLast("encoder", new StringEncoder(Charset.forName("UTF-8")));
 
-				ph.addLast(new IdleStateHandler(-1, 20, 20, TimeUnit.SECONDS)); // 1
+				ph.addLast(new IdleStateHandler(-1, 30, -1, TimeUnit.SECONDS)); // 1
 				ph.addLast(new PadClientHandler());
 			}
 		});

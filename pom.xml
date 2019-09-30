@@ -6,7 +6,7 @@
 
 	<groupId>com.bairock</groupId>
 	<artifactId>intelDevPc</artifactId>
-	<version>1</version>
+	<version>1.324</version>
 	<packaging>jar</packaging>
 
 	<name>intelDevPc</name>

@@ -150,8 +150,14 @@ public class ValueDeviceListView extends VBox {
 		cc2.setPercentWidth(40);
 		paneRoot.getColumnConstraints().add(cc2);
 		ColumnConstraints cc3 = new ColumnConstraints();
-		cc3.setPercentWidth(40);
+		cc3.setPercentWidth(20);
 		paneRoot.getColumnConstraints().add(cc3);
+		ColumnConstraints cc4 = new ColumnConstraints();
+        cc4.setPercentWidth(20);
+        paneRoot.getColumnConstraints().add(cc4);
+        ColumnConstraints cc5 = new ColumnConstraints();
+        cc5.setPercentWidth(20);
+        paneRoot.getColumnConstraints().add(cc5);
 		
 		Label labelName = new Label(device.getName());
 		labelName.setId("labelName");
@@ -162,13 +168,17 @@ public class ValueDeviceListView extends VBox {
 		labelName.setCursor(Cursor.HAND);
 		paneRoot.addColumn(0, labelName);
 
-		Label labelValue = new Label(dc.getCollectProperty().getValueWithSymbol());
+		Label labelValue = new Label(dc.getCollectProperty().createFormatValue());
 		labelValue.setId("labelValue");
 		paneRoot.addColumn(1, labelValue);
 		
+		Label labelSymbol = new Label(dc.getCollectProperty().getUnitSymbol());
+        labelValue.setId("labelSymbol");
+        paneRoot.addColumn(2, labelSymbol);
+		
 		String ctrlModel = Util.getCtrlModelName(device.findSuperParent().getCtrlModel());
 		Label labelCtrlModel = new Label(ctrlModel);
-		paneRoot.addColumn(2, labelCtrlModel);
+		paneRoot.addColumn(3, labelCtrlModel);
 
 		if (!device.isNormal()) {
 			paneRoot.setStyle("-fx-background-color : " + MyColor.DANGER);

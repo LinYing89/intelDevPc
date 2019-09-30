@@ -52,8 +52,8 @@ public class AddDeviceController {
     private TextField txtDeviceName;
 
     private ObservableList<String> mainDevices = FXCollections.observableArrayList("协调器", "PLC", "一路开关", "两路开关", "三路开关",
-            "多路开关", "信号采集控制器", "信号采集器", "呱呱嘴");
-    private List<String> mainCodes = new ArrayList<>(Arrays.asList("A1", "Ax", "B1", "B2", "B3", "Bx", "bx", "b1", "R1"));
+            "多路开关", "信号采集控制器", "信号采集器", "呱呱嘴", "虚拟-参数设备", "虚拟-计数器");
+    private List<String> mainCodes = new ArrayList<>(Arrays.asList("A1", "Ax", "B1", "B2", "B3", "Bx", "bx", "b1", "R1", "V1", "V2"));
     
     private boolean inited = false;
     

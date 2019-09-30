@@ -80,6 +80,7 @@ public class EditLinkageConditionController {
         List<Device> listDevices = new ArrayList<>();
         listDevices.addAll(UserService.getDevGroup().findListCollectDev(true));
         listDevices.addAll(UserService.getDevGroup().findListIStateDev(true));
+        listDevices.addAll(UserService.getDevGroup().findListDevParam(true));
         choiceBoxDevice.getItems().clear();
         choiceBoxDevice.getItems().addAll(listDevices);
 

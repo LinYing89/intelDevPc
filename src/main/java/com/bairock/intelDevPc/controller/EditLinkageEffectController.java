@@ -10,11 +10,13 @@ import com.bairock.intelDevPc.service.UserService;
 import com.bairock.intelDevPc.view.EditLinkageEffectView;
 import com.bairock.iot.intelDev.device.DevStateHelper;
 import com.bairock.iot.intelDev.device.Device;
+import com.bairock.iot.intelDev.device.IStateDev;
 import com.bairock.iot.intelDev.linkage.Effect;
 
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
 @FXMLController
@@ -27,6 +29,8 @@ public class EditLinkageEffectController {
 	private ChoiceBox<Device> choiceBoxDevice;
 	@FXML
 	private ChoiceBox<String> choiceBoxState;
+	@FXML
+    private TextField txtEffectValue;
 	
 	public Effect effect;
 	
@@ -51,6 +55,15 @@ public class EditLinkageEffectController {
 				return null;
 			}
 		});
+		choiceBoxDevice.getSelectionModel().selectedItemProperty().addListener((p0, p1, p2) -> {
+            if (p2 instanceof IStateDev) {
+                txtEffectValue.setDisable(true);
+                choiceBoxState.setDisable(false);
+            } else {
+                txtEffectValue.setDisable(false);
+                choiceBoxState.setDisable(true);
+            }
+        });
 	}
 	
 	public void init(Effect effect) {
@@ -61,10 +74,11 @@ public class EditLinkageEffectController {
 		}
 		List<Device> listDevices = new ArrayList<>();
 		listDevices.addAll(UserService.getDevGroup().findListIStateDev(true));
+		listDevices.addAll(UserService.getDevGroup().findListDevParam(true));
 		choiceBoxDevice.getItems().clear();
 		choiceBoxDevice.getItems().addAll(listDevices);
 
-		// 如果effect为空则为添加, 不为控股则为编辑
+		// 如果effect为空则为添加, 不为空则为编辑
 		if (null == effect) {
 			edit = false;
 			this.effect = new Effect();
@@ -74,13 +88,19 @@ public class EditLinkageEffectController {
 			edit = true;
 			this.effect = effect;
 
-			if(effect.getDsId().equals(DevStateHelper.DS_KAI)) {
-				choiceBoxState.getSelectionModel().select(0);
-			}else {
-				choiceBoxState.getSelectionModel().select(1);
-			}
-
 			Device device = effect.getDevice();
+			
+			if(device instanceof IStateDev) {
+			    txtEffectValue.setDisable(true);
+    			if(effect.getDsId().equals(DevStateHelper.DS_KAI)) {
+    				choiceBoxState.getSelectionModel().select(0);
+    			}else {
+    				choiceBoxState.getSelectionModel().select(1);
+    			}
+			}else {
+			    txtEffectValue.setText(effect.getEffectContent());
+			    choiceBoxState.setDisable(true);
+			}
 			choiceBoxDevice.getSelectionModel().select(device);
 		}
 	}
@@ -96,6 +116,7 @@ public class EditLinkageEffectController {
 			}else {
 				effect.setDsId(DevStateHelper.DS_GUAN);
 			}
+			effect.setEffectContent(txtEffectValue.getText());
 			editLinkageEffectView.getView().getScene().getWindow().hide();
 		}
 

@@ -23,6 +23,7 @@ import com.bairock.iot.intelDev.device.SetDevModelTask;
 import com.bairock.iot.intelDev.device.devcollect.DevCollect;
 import com.bairock.iot.intelDev.order.DeviceOrder;
 import com.bairock.iot.intelDev.order.LoginModel;
+import com.bairock.iot.intelDev.order.OrderBase;
 import com.bairock.iot.intelDev.order.OrderType;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,6 +34,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -98,11 +100,35 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-		super.userEventTriggered(ctx, evt);
-		if (evt instanceof IdleStateEvent) { // 2
-			ctx.close();
-		}
+	    if (evt instanceof IdleStateEvent) {  // 2
+            IdleStateEvent event = (IdleStateEvent) evt;  
+            String type = "";
+            if (event.state() == IdleState.READER_IDLE) {
+                type = "read idle";
+            } else if (event.state() == IdleState.WRITER_IDLE) {
+                type = "write idle";
+                sendHeart();
+            } else if (event.state() == IdleState.ALL_IDLE) {
+                type = "all idle";
+            }
+            System.out.println( ctx.channel().remoteAddress()+"超时类型：" + type);
+        } else {
+            super.userEventTriggered(ctx, evt);
+        }
 	}
+	
+	public void sendHeart() {
+        ObjectMapper om = new ObjectMapper();
+        OrderBase ob = new OrderBase();
+        ob.setOrderType(OrderType.HEAD_SYN);
+        try {
+            String heart = om.writeValueAsString(ob);
+            send(heart);
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 	private void setRemoteDeviceAbnormal() {
 		IntelDevPcApplication.SERVER_CONNECTED = false;
@@ -143,12 +169,12 @@ public class PadClientHandler extends ChannelInboundHandlerAdapter {
 			case HEAD_SYN:
 				syncDevMsg = true;
 //				order = om.writeValueAsString(orderBase);
-				send(strData);
+//				send(strData);
 				break;
 			case HEAD_NOT_SYN:
 				syncDevMsg = false;
 //				order = om.writeValueAsString(orderBase);
-				send(strData);
+//				send(strData);
 				break;
 			case REFRESH_STATE:
                 if (config.getLoginModel().equals(LoginModel.LOCAL)) {
