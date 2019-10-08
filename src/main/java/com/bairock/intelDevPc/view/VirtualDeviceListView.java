@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.bairock.intelDevPc.IntelDevPcApplication;
 import com.bairock.intelDevPc.SpringUtil;
-import com.bairock.intelDevPc.Util;
 import com.bairock.intelDevPc.controller.VirtualDeviceInfoController;
 import com.bairock.intelDevPc.data.MyColor;
 import com.bairock.intelDevPc.service.UserService;
@@ -85,14 +84,14 @@ public class VirtualDeviceListView extends VBox {
         DevParam dc = (DevParam) device;
         GridPane paneRoot = new GridPane();
         ColumnConstraints cc2 = new ColumnConstraints();
-        cc2.setPercentWidth(40);
+        cc2.setPercentWidth(50);
         paneRoot.getColumnConstraints().add(cc2);
         ColumnConstraints cc3 = new ColumnConstraints();
-        cc3.setPercentWidth(30);
+        cc3.setPercentWidth(50);
         paneRoot.getColumnConstraints().add(cc3);
-        ColumnConstraints cc4 = new ColumnConstraints();
-        cc4.setPercentWidth(30);
-        paneRoot.getColumnConstraints().add(cc4);
+//        ColumnConstraints cc4 = new ColumnConstraints();
+//        cc4.setPercentWidth(30);
+//        paneRoot.getColumnConstraints().add(cc4);
         
         Label labelName = new Label(device.getName());
         labelName.setId("labelName");
@@ -107,18 +106,18 @@ public class VirtualDeviceListView extends VBox {
         labelValue.setId("labelValue");
         paneRoot.addColumn(1, labelValue);
         
-        String ctrlModel = Util.getCtrlModelName(device.findSuperParent().getCtrlModel());
-        Label labelCtrlModel = new Label(ctrlModel);
-        paneRoot.addColumn(2, labelCtrlModel);
+//        String ctrlModel = Util.getCtrlModelName(device.findSuperParent().getCtrlModel());
+//        Label labelCtrlModel = new Label(ctrlModel);
+//        paneRoot.addColumn(2, labelCtrlModel);
 
         if (!device.isNormal()) {
             paneRoot.setStyle("-fx-background-color : " + MyColor.DANGER);
             labelName.setStyle("-fx-text-fill : white");
-            labelCtrlModel.setStyle("-fx-text-fill : white");
+//            labelCtrlModel.setStyle("-fx-text-fill : white");
         } else {
             paneRoot.setStyle("-fx-background-color : #00000000;");
             labelName.setStyle("-fx-text-fill : black");
-            labelCtrlModel.setStyle("-fx-text-fill : black");
+//            labelCtrlModel.setStyle("-fx-text-fill : black");
         }
 
         paneRoot.setPadding(new Insets(4, 0, 4, 0));

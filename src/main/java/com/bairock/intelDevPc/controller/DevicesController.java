@@ -35,6 +35,7 @@ import com.bairock.iot.intelDev.device.XRoadDevice;
 import com.bairock.iot.intelDev.device.devcollect.DevCollectSignalContainer;
 import com.bairock.iot.intelDev.device.devswitch.DevSwitch;
 import com.bairock.iot.intelDev.device.devswitch.SubDev;
+import com.bairock.iot.intelDev.device.virtual.VirTualDevice;
 import com.bairock.iot.intelDev.http.HttpDownloadDeviceImgTask;
 import com.bairock.iot.intelDev.linkage.Effect;
 import com.bairock.iot.intelDev.linkage.LinkageCondition;
@@ -461,7 +462,7 @@ public class DevicesController {
                     btnEditCoding.setVisible(true);
                 }
                 cbVisibility.setSelected(!selectedDevice.isVisibility());
-                if (selectedDevice.getParent() == null) {
+                if (selectedDevice.getParent() == null && !(selectedDevice instanceof VirTualDevice)) {
                     btnCtrlModel.setVisible(true);
                     if (selectedDevice.getCtrlModel() == CtrlModel.LOCAL) {
                         btnCtrlModel.setText("设为远程");
